@@ -13,7 +13,11 @@ class Dashboard extends Component {
         </section>
 
         <section className="analytics">
+          {/* 1ST ROW */}
           <AnalyticsCard />
+          <AnalyticsCard />
+          <AnalyticsCard />
+          {/* 2ND ROW */}
           <AnalyticsCard />
           <AnalyticsCard />
         </section>

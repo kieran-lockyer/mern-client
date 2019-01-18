@@ -23,6 +23,17 @@
   max-width: 5rem;
   background: #0a0a0a;
   margin-right: auto;
+
+  &__brand {
+    margin: 3rem auto;
+
+    & img {
+      border-radius: 50%;
+      width: 100%;
+      height: auto;
+      padding: 0.7rem;
+    }
+  }
 }
 
 .graph {
@@ -37,14 +48,6 @@
   padding: 26px;
 }
 
-.navbar__brand {
-  margin: 3rem auto;
-}
-
-.navbar__brand img {
-  border-radius: 50%;
-}
-
 .navbar__nav {
   display: flex;
   flex-direction: column;
@@ -53,17 +56,14 @@
   flex-basis: 100%;
 }
 
-i {
-  color: #c5c5c5;
-  font-size: 24px;
-}
-
 
 .navbar__nav-item {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: all 1s ease-in;
+  -webkit-transition: all 1s ease-in;
 }
 
 .navbar__nav-link {
@@ -74,19 +74,24 @@ i {
   flex: 0 0 2rem;
   align-items: center;
   transition: all 2s ease-in;
+
+  & svg {
+    color: #c3c3c3;
+  }
+
+  &:hover,
+  &:active {
+    background: linear-gradient(to bottom, #48c0b9, #89539d);
+    outline: none;
+
+    & svg {
+      color: #FFF;
+    }
+  }
 }
 
-.navbar__nav-link:hover {
-  background: linear-gradient(to bottom, #48c0b9, #89539d);
-}
-
-.navbar__nav-link:hover>i {
-  color: #fff;
-}
-
-.navbar__nav-item>a {
-  transition: all 2s ease-in;
-  -webkit-transition: all 2s ease-in;
+.bg-dark {
+  background: #0a0a0a;
 }
 
 .dashboard {
@@ -95,86 +100,92 @@ i {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
 
-.featured {
-  width: 85%;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 0 14px 12px #e8e8e8;
-  margin-bottom: 3rem;
-  flex: 0 1 auto;
-  height: auto;
-}
+  & .featured {
+    width: 85%;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 14px 12px #e8e8e8;
+    margin-bottom: 3rem;
+    flex: 0 1 auto;
+    height: auto;
 
-.featured-graph {
-  padding: 20px;
-  box-sizing: border-box;
-}
+    &-graph {
+      padding: 20px;
+      box-sizing: border-box;
+    }
+  }
 
-.analytics {
-  display: flex;
-  flex: 1 0 auto;
-  width: 85%;
-  justify-content: center;
-  flex-wrap: nowrap;
-}
+  & .analytics {
+    display: flex;
+    flex: 1 0 auto;
+    width: 85%;
+    justify-content: center;
+    flex-wrap: wrap;
 
-.analytics-card {
-  background: #fff;
-  flex: 0 calc(100% / 12 * 4);
-  margin: 10px 10px 0 0;
-  border-radius: 15px;
-  box-shadow: 0 0 14px 12px #e8e8e8;
-  margin: 10px 30px 0 0;
-}
+    &-card {
+      background: #fff;
+      flex: 1 1 calc(100% / 12 * 3);
+      margin: 10px 10px 30px 0;
+      border-radius: 15px;
+      box-shadow: 0 0 5px 2px #dedede;
 
-.analytics-card:nth-child(3) {
-  margin-right: 0;
-}
+      &:nth-child(3n),
+      &:last-child {
+        margin-right: 0;
+      }
 
-.navbar__brand-img {
-  width: 100%;
-  height: auto;
-  padding: 0.7rem;
-}
+      &__heading {
+        border-bottom: 1px solid #eee;
+        padding: 1rem;
+        margin: 0 1rem;
+      }
+    }
 
-.analytics-card__heading {
-  border-bottom: 1px solid #eee;
-  padding: 1rem;
-  margin: 0 1rem;
-}
+    &__item {
+      display: flex;
+      align-items: center;
+      min-height: 5rem;
+      padding: 0 1rem;
 
-.analytics__item {
-  display: flex;
-  align-items: center;
-  min-height: 5rem;
-  margin: 0 1rem;
-}
+      &:last-child {
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+      }
 
-.analytics__item-icon {
-  margin-right: 1rem;
-}
+      &:hover {
+        background: #f9f9f9;
+      }
 
-.analytics__item-details {
-  margin-right: auto;
-}
+      &-icon {
+        margin-right: 1rem;
+      }
 
-.analytics__item-title {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+      &-details {
+        margin-right: auto;
+      }
 
-.analytics__item-count {
-  font-size: 0.875rem;
-  color: #ccc;
-}
+      &-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
 
-.analytics__item-options {
-  cursor: pointer;
-  transition: all 1.5s ease-out;
-}
+      &-count {
+        font-size: 0.875rem;
+        color: #ccc;
+      }
 
-.analytics__item-options:hover>i {
-  color: #48c0b9;
+      &-options {
+        cursor: pointer;
+        transition: all 0.5s ease-out;
+        color: #d4dee3;
+
+        &:hover,
+        &:active,
+        &:focus svg {
+          color: #48c0b9;
+        }
+      }
+    }
+  }
 }

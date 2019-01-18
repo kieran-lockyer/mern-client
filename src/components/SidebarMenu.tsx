@@ -1,4 +1,5 @@
 import React from "react";
+import { Icon } from "@blueprintjs/core";
 
 const SidebarMenu = () => {
   return (
@@ -15,12 +16,17 @@ const SidebarMenu = () => {
         <ul className="navbar__nav">
           <li className="navbar__nav-item">
             <a href="#" className="navbar__nav-link">
-              <i className="fas fa-chart-bar" />
+              <Icon icon="home" iconSize={25} />
             </a>
           </li>
           <li className="navbar__nav-item">
             <a href="#" className="navbar__nav-link">
-              <i className="fas fa-cog" />
+              <Icon icon="chart" iconSize={25} />
+            </a>
+          </li>
+          <li className="navbar__nav-item">
+            <a href="#" className="navbar__nav-link">
+              <Icon icon="cog" iconSize={25} />
             </a>
           </li>
         </ul>
