@@ -3,6 +3,7 @@ import Chart from "react-apexcharts";
 
 class DemoChart extends Component {
   state = {
+    selection: "one_year",
     options: {
       legend: {
         show: true
@@ -17,28 +18,30 @@ class DemoChart extends Component {
         }
       },
       chart: {
-        id: "apexchart-example"
+        id: "Photo Analytics"
       },
       xaxis: {
-        lines: {
-          show: false
-        },
+        type: "date",
+        min: new Date("01 Jan 2018").getTime(),
+        tickAmount: 6,
         categories: [
-          "January",
-          "Feburary",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December"
-        ],
-        xaxis: {
-          type: "datetime"
+          "2018-01-01",
+          "2018-02-01",
+          "2018-03-01",
+          "2018-04-01",
+          "2018-05-01",
+          "2018-06-01",
+          "2018-07-01",
+          "2018-08-01",
+          "2018-09-01",
+          "2018-10-01",
+          "2018-11-01",
+          "2018-12-01"
+        ]
+      },
+      tooltip: {
+        x: {
+          format: "dd MMM yyyy"
         }
       },
       yaxis: {
@@ -47,6 +50,7 @@ class DemoChart extends Component {
         }
       }
     },
+    // END OF OPTIONS
 
     series: [
       {

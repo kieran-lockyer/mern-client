@@ -13,7 +13,7 @@ class Dashboard extends Component {
             <DemoChart />
           </div>
         </section>
-        <Analytics />
+        {/* <Analytics /> */}
         <SortableComponent />
       </div>
     );
