@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import AnalyticsCard from "./AnalyticsCard";
+import Analytics from "./Analytics";
 import FeaturedChart from "./FeaturedChart";
+import SortableComponent from "./SortableComponent";
+import DemoChart from "./DemoChart";
 
 class Dashboard extends Component {
   render() {
@@ -8,19 +10,11 @@ class Dashboard extends Component {
       <div className="dashboard">
         <section className="featured">
           <div className="featured-graph chart">
-            <FeaturedChart />
+            <DemoChart />
           </div>
         </section>
-
-        <section className="analytics">
-          {/* 1ST ROW */}
-          <AnalyticsCard />
-          <AnalyticsCard />
-          <AnalyticsCard />
-          {/* 2ND ROW */}
-          <AnalyticsCard />
-          <AnalyticsCard />
-        </section>
+        <Analytics />
+        <SortableComponent />
       </div>
     );
   }

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import { Icon } from "@blueprintjs/core";
+import { Link } from "react-router-dom";
 
 const SidebarMenu = () => {
   return (
@@ -15,19 +16,24 @@ const SidebarMenu = () => {
 
         <ul className="navbar__nav">
           <li className="navbar__nav-item">
-            <a href="#" className="navbar__nav-link">
-              <Icon icon="home" iconSize={25} />
-            </a>
+            <Link className="navbar__nav-link" to="/">
+              <Icon icon="dashboard" iconSize={25} />
+            </Link>
           </li>
           <li className="navbar__nav-item">
-            <a href="#" className="navbar__nav-link">
-              <Icon icon="chart" iconSize={25} />
-            </a>
+            <Link className="navbar__nav-link" to="/photos">
+              <Icon icon="mugshot" iconSize={25} />
+            </Link>
           </li>
           <li className="navbar__nav-item">
-            <a href="#" className="navbar__nav-link">
+            <Link className="navbar__nav-link" to="/tags">
+              <Icon icon="tag" iconSize={25} />
+            </Link>
+          </li>
+          <li className="navbar__nav-item">
+            <Link className="navbar__nav-link" to="/settings">
               <Icon icon="cog" iconSize={25} />
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

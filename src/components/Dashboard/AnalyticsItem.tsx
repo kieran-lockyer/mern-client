@@ -19,6 +19,17 @@ class AnalyticsItem extends Component {
         </Button>
         <Button
           style={{
+            background: "lightseagreen",
+            color: "white",
+            fontWeight: "bold",
+            marginLeft: "5px"
+          }}
+          className="bp3-button bp3-popover-dismiss"
+        >
+          <Icon icon="flag" color={Colors.WHITE} iconSize={20} />
+        </Button>
+        <Button
+          style={{
             background: "cornflowerblue",
             color: "white",
             fontWeight: "bold",
