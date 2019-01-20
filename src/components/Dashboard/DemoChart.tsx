@@ -8,17 +8,11 @@ class DemoChart extends Component {
       legend: {
         show: true
       },
-      theme: {
-        palette: "palette2",
-        monochrome: {
-          enabled: false,
-          color: "#255aee",
-          shadeTo: "light",
-          shadeIntensity: 0.65
-        }
-      },
       chart: {
         id: "Photo Analytics"
+      },
+      grid: {
+        show: false
       },
       xaxis: {
         type: "date",
@@ -48,20 +42,23 @@ class DemoChart extends Component {
         lines: {
           show: false
         }
+      },
+      theme: {
+        palette: "palette1"
       }
     },
     // END OF OPTIONS
 
     series: [
       {
-        name: "Photos Uploaded",
-        type: "area",
+        name: "Tags Generated",
+        type: "bar",
         data: [30, 40, 45, 50, 49, 60, 70, 91, 65, 45, 34, 44]
       },
       {
-        name: "Tags Generated",
-        type: "bar",
-        data: [10, 32, 18, 50, 67, 23, 75, 70, 65, 45, 34, 44]
+        name: "Photos Uploaded",
+        type: "line",
+        data: [18, 32, 18, 50, 67, 23, 75, 70, 65, 45, 34, 44]
       }
     ]
   };
