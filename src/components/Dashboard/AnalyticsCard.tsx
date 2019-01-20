@@ -18,7 +18,6 @@ const renderTags = tags => {
 };
 
 const AnalyticsCard = props => {
-  console.log(props.tags);
   return (
     <div className="analytics-card" style={{ opacity: 1 }}>
       <div className="analytics-card__heading">

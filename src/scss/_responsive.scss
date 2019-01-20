@@ -1,0 +1,31 @@
+// MEDIA QUERY MANAGER
+// 0 - 600px : Small
+// 600 - 900 : Medium
+// 900 - 1200 : Large
+// [1200 - 1800+] : Extra Large
+
+@mixin respond($breakpoint) {
+  @if $breakpoint==small {
+    @media only screen and (max-width: 600px) {
+      @content
+    }
+  }
+
+  @if $breakpoint==medium {
+    @media only screen and (max-width: 900px) {
+      @content
+    }
+  }
+
+  @if $breakpoint==large {
+    @media only screen and (max-width: 1200px) {
+      @content
+    }
+  }
+
+  @if $breakpoint==extra-large {
+    @media only screen and (min-width: 1800px) {
+      @content
+    }
+  }
+}

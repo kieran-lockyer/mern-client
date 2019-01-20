@@ -6,7 +6,9 @@ class DemoChart extends Component {
     selection: "one_year",
     options: {
       legend: {
-        show: true
+        show: false,
+        position: "top",
+        horizontalAlign: "left"
       },
       chart: {
         id: "Photo Analytics"
@@ -19,18 +21,18 @@ class DemoChart extends Component {
         min: new Date("01 Jan 2018").getTime(),
         tickAmount: 6,
         categories: [
-          "2018-01-01",
-          "2018-02-01",
-          "2018-03-01",
-          "2018-04-01",
-          "2018-05-01",
-          "2018-06-01",
-          "2018-07-01",
-          "2018-08-01",
-          "2018-09-01",
-          "2018-10-01",
-          "2018-11-01",
-          "2018-12-01"
+          "January",
+          "Feburary",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
         ]
       },
       tooltip: {

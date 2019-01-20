@@ -1,15 +1,26 @@
 import React, { Component } from "react";
-import { Icon, Colors } from "@blueprintjs/core";
+import { Icon, Colors, TagInput } from "@blueprintjs/core";
 
-export default class AllPhotos extends Component {
+class AllPhotos extends Component {
+  state = {
+    tagSearch: []
+  };
   render() {
     return (
       <div className="dashboard">
         <div className="container">
           <div className="filter">
             <h2>Collection of Photos Here</h2>
+            <div className="filter-search-form">
+              <TagInput
+                values={this.state.tagSearch}
+                fill
+                large
+                leftIcon="tag"
+                placeholder="Filter by tags"
+              />
+            </div>
             <div className="filter-icons">
-              <Icon color={Colors.GRAY2} icon="tag" iconSize={25} />
               <Icon
                 color={Colors.GRAY2}
                 icon="sort-alphabetical"
@@ -25,3 +36,5 @@ export default class AllPhotos extends Component {
     );
   }
 }
+
+export default AllPhotos;
