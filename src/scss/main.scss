@@ -174,16 +174,18 @@ body {
   align-items: center;
 
   & .featured {
-    width: 85%;
     border-radius: 15px;
     margin-bottom: 3rem;
     -webkit-box-flex: 0;
     -ms-flex: 0 1 auto;
-    flex: 0 1 auto;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    height: auto;
+
+    &-container {
+      width: 85%;
+      max-width: 1300px;
+    }
 
     &-graph {
       background: #18263d;
@@ -202,10 +204,6 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-flex: 1;
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto;
-    width: 85%;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -335,6 +333,7 @@ body {
   width: 85%;
   padding: 1rem 2rem 3rem;
   background: #fff;
+  max-width: 1300px;
 }
 
 .featured-stats {
