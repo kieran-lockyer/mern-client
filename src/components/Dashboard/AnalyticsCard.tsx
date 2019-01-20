@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AnalyticsItem from "./AnalyticsItem";
 import { SortableHandle } from "react-sortable-hoc";
 import { Icon, Colors } from "@blueprintjs/core";
@@ -19,7 +19,7 @@ const renderTags = tags => {
 
 const AnalyticsCard = props => {
   return (
-    <div className="analytics-card" style={{ opacity: 1 }}>
+    <div className="analytics-card">
       <div className="analytics-card__heading">
         <DragHandle />
         <h3>{props.title}</h3>

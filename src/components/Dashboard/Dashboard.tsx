@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Analytics from "./Analytics";
-import FeaturedChart from "./FeaturedChart";
 import SortableComponent from "./SortableComponent";
-import DemoChart from "./DemoChart";
+import DashboardChart from "./DashboardChart";
 import AnimatedNumber from "react-animated-number";
 
 class Dashboard extends Component {
@@ -16,7 +14,7 @@ class Dashboard extends Component {
         <div className="featured-container">
           <section className="featured">
             <div className="featured-graph chart">
-              <DemoChart />
+              <DashboardChart />
             </div>
             <div className="featured-stats">
               <div className="featured-stats-item">

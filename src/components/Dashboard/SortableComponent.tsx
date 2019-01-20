@@ -7,9 +7,22 @@ import {
 } from "react-sortable-hoc";
 
 const SortableColumn = SortableElement(
-  ({ title, tags, index }: { title: string; tags: Array<any>; index: any }) => (
+  ({
+    title,
+    tags,
+    index
+  }: {
+    title: string;
+    tags: string[];
+    index: number;
+  }) => (
     <>
-      <AnalyticsCard title={title} tags={tags} index={index} />
+      <AnalyticsCard
+        title={title}
+        tags={tags}
+        index={index}
+        helperClass="sortableHelper"
+      />
     </>
   )
 );

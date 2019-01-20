@@ -362,7 +362,7 @@ body {
 
 
 .featured-stats-item {
-  padding: 3rem;
+  padding: 2rem;
   background: #fff;
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
@@ -373,15 +373,31 @@ body {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   position: relative;
   border-radius: 10px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+
+  & h2 {
+    font-size: 30px;
+  }
+
+  &>span {
+    padding: 10px;
+    background: #0000004f;
+    width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: inherit;
+    font-size: 14px;
+    margin-top: 10px;
+  }
 
   &-title {
     position: absolute;
@@ -419,4 +435,8 @@ body {
   -ms-flex: 1 1;
   flex: 1 1;
   margin: 0 5rem;
+}
+
+.sortableHelper {
+  z-index: 9999;
 }
