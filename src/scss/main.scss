@@ -186,7 +186,8 @@ body {
     height: auto;
 
     &-graph {
-      background: #fff;
+      background: #18263d;
+      border-radius: 1rem;
       -webkit-box-shadow: 0 0 14px 12px #e8e8e8;
       box-shadow: 0 0 14px 12px #e8e8e8;
       padding: 20px;
@@ -222,6 +223,12 @@ body {
       align-self: start;
       -webkit-box-shadow: 0 0 5px 2px #dedede;
       box-shadow: 0 0 5px 2px #dedede;
+
+      @include respond(medium) {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        margin: 1.5rem auto;
+      }
 
       &:nth-child(2n),
       &:last-child {

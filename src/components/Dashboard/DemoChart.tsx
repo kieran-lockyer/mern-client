@@ -11,15 +11,19 @@ class DemoChart extends Component {
         horizontalAlign: "left"
       },
       chart: {
-        id: "Photo Analytics"
+        id: "Photo Analytics",
+        foreColor: "#FFFFFF"
       },
       grid: {
         show: false
       },
       xaxis: {
         type: "date",
-        min: new Date("01 Jan 2018").getTime(),
-        tickAmount: 6,
+        title: {
+          style: {
+            color: "#FFF"
+          }
+        },
         categories: [
           "January",
           "Feburary",
