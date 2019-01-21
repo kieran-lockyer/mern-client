@@ -7,6 +7,15 @@ import {
   PopoverInteractionKind
 } from "@blueprintjs/core";
 
+import {
+  CardItem,
+  CardLeft,
+  CardRight,
+  CardDetails,
+  CardTitle,
+  CardCount
+} from "./styles";
+
 function popoverContent() {
   return (
     <div>
@@ -42,17 +51,17 @@ function popoverContent() {
   );
 }
 
-const AnalyticsItem = props => {
+export default ({ tag }) => {
   return (
-    <>
-      <div className="analytics__item-icon">
+    <CardItem>
+      <CardLeft>
         <Icon color={Colors.LIGHT_GRAY1} icon="tag" iconSize={25} />
-      </div>
-      <div className="analytics__item-details">
-        <p className="analytics__item-title">{props.tag}</p>
-        <p className="analytics__item-count">700 Images</p>
-      </div>
-      <div className="analytics__item-options">
+      </CardLeft>
+      <CardDetails>
+        <CardTitle>{tag}</CardTitle>
+        <CardCount>700 Images</CardCount>
+      </CardDetails>
+      <CardRight>
         <Popover
           popoverClassName="bp3-popover-content-sizing bp3-dark"
           interactionKind={PopoverInteractionKind.HOVER}
@@ -60,9 +69,7 @@ const AnalyticsItem = props => {
         >
           <Icon icon="layout-linear" iconSize={24} />
         </Popover>
-      </div>
-    </>
+      </CardRight>
+    </CardItem>
   );
 };
-
-export default AnalyticsItem;

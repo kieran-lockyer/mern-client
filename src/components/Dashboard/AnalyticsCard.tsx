@@ -1,32 +1,21 @@
-import React from "react";
+import React, { Component } from "react";
 import AnalyticsItem from "./AnalyticsItem";
-import { SortableHandle } from "react-sortable-hoc";
-import { Icon, Colors } from "@blueprintjs/core";
+import { Card, CardHeading } from "./styles";
 
-const DragHandle = SortableHandle(() => (
-  <Icon icon="drag-handle-horizontal" color={Colors.GRAY4} />
-));
-
-const renderTags = tags => {
-  return tags.map((tag, id) => {
+export default class AnalyticsCard extends Component<any, any> {
+  renderTags() {
+    return this.props.tags.map(tag => {
+      return <AnalyticsItem tag={tag} />;
+    });
+  }
+  render() {
     return (
-      <div className="analytics__item" key={id}>
-        <AnalyticsItem tag={tag} />
-      </div>
+      <Card>
+        <CardHeading>
+          <h3>{this.props.title}</h3>
+        </CardHeading>
+        {this.renderTags()}
+      </Card>
     );
-  });
-};
-
-const AnalyticsCard = props => {
-  return (
-    <div className="analytics-card">
-      <div className="analytics-card__heading">
-        <DragHandle />
-        <h3>{props.title}</h3>
-      </div>
-      {renderTags(props.tags)}
-    </div>
-  );
-};
-
-export default AnalyticsCard;
+  }
+}
