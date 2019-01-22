@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
 
-class DemoChart extends Component {
+export default class DashboardGraph extends Component {
   state = {
     selection: "one_year",
     options: {
@@ -79,5 +79,3 @@ class DemoChart extends Component {
     );
   }
 }
-
-export default DemoChart;

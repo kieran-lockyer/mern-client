@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Icon } from "@blueprintjs/core";
 import { NavLink } from "react-router-dom";
 
-const SidebarMenu = () => {
+export default () => {
   return (
     <>
       <div className="navbar">
@@ -59,5 +59,3 @@ const SidebarMenu = () => {
     </>
   );
 };
-
-export default SidebarMenu;
