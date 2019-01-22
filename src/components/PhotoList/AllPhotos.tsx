@@ -1,7 +1,18 @@
 import React, { Component } from "react";
-import { Icon, Colors, TagInput } from "@blueprintjs/core";
+import { Icon, Colors, TagInput as Input, Tag } from "@blueprintjs/core";
 import { connect } from "react-redux";
+import Moment from "react-moment";
 import * as actions from "../../actions/";
+import {
+  Container,
+  Wrapper,
+  Header,
+  SearchForm,
+  Filter,
+  TagRow,
+  Date,
+  Client
+} from "./PhotoListStyles";
 
 class AllPhotos extends Component<any, any> {
   componentDidMount() {
@@ -11,8 +22,10 @@ class AllPhotos extends Component<any, any> {
   renderTags(metadata) {
     return metadata.map((tag, id) => {
       return (
-        <div key={id}>
-          <p>{tag.tag}</p>
+        <div>
+          <Tag key={id} round onRemove={e => console.log(e)}>
+            {tag.tag}
+          </Tag>
         </div>
       );
     });
@@ -22,45 +35,50 @@ class AllPhotos extends Component<any, any> {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
         return (
-          <div key={id} className="tag-item-list">
+          <TagRow key={id}>
             <img src={photo.url} alt="" />
-            <p>ClientID: {photo.client}</p>
-            <p>Date: {photo.datetime}</p>
-            <span>Tags: {this.renderTags(photo.metadata)}</span>
-          </div>
+            <Client>
+              <Icon icon="user" color={Colors.BLUE1} iconSize={25} />
+              {photo.client}
+            </Client>
+            <Date>
+              <Moment format="MMMM D, YYYY">{photo.datetime}</Moment>
+            </Date>
+            {this.renderTags(photo.metadata)}
+          </TagRow>
         );
       });
     }
   }
 
   render() {
-    console.log(this.props);
     return (
-      <div className="dashboard">
-        <div className="container">
-          <div className="filter">
-            <h2>Collection of Photos Here</h2>
-            <div className="filter-search-form">
-              <TagInput
+      <Container>
+        <Wrapper>
+          <Header>
+            <h2>PHOTO COLLECTION</h2>
+            <SearchForm>
+              <Input
                 values={["photos"]}
                 fill
                 large
                 leftIcon="tag"
                 placeholder="Filter by tags"
               />
-            </div>
-            <div className="filter-icons">
+            </SearchForm>
+            <Filter>
               <Icon
                 color={Colors.GRAY2}
                 icon="sort-alphabetical"
                 iconSize={25}
               />
               <Icon color={Colors.GRAY2} icon="sort" iconSize={25} />
-            </div>
-          </div>
+            </Filter>
+          </Header>
+
           {this.renderPhotos()}
-        </div>
-      </div>
+        </Wrapper>
+      </Container>
     );
   }
 }

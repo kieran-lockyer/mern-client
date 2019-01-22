@@ -1,7 +1,16 @@
 import React, { Component } from "react";
-import { Colors, Icon, TagInput } from "@blueprintjs/core";
+import { Colors, Icon, TagInput as Input } from "@blueprintjs/core";
 import { connect } from "react-redux";
+import Moment from "react-moment";
 import * as actions from "../../actions";
+import {
+  Container,
+  Wrapper,
+  Header,
+  SearchForm,
+  Filter,
+  TagRow
+} from "./TagListStyles";
 
 class AllTags extends Component<any, any> {
   componentDidMount() {
@@ -12,47 +21,48 @@ class AllTags extends Component<any, any> {
     if (this.props.tags) {
       return this.props.tags.map((tags, id) => {
         return (
-          <div key={id} className="tag-item-list">
-            <h3 className="tag-title">{tags.tag}</h3>
-            <p className="tag-item-image">
+          <TagRow key={id}>
+            <h3>{tags.tag}</h3>
+            <p>
               <span>ImageID:</span>
               {tags.imageId}
             </p>
-            <p className="tag-item-date">{tags.dateAdded}</p>
-          </div>
+            <p>
+              <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
+            </p>
+          </TagRow>
         );
       });
     }
   }
 
   render() {
-    console.log(this.props);
     return (
-      <div className="dashboard">
-        <div className="container">
-          <div className="filter">
-            <h2>Collection of Tags Here</h2>
-            <div className="filter-search-form">
-              <TagInput
+      <Container>
+        <Wrapper>
+          <Header>
+            <h2>TAG COLLECTION</h2>
+            <SearchForm>
+              <Input
                 values={["Hello"]}
                 fill
                 large
                 leftIcon="tag"
                 placeholder="Filter by tags"
               />
-            </div>
-            <div className="filter-icons">
+            </SearchForm>
+            <Filter>
               <Icon
                 color={Colors.GRAY2}
                 icon="sort-alphabetical"
                 iconSize={25}
               />
               <Icon color={Colors.GRAY2} icon="sort" iconSize={25} />
-            </div>
-          </div>
+            </Filter>
+          </Header>
           {this.renderTags()}
-        </div>
-      </div>
+        </Wrapper>
+      </Container>
     );
   }
 }

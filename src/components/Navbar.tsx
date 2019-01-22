@@ -1,21 +1,18 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import { NavLink } from "react-router-dom";
+import { Navbar, NavbarBrand, NavbarNav, NavbarNavItem } from "./styles";
 
 export default () => {
   return (
     <>
-      <div className="navbar">
-        <div className="navbar__brand">
-          <img
-            className="navbar__brand-img"
-            src="./images/logo.png"
-            alt="Brand Logo"
-          />
-        </div>
+      <Navbar>
+        <NavbarBrand>
+          <img src="./images/logo.png" alt="Brand Logo" />
+        </NavbarBrand>
 
-        <ul className="navbar__nav">
-          <li className="navbar__nav-item">
+        <NavbarNav>
+          <NavbarNavItem>
             <NavLink
               activeClassName="selected"
               className="navbar__nav-link"
@@ -24,8 +21,8 @@ export default () => {
             >
               <Icon icon="dashboard" iconSize={25} />
             </NavLink>
-          </li>
-          <li className="navbar__nav-item">
+          </NavbarNavItem>
+          <NavbarNavItem>
             <NavLink
               activeClassName="selected"
               className="navbar__nav-link"
@@ -34,8 +31,8 @@ export default () => {
             >
               <Icon icon="mugshot" iconSize={25} />
             </NavLink>
-          </li>
-          <li className="navbar__nav-item">
+          </NavbarNavItem>
+          <NavbarNavItem>
             <NavLink
               activeClassName="selected"
               className="navbar__nav-link"
@@ -44,8 +41,8 @@ export default () => {
             >
               <Icon icon="tag" iconSize={25} />
             </NavLink>
-          </li>
-          <li className="navbar__nav-item">
+          </NavbarNavItem>
+          <NavbarNavItem>
             <NavLink
               activeClassName="selected"
               className="navbar__nav-link"
@@ -53,9 +50,9 @@ export default () => {
             >
               <Icon icon="cog" iconSize={25} />
             </NavLink>
-          </li>
-        </ul>
-      </div>
+          </NavbarNavItem>
+        </NavbarNav>
+      </Navbar>
     </>
   );
 };

@@ -14,7 +14,7 @@ import {
   CardDetails,
   CardTitle,
   CardCount
-} from "./styles";
+} from "./DashboardStyles";
 
 function popoverContent() {
   return (
@@ -67,7 +67,7 @@ export default ({ tag }) => {
           interactionKind={PopoverInteractionKind.HOVER}
           content={popoverContent()}
         >
-          <Icon icon="layout-linear" iconSize={24} />
+          <Icon icon="more" iconSize={24} />
         </Popover>
       </CardRight>
     </CardItem>

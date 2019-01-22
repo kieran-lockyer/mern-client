@@ -1,15 +1,31 @@
 import React, { PureComponent } from "react";
-import { Stats } from "./styles";
+import { Stats } from "./DashboardStyles";
 import StatsItem from "./StatsItem";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
-export default class DashboardStats extends PureComponent {
+class DashboardStats extends PureComponent<any, any> {
+  componentDidMount() {
+    this.props.fetchPhotos();
+    this.props.fetchTags();
+  }
   render() {
     return (
       <Stats>
-        <StatsItem name={"Photos"} value={3200} />
-        <StatsItem name={"Tags"} value={1200} />
+        <StatsItem name={"Photos"} value={this.props.photoLength} />
+        <StatsItem name={"Tags"} value={this.props.tagsLength} />
         <StatsItem name={"Flagged"} value={18} />
       </Stats>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  photoLength: state.photos.length,
+  tagsLength: state.tags.length
+});
+
+export default connect(
+  mapStateToProps,
+  actions
+)(DashboardStats);

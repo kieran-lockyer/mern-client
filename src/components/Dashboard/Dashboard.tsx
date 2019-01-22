@@ -4,7 +4,12 @@ import DashboardGraph from "./DashboardGraph";
 import DashboardStats from "./DashboardStats";
 
 // Styles
-import { Dashboard as Container, Wrapper, Featured, Graph } from "./styles";
+import {
+  Dashboard as Container,
+  Wrapper,
+  Featured,
+  Graph
+} from "./DashboardStyles";
 
 export default () => {
   return (
