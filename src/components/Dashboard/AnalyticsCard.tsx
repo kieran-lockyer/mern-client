@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import AnalyticsItem from "./AnalyticsItem";
-import { Card, CardHeading } from "./styles";
+import { Card, CardHeading } from "./DashboardStyles";
 
 export default class AnalyticsCard extends Component<any, any> {
   renderTags() {
-    return this.props.tags.map(tag => {
-      return <AnalyticsItem tag={tag} />;
+    return this.props.tags.map((tag, id) => {
+      return <AnalyticsItem tag={tag} key={id} />;
     });
   }
   render() {

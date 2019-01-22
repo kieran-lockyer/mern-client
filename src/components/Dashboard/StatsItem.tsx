@@ -1,6 +1,5 @@
 import React from "react";
-import { StatsItem as Stats, AnimatedNum } from "./styles";
-import AnimatedNumber from "react-animated-number";
+import { StatsItem as Stats } from "./DashboardStyles";
 
 // Add commas to number
 function numberWithCommas(num) {
@@ -10,15 +9,7 @@ function numberWithCommas(num) {
 export default ({ name, value }) => {
   return (
     <Stats>
-      <h2>
-        <AnimatedNumber
-          value={value}
-          style={AnimatedNum}
-          formatValue={n => numberWithCommas(n)}
-          stepPrecision={0}
-          duration={1000}
-        />
-      </h2>
+      <h2>{numberWithCommas(value)}</h2>
       <span>{name}</span>
     </Stats>
   );

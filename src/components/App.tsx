@@ -5,12 +5,13 @@ import PhotoDashboard from "./PhotoList/AllPhotos";
 import TagsDashboard from "./TagList/AllTags";
 import Error from "./Error";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Container } from "./styles";
 
 export default class App extends Component {
   render() {
     return (
       <Router>
-        <div className="wrapper">
+        <Container>
           <Navbar />
           <Switch>
             <Route path="/" exact component={Dashboard} />
@@ -18,7 +19,7 @@ export default class App extends Component {
             <Route path="/tags" exact component={TagsDashboard} />
             <Route component={Error} />
           </Switch>
-        </div>
+        </Container>
       </Router>
     );
   }

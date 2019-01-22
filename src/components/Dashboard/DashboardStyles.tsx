@@ -159,8 +159,3 @@ export const CardCount = styled.p`
   font-size: 0.875rem;
   color: #ccc;
 `;
-
-export const AnimatedNum = {
-  transition: "0.8s ease-out",
-  transitionProperty: "background-color, color, opacity"
-};

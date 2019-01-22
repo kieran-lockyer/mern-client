@@ -7,9 +7,8 @@ import App from "./components/App";
 import thunk from "redux-thunk";
 
 // STYLES
-import "normalize.css/normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
-import "./scss/main.scss";
+import "./scss/base.scss";
 
 // REDUX STORE
 const store = createStore(reducers, applyMiddleware(thunk));
