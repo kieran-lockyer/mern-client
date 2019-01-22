@@ -1,6 +1,6 @@
 export default (state = [], { type, payload }) => {
   switch (type) {
-    case "FETCH_TAGS":
+    case "FETCH_PHOTOS":
       return payload;
 
     default:
