@@ -440,3 +440,11 @@ body {
 .sortableHelper {
   z-index: 9999;
 }
+
+.tag-item-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  border-bottom: 2px solid #eee;
+}
