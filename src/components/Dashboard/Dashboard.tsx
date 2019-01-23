@@ -21,7 +21,6 @@ export default () => {
           </Graph>
           <DashboardStats />
         </Featured>
-        <DashboardAnalytics />
       </Wrapper>
     </Container>
   );
