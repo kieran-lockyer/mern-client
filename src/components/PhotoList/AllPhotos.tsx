@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Icon, Colors, TagInput as Input, Tag } from "@blueprintjs/core";
+import {
+  Icon,
+  Colors,
+  TagInput as Input,
+  Tag,
+  Button
+} from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import * as actions from "../../actions/";
@@ -15,15 +21,28 @@ import {
 } from "./PhotoListStyles";
 
 class AllPhotos extends Component<any, any> {
+  state = {
+    pageNum: 1
+  };
+
   componentDidMount() {
-    this.props.fetchPhotos();
+    this.props.fetchPhotos(this.state.pageNum);
   }
 
-  renderTags(metadata) {
-    return metadata.map((tag, id) => {
+  componentDidUpdate() {
+    if (
+      this.state.pageNum === this.props.nextPage ||
+      this.state.pageNum === this.props.prevPage
+    ) {
+      this.props.fetchPhotos(this.state.pageNum);
+    }
+  }
+
+  renderTags(tags) {
+    return tags.map((tag, id) => {
       return (
-        <div>
-          <Tag key={id} round onRemove={e => console.log(e)}>
+        <div key={id}>
+          <Tag round onRemove={e => console.log(e)}>
             {tag.tag}
           </Tag>
         </div>
@@ -37,10 +56,7 @@ class AllPhotos extends Component<any, any> {
         return (
           <TagRow key={id}>
             <img src={photo.url} alt="" />
-            <Client>
-              <Icon icon="user" color={Colors.BLUE1} iconSize={25} />
-              {photo.client}
-            </Client>
+            <Client>{photo.client}</Client>
             <Date>
               <Moment format="MMMM D, YYYY">{photo.datetime}</Moment>
             </Date>
@@ -50,6 +66,34 @@ class AllPhotos extends Component<any, any> {
       });
     }
   }
+
+  renderPagination() {
+    return (
+      <div className="pagination">
+        <Button
+          icon="arrow-left"
+          text="Back"
+          disabled={!this.props.hasPrevPage}
+          onClick={this.prevPage}
+        />
+
+        <Button
+          rightIcon="arrow-right"
+          text="Next"
+          disabled={!this.props.hasNextPage}
+          onClick={this.nextPage}
+        />
+      </div>
+    );
+  }
+
+  prevPage = () => {
+    this.setState({ pageNum: this.props.prevPage });
+  };
+
+  nextPage = () => {
+    this.setState({ pageNum: this.props.nextPage });
+  };
 
   render() {
     return (
@@ -77,6 +121,7 @@ class AllPhotos extends Component<any, any> {
           </Header>
 
           {this.renderPhotos()}
+          {this.renderPagination()}
         </Wrapper>
       </Container>
     );
@@ -84,7 +129,12 @@ class AllPhotos extends Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  photos: state.photos
+  photos: state.photos.docs,
+  page: state.photos.page,
+  nextPage: state.photos.nextPage,
+  prevPage: state.photos.prevPage,
+  hasPrevPage: state.photos.hasPrevPage,
+  hasNextPage: state.photos.hasNextPage
 });
 
 export default connect(
