@@ -42,8 +42,7 @@ body {
   transition: all 2s ease-in;
 
   &.selected {
-    background: -webkit-gradient(linear, left top, right top, from(#48c0b9), to(#9747d4));
-    background: linear-gradient(to right, #48c0b9, #9747d4);
+    background: linear-gradient(to right bottom, #48c0b9, #9747d4);
 
     & svg {
       color: #fff !important;
@@ -56,12 +55,16 @@ body {
 
   &:hover,
   &:active {
-    background: -webkit-gradient(linear, left top, right top, from(#48c0b9), to(#9747d4));
-    background: linear-gradient(to right, #48c0b9, #9747d4);
+    background: linear-gradient(to right bottom, #48c0b9, #9747d4);
     outline: none;
 
     & svg {
       color: #FFF;
     }
   }
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
 }

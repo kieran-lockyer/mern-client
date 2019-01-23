@@ -9,7 +9,7 @@ function numberWithCommas(num) {
 export default ({ name, value }) => {
   return (
     <Stats>
-      <h2>{numberWithCommas(value)}</h2>
+      <h2>{value}</h2>
       <span>{name}</span>
     </Stats>
   );

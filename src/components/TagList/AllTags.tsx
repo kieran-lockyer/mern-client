@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Colors, Icon, TagInput as Input } from "@blueprintjs/core";
+import { Colors, Icon, TagInput as Input, Button } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import * as actions from "../../actions";
@@ -13,8 +13,27 @@ import {
 } from "./TagListStyles";
 
 class AllTags extends Component<any, any> {
+  state = {
+    pageNum: this.props.page
+  };
+
   componentDidMount() {
-    this.props.fetchTags();
+    this.props.fetchTags(1);
+  }
+
+  componentDidUpdate() {
+    if (
+      this.state.pageNum === this.props.nextPage ||
+      this.state.pageNum === this.props.prevPage
+    ) {
+      this.props.fetchTags(this.state.pageNum);
+    }
+  }
+
+  renderImages(images) {
+    return images.map(image => {
+      return <p>{image}</p>;
+    });
   }
 
   renderTags() {
@@ -23,10 +42,7 @@ class AllTags extends Component<any, any> {
         return (
           <TagRow key={id}>
             <h3>{tags.tag}</h3>
-            <p>
-              <span>ImageID:</span>
-              {tags.imageId}
-            </p>
+            <div>{this.renderImages(tags.images)}</div>
             <p>
               <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
             </p>
@@ -35,6 +51,34 @@ class AllTags extends Component<any, any> {
       });
     }
   }
+
+  renderPagination() {
+    return (
+      <div className="pagination">
+        <Button
+          icon="arrow-left"
+          text="Back"
+          disabled={!this.props.hasPrevPage}
+          onClick={this.prevPage}
+        />
+
+        <Button
+          rightIcon="arrow-right"
+          text="Next"
+          disabled={!this.props.hasNextPage}
+          onClick={this.nextPage}
+        />
+      </div>
+    );
+  }
+
+  prevPage = () => {
+    this.setState({ pageNum: this.props.prevPage });
+  };
+
+  nextPage = () => {
+    this.setState({ pageNum: this.props.nextPage });
+  };
 
   render() {
     return (
@@ -61,6 +105,7 @@ class AllTags extends Component<any, any> {
             </Filter>
           </Header>
           {this.renderTags()}
+          {this.renderPagination()}
         </Wrapper>
       </Container>
     );
@@ -68,7 +113,12 @@ class AllTags extends Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  tags: state.tags
+  tags: state.tags.docs,
+  page: state.tags.page,
+  nextPage: state.tags.nextPage,
+  prevPage: state.tags.prevPage,
+  hasPrevPage: state.tags.hasPrevPage,
+  hasNextPage: state.tags.hasNextPage
 });
 
 export default connect(
