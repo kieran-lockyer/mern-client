@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Colors, Icon, TagInput as Input, Button } from "@blueprintjs/core";
+import {
+  Colors,
+  Icon,
+  TagInput as Input,
+  Button,
+  Intent
+} from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Moment from "react-moment";
@@ -10,7 +16,8 @@ import {
   Header,
   SearchForm,
   Filter,
-  TagRow
+  TagRow,
+  Date
 } from "./TagListStyles";
 
 class AllTags extends Component<any, any> {
@@ -36,13 +43,19 @@ class AllTags extends Component<any, any> {
       return this.props.tags.map((tags, id) => {
         return (
           <TagRow key={id}>
-            <h3>{tags.tag}</h3>
-            <p>
+            <h3>{tags.label}</h3>
+            <Date>
               <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
-            </p>
-            <Link to={`/tags/${tags.tag}`}>
-              <Button text="Show Details" />
+            </Date>
+            <Link to={`/tags/${tags._id}`}>
+              <Button intent={Intent.PRIMARY} text="Show Details" />
             </Link>
+            <Button intent={Intent.NONE} style={{ marginLeft: "10px" }}>
+              <Icon icon="flag" />
+            </Button>
+            <Button intent={Intent.DANGER} style={{ marginLeft: "10px" }}>
+              <Icon icon="trash" />
+            </Button>
           </TagRow>
         );
       });
@@ -78,12 +91,10 @@ class AllTags extends Component<any, any> {
   };
 
   render() {
-    console.log(this.props.images);
     return (
       <Container>
         <Wrapper>
           <Header>
-            <h2>TAG COLLECTION</h2>
             <SearchForm>
               <Input
                 values={["Hello"]}

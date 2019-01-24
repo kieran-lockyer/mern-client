@@ -43,3 +43,8 @@ export const TagRow = styled.div`
   border-bottom: 2px solid #eee;
   padding: 1rem 1.5rem;
 `;
+
+export const Date = styled.div`
+  margin-left: auto;
+  margin-right: 2rem;
+`;
