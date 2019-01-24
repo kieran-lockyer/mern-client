@@ -66,7 +66,9 @@ class AllPhotos extends Component<any, any> {
 
   renderPhotos() {
     if (this.props.photos) {
+      console.log(this.props.photos)
       return this.props.photos.map((photo, id) => {
+        console.log(photo, id)
         return (
           <TagRow key={id}>
             <img src={photo.id} alt="" />
@@ -115,11 +117,10 @@ class AllPhotos extends Component<any, any> {
     }
 
     const images = [];
-    console.log(this.props.images)
     this.props.images.forEach(function (object) {
       images.push({
-        src: baseUrl + object._id,
-        thumbnail: baseUrl + object._id,
+        src: baseUrl + "/photos/image/" + object._id,
+        thumbnail: baseUrl + "/photos/image/" + object._id,
         thumbnailWidth: 450,
         thumbnailHeight: 250,
         caption: object.tags.map(tags => {
@@ -132,8 +133,6 @@ class AllPhotos extends Component<any, any> {
         })
       });
     });
-
-    console.log(images)
 
     return (
       <Container>
