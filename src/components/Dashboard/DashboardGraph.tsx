@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import api from '../../api/index'
 
 export default class DashboardGraph extends Component {
   state = {
-    selection: "one_year",
+    selection: "thirty_days",
     options: {
       legend: {
         show: false,
@@ -25,19 +26,38 @@ export default class DashboardGraph extends Component {
           }
         },
         categories: [
-          "January",
-          "Feburary",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December"
-        ]
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30"
+        ].reverse()
       },
       tooltip: {
         x: {
@@ -59,15 +79,35 @@ export default class DashboardGraph extends Component {
       {
         name: "Tags Generated",
         type: "bar",
-        data: [30, 40, 45, 50, 49, 60, 70, 91, 65, 45, 34, 44]
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       },
       {
         name: "Photos Uploaded",
         type: "line",
-        data: [18, 32, 18, 50, 67, 23, 75, 70, 65, 45, 34, 44]
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }
     ]
   };
+
+  componentDidMount() {
+    this.getTagStats()
+  }
+
+  getTagStats = () => {
+    console.log("fetching")
+    api.get('/tags/stats/30').then((res) => {
+      console.log(res)
+      this.setState({
+        series: [
+          {
+            name: "Tags Generated",
+            type: "bar",
+            data: res.data
+          }
+        ]
+      })
+    })
+  }
 
   render() {
     return (
