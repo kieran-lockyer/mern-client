@@ -43,11 +43,11 @@ class AllTags extends Component<any, any> {
       return this.props.tags.map((tags, id) => {
         return (
           <TagRow key={id}>
-            <h3>{tags.tag}</h3>
+            <h3>{tags.label}</h3>
             <Date>
               <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
             </Date>
-            <Link to={`/tags/${tags.tag}`}>
+            <Link to={`/tags/${tags._id}`}>
               <Button intent={Intent.PRIMARY} text="Show Details" />
             </Link>
             <Button intent={Intent.NONE} style={{ marginLeft: "10px" }}>
@@ -91,12 +91,10 @@ class AllTags extends Component<any, any> {
   };
 
   render() {
-    console.log(this.props.images);
     return (
       <Container>
         <Wrapper>
           <Header>
-            <h2>TAG COLLECTION</h2>
             <SearchForm>
               <Input
                 values={["Hello"]}

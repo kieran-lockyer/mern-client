@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
+import Gallery from "react-grid-gallery";
 import * as actions from "../../actions/";
 import {
   Container,
@@ -64,6 +65,7 @@ class AllPhotos extends Component<any, any> {
 
   renderPhotos() {
     if (this.props.photos) {
+      console.log(this.props.imageUrls);
       return this.props.photos.map((photo, id) => {
         return (
           <TagRow key={id}>
@@ -111,11 +113,26 @@ class AllPhotos extends Component<any, any> {
     if (this.state.redirect) {
       return <Redirect push to={`/tags/${this.state.tag}`} />;
     }
+
+    const images = [];
+    this.props.images.forEach(function(object) {
+      images.push({
+        src: object.url,
+        thumbnail: object.url,
+        thumbnailWidth: 450,
+        thumbnailHeight: 250,
+        caption: object.tags.map(tags => {
+          return tags.label;
+        })
+      });
+    });
+
+    console.log(images);
+
     return (
       <Container>
         <Wrapper>
           <Header>
-            <h2>PHOTO COLLECTION</h2>
             <SearchForm>
               <Input
                 values={["photos"]}
@@ -125,18 +142,11 @@ class AllPhotos extends Component<any, any> {
                 placeholder="Filter by tags"
               />
             </SearchForm>
-            <Filter>
-              <Icon
-                color={Colors.GRAY2}
-                icon="sort-alphabetical"
-                iconSize={25}
-              />
-              <Icon color={Colors.GRAY2} icon="sort" iconSize={25} />
-            </Filter>
+            {this.renderPagination()}
           </Header>
-
-          {this.renderPhotos()}
-          {this.renderPagination()}
+          <div>
+            <Gallery images={images} />
+          </div>
         </Wrapper>
       </Container>
     );
@@ -144,12 +154,13 @@ class AllPhotos extends Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  photos: state.photos.docs,
-  page: state.photos.page,
-  nextPage: state.photos.nextPage,
-  prevPage: state.photos.prevPage,
-  hasPrevPage: state.photos.hasPrevPage,
-  hasNextPage: state.photos.hasNextPage
+  photos: state.photos.data.docs,
+  page: state.photos.data.page,
+  nextPage: state.photos.data.nextPage,
+  prevPage: state.photos.data.prevPage,
+  hasPrevPage: state.photos.data.hasPrevPage,
+  hasNextPage: state.photos.data.hasNextPage,
+  images: state.photos.images
 });
 
 export default connect(

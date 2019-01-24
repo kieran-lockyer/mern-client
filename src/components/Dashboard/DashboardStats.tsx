@@ -22,7 +22,7 @@ class DashboardStats extends PureComponent<any, any> {
 }
 
 const mapStateToProps = state => ({
-  numPhotos: state.photos.totalDocs,
+  numPhotos: state.photos.data.totalDocs,
   numTags: state.tags.data.totalDocs
 });
 
