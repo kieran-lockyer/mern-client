@@ -64,11 +64,10 @@ class AllPhotos extends Component<any, any> {
     });
   }
 
+  // I don't understand where this is being used... from Kieran...
   renderPhotos() {
     if (this.props.photos) {
-      console.log(this.props.photos)
       return this.props.photos.map((photo, id) => {
-        console.log(photo, id)
         return (
           <TagRow key={id}>
             <img src={photo.id} alt="" />
