@@ -120,8 +120,8 @@ class AllPhotos extends Component<any, any> {
       images.push({
         src: baseUrl + "/photos/image/" + object._id,
         thumbnail: baseUrl + "/photos/image/" + object._id,
-        thumbnailWidth: 450,
-        thumbnailHeight: 250,
+        thumbnailWidth: '20%',
+        thumbnailHeight: '20%',
         caption: object.tags.map(tags => {
           const labels = tags.label.split(",").join(", ") + ", ";
           return labels;
