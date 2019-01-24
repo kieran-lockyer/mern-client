@@ -1,5 +1,6 @@
 import axios from "axios";
+import baseUrl from './baseurl'
 
 export default axios.create({
-  baseURL: "https://ca-mern-server.herokuapp.com"
+  baseURL: baseUrl
 });
