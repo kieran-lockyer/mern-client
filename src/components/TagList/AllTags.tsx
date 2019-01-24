@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Colors, Icon, TagInput as Input, Button } from "@blueprintjs/core";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import * as actions from "../../actions";
@@ -30,22 +31,18 @@ class AllTags extends Component<any, any> {
     }
   }
 
-  renderImages(images) {
-    return images.map(image => {
-      return <p>{image}</p>;
-    });
-  }
-
   renderTags() {
     if (this.props.tags) {
       return this.props.tags.map((tags, id) => {
         return (
           <TagRow key={id}>
             <h3>{tags.tag}</h3>
-            <div>{this.renderImages(tags.images)}</div>
             <p>
               <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
             </p>
+            <Link to={`/tags/${tags.tag}`}>
+              <Button text="Show Details" />
+            </Link>
           </TagRow>
         );
       });
@@ -81,6 +78,7 @@ class AllTags extends Component<any, any> {
   };
 
   render() {
+    console.log(this.props.images);
     return (
       <Container>
         <Wrapper>
@@ -113,12 +111,12 @@ class AllTags extends Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  tags: state.tags.docs,
-  page: state.tags.page,
-  nextPage: state.tags.nextPage,
-  prevPage: state.tags.prevPage,
-  hasPrevPage: state.tags.hasPrevPage,
-  hasNextPage: state.tags.hasNextPage
+  tags: state.tags.data.docs,
+  page: state.tags.data.page,
+  nextPage: state.tags.data.nextPage,
+  prevPage: state.tags.data.prevPage,
+  hasPrevPage: state.tags.data.hasPrevPage,
+  hasNextPage: state.tags.data.hasNextPage
 });
 
 export default connect(

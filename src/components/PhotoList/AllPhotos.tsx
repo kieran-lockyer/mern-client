@@ -7,6 +7,7 @@ import {
   Button
 } from "@blueprintjs/core";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
 import * as actions from "../../actions/";
 import {
@@ -22,7 +23,9 @@ import {
 
 class AllPhotos extends Component<any, any> {
   state = {
-    pageNum: 1
+    pageNum: 1,
+    redirect: false,
+    tag: ""
   };
 
   componentDidMount() {
@@ -38,11 +41,20 @@ class AllPhotos extends Component<any, any> {
     }
   }
 
+  handleOnClick = tag => {
+    this.setState({ redirect: true, tag });
+  };
+
   renderTags(tags) {
     return tags.map((tag, id) => {
       return (
         <div key={id}>
-          <Tag round onRemove={e => console.log(e)}>
+          <Tag
+            round
+            interactive
+            large
+            onClick={() => this.handleOnClick(tag.tag)}
+          >
             {tag.tag}
           </Tag>
         </div>
@@ -96,6 +108,9 @@ class AllPhotos extends Component<any, any> {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to={`/tags/${this.state.tag}`} />;
+    }
     return (
       <Container>
         <Wrapper>

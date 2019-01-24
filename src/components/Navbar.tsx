@@ -8,7 +8,7 @@ export default () => {
     <>
       <Navbar>
         <NavbarBrand>
-          <img src="./images/logo.png" alt="Brand Logo" />
+          <img src="/images/logo.png" alt="Brand Logo" />
         </NavbarBrand>
 
         <NavbarNav>
