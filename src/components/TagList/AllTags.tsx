@@ -47,7 +47,7 @@ class AllTags extends Component<any, any> {
             <Date>
               <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
             </Date>
-            <Link to={`/tags/${tags._id}`}>
+            <Link to={`/tags/${tags.label}`}>
               <Button intent={Intent.PRIMARY} text="Show Details" />
             </Link>
             <Button intent={Intent.NONE} style={{ marginLeft: "10px" }}>

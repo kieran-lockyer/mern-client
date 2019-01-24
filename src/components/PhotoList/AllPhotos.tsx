@@ -16,11 +16,11 @@ import {
   Wrapper,
   Header,
   SearchForm,
-  Filter,
   TagRow,
   Date,
   Client
 } from "./PhotoListStyles";
+import { any } from "prop-types";
 
 class AllPhotos extends Component<any, any> {
   state = {
@@ -65,7 +65,6 @@ class AllPhotos extends Component<any, any> {
 
   renderPhotos() {
     if (this.props.photos) {
-      console.log(this.props.imageUrls);
       return this.props.photos.map((photo, id) => {
         return (
           <TagRow key={id}>
@@ -122,12 +121,15 @@ class AllPhotos extends Component<any, any> {
         thumbnailWidth: 450,
         thumbnailHeight: 250,
         caption: object.tags.map(tags => {
-          return tags.label;
+          const labels = tags.label.split(",").join(", ") + ", ";
+          return labels;
+        }),
+        tags: object.tags.map(tags => {
+          const label = tags.label.split(",");
+          return { value: label[0] };
         })
       });
     });
-
-    console.log(images);
 
     return (
       <Container>
@@ -145,13 +147,21 @@ class AllPhotos extends Component<any, any> {
             {this.renderPagination()}
           </Header>
           <div>
-            <Gallery images={images} />
+            <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
           </div>
         </Wrapper>
       </Container>
     );
   }
 }
+
+const tagStyles = {
+  background: "#5c7080",
+  color: "#fff",
+  padding: " 2px 5px",
+  fontSize: "12px",
+  borderRadius: "5px"
+};
 
 const mapStateToProps = state => ({
   photos: state.photos.data.docs,
