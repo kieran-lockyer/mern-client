@@ -21,6 +21,7 @@ import {
   Client
 } from "./PhotoListStyles";
 import { any } from "prop-types";
+import baseUrl from '../../api/baseurl'
 
 class AllPhotos extends Component<any, any> {
   state = {
@@ -63,12 +64,13 @@ class AllPhotos extends Component<any, any> {
     });
   }
 
+  // I don't understand where this is being used... from Kieran...
   renderPhotos() {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
         return (
           <TagRow key={id}>
-            <img src={photo.url} alt="" />
+            <img src={photo.id} alt="" />
             <Client>{photo.client}</Client>
             <Date>
               <Moment format="MMMM D, YYYY">{photo.datetime}</Moment>
@@ -114,10 +116,10 @@ class AllPhotos extends Component<any, any> {
     }
 
     const images = [];
-    this.props.images.forEach(function(object) {
+    this.props.images.forEach(function (object) {
       images.push({
-        src: object.url,
-        thumbnail: object.url,
+        src: baseUrl + "/photos/image/" + object._id,
+        thumbnail: baseUrl + "/photos/image/" + object._id,
         thumbnailWidth: 450,
         thumbnailHeight: 250,
         caption: object.tags.map(tags => {
