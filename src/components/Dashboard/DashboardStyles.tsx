@@ -8,6 +8,7 @@ export const Dashboard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 export const Wrapper = styled.div`
