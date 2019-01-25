@@ -106,8 +106,8 @@ class AllPhotos extends Component<any, any> {
     this.setState({ pageNum: this.props.nextPage });
   };
 
+  // Tag Added
   filter = value => {
-    console.log(value);
     const filterString = `${value}`;
     if (!filterString) {
       this.props.fetchPhotos(this.state.pageNum);
@@ -115,6 +115,19 @@ class AllPhotos extends Component<any, any> {
       this.props.filterPhotos(filterString);
     }
     this.setState({ tagInput: value });
+  };
+
+  // Tag removed
+  removeFilter = value => {
+    const filterArray = this.state.tagInput.filter(tag => {
+      return tag !== value;
+    });
+    this.setState({ tagInput: filterArray });
+    if (!filterArray) {
+      this.props.fetchPhotos(this.state.pageNum);
+    } else {
+      this.props.filterPhotos(filterArray.join());
+    }
   };
 
   render() {
@@ -152,7 +165,7 @@ class AllPhotos extends Component<any, any> {
               <Input
                 values={this.state.tagInput}
                 onChange={value => this.filter(value)}
-                onRemove={value => this.filter(value)}
+                onRemove={value => this.removeFilter(value)}
                 addOnBlur
                 fill
                 large
