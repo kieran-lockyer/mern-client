@@ -22,7 +22,8 @@ import {
 
 class AllTags extends Component<any, any> {
   state = {
-    pageNum: this.props.page
+    pageNum: this.props.page,
+    tagInput: []
   };
 
   componentDidMount() {
@@ -97,7 +98,9 @@ class AllTags extends Component<any, any> {
           <Header>
             <SearchForm>
               <Input
-                values={["Hello"]}
+                values={this.state.tagInput}
+                onChange={(tagInput: string[]) => this.setState({ tagInput })}
+                addOnBlur
                 fill
                 large
                 leftIcon="tag"

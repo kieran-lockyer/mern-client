@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import {
-  Icon,
-  Colors,
-  TagInput as Input,
-  Tag,
-  Button
-} from "@blueprintjs/core";
+import { TagInput as Input, Tag, Button } from "@blueprintjs/core";
+import api from "../../api";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
@@ -20,14 +15,14 @@ import {
   Date,
   Client
 } from "./PhotoListStyles";
-import { any } from "prop-types";
-import baseUrl from '../../api/baseurl'
+import baseUrl from "../../api/baseurl";
 
 class AllPhotos extends Component<any, any> {
   state = {
     pageNum: 1,
     redirect: false,
-    tag: ""
+    tag: "",
+    tagInput: []
   };
 
   componentDidMount() {
@@ -40,6 +35,10 @@ class AllPhotos extends Component<any, any> {
       this.state.pageNum === this.props.prevPage
     ) {
       this.props.fetchPhotos(this.state.pageNum);
+    }
+    if (this.state.tagInput.length > 0 && this.state.tagInput) {
+      this.props.filterPhotos(this.state.tagInput);
+      this.setState({ tagInput: [] });
     }
   }
 
@@ -116,15 +115,19 @@ class AllPhotos extends Component<any, any> {
     }
 
     const images = [];
-    this.props.images.forEach(function (object) {
+    this.props.images.forEach(function(object) {
       images.push({
         src: baseUrl + "/photos/image/" + object._id,
         thumbnail: baseUrl + "/photos/image/" + object._id,
-        thumbnailWidth: '20%',
-        thumbnailHeight: '20%',
+        thumbnailWidth: "20%",
+        thumbnailHeight: "20%",
         caption: object.tags.map(tags => {
-          const labels = tags.label.split(",").join(", ") + ", ";
-          return labels;
+          const labels = tags.label.split(",").join(", ");
+          return (
+            <Tag interactive style={{ marginRight: "5px" }}>
+              {labels}
+            </Tag>
+          );
         }),
         tags: object.tags.map(tags => {
           const label = tags.label.split(",");
@@ -139,7 +142,9 @@ class AllPhotos extends Component<any, any> {
           <Header>
             <SearchForm>
               <Input
-                values={["photos"]}
+                values={this.state.tagInput}
+                onChange={(tagInput: string[]) => this.setState({ tagInput })}
+                addOnBlur
                 fill
                 large
                 leftIcon="tag"
