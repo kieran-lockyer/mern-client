@@ -7,8 +7,8 @@ export const fetchTags = pageNum => async dispatch => {
 };
 
 // Filter photos
-export const filterPhotos = label => async dispatch => {
-  const response = await api.get(`/photos/tag/${label}`);
+export const filterPhotos = tags => async dispatch => {
+  const response = await api.get(`/photos/tag/${tags}`);
   dispatch({ type: "FILTER_PHOTOS", payload: response.data });
 };
 
