@@ -6,6 +6,12 @@ export const fetchTags = pageNum => async dispatch => {
   dispatch({ type: "FETCH_TAGS", payload: response.data });
 };
 
+// Filter photos
+export const filterPhotos = label => async dispatch => {
+  const response = await api.get(`/photos/tag/${label}`);
+  dispatch({ type: "FILTER_PHOTOS", payload: response.data });
+};
+
 // Fetch images attached to specific tag
 export const fetchImages = tag => async dispatch => {
   const response = await api.get(`/tags/images/${tag}`);
