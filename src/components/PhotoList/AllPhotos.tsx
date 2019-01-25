@@ -22,7 +22,8 @@ class AllPhotos extends Component<any, any> {
     pageNum: 1,
     redirect: false,
     tag: "",
-    tagInput: []
+    tagInput: [],
+    isMain: true
   };
 
   componentDidMount() {
@@ -35,10 +36,6 @@ class AllPhotos extends Component<any, any> {
       this.state.pageNum === this.props.prevPage
     ) {
       this.props.fetchPhotos(this.state.pageNum);
-    }
-    if (this.state.tagInput.length > 0 && this.state.tagInput) {
-      this.props.filterPhotos(this.state.tagInput);
-      this.setState({ tagInput: [] });
     }
   }
 
@@ -109,6 +106,17 @@ class AllPhotos extends Component<any, any> {
     this.setState({ pageNum: this.props.nextPage });
   };
 
+  filter = value => {
+    console.log(value);
+    const filterString = `${value}`;
+    if (!filterString) {
+      this.props.fetchPhotos(this.state.pageNum);
+    } else {
+      this.props.filterPhotos(filterString);
+    }
+    this.setState({ tagInput: value });
+  };
+
   render() {
     if (this.state.redirect) {
       return <Redirect push to={`/tags/${this.state.tag}`} />;
@@ -143,7 +151,8 @@ class AllPhotos extends Component<any, any> {
             <SearchForm>
               <Input
                 values={this.state.tagInput}
-                onChange={(tagInput: string[]) => this.setState({ tagInput })}
+                onChange={value => this.filter(value)}
+                onRemove={value => this.filter(value)}
                 addOnBlur
                 fill
                 large
