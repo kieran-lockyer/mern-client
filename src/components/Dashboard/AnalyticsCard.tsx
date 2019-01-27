@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AnalyticsItem from "./AnalyticsItem";
-import { Card, CardHeading } from "./DashboardStyles";
+import { Card, CardHeading } from "../../styles/AppStyles";
 
 export default class AnalyticsCard extends Component<any, any> {
   renderTags() {

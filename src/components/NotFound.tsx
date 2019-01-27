@@ -1,12 +1,12 @@
 import React from "react";
-import { Wrapper } from "./styles";
+import * as Errors from "../styles/AppStyles";
 
 const Error = () => {
   return (
-    <Wrapper>
+    <Errors.Container>
       <h1>Error 404</h1>
       <p>The page you are looking for could not be found.</p>
-    </Wrapper>
+    </Errors.Container>
   );
 };
 

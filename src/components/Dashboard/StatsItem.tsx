@@ -1,10 +1,5 @@
 import React from "react";
-import { StatsItem as Stats } from "./DashboardStyles";
-
-// Add commas to number
-function numberWithCommas(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+import { StatsItem as Stats } from "../../styles/AppStyles";
 
 export default ({ name, value }) => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import AnalyticsCard from "./AnalyticsCard";
-import { DashboardAnalytics } from "./DashboardStyles";
+import { DashboardAnalytics } from "../../styles/AppStyles";
 
 const tags = ["tag1", "tag2", "tag3", "tag4", "tag5"];
 

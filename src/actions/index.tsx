@@ -29,3 +29,9 @@ export const fetchClients = () => async dispatch => {
   const response = await api.get("/clients");
   dispatch({ type: "FETCH_CLIENTS", payload: response.data });
 };
+
+// Fetch dashboard graph stats
+export const fetchGraphStats = () => async dispatch => {
+  const response = await api.get("/clients");
+  dispatch({ type: "FETCH_GRAPH_STATS", payload: response.data });
+};

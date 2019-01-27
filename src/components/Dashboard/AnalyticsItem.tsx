@@ -14,7 +14,7 @@ import {
   CardDetails,
   CardTitle,
   CardCount
-} from "./DashboardStyles";
+} from "../../styles/AppStyles";
 
 function popoverContent() {
   return (

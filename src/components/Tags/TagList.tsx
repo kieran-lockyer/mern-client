@@ -1,24 +1,10 @@
 import React, { Component } from "react";
-import {
-  Colors,
-  Icon,
-  TagInput as Input,
-  Button,
-  Intent
-} from "@blueprintjs/core";
+import { Colors, Icon, TagInput, Button, Intent } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import * as actions from "../../actions";
-import {
-  Container,
-  Wrapper,
-  Header,
-  SearchForm,
-  Filter,
-  TagRow,
-  Date
-} from "./TagListStyles";
+import * as Tags from "../../styles/AppStyles";
 
 class AllTags extends Component<any, any> {
   state = {
@@ -43,21 +29,15 @@ class AllTags extends Component<any, any> {
     if (this.props.tags) {
       return this.props.tags.map((tags, id) => {
         return (
-          <TagRow key={id}>
+          <Tags.TagRow key={id}>
             <h3>{tags.label}</h3>
-            <Date>
-              <Moment format="MMMM D, YYYY">{tags.dateAdded}</Moment>
-            </Date>
             <Link to={`/tags/${tags.label}`}>
               <Button intent={Intent.PRIMARY} text="Show Details" />
             </Link>
-            <Button intent={Intent.NONE} style={{ marginLeft: "10px" }}>
-              <Icon icon="flag" />
-            </Button>
             <Button intent={Intent.DANGER} style={{ marginLeft: "10px" }}>
               <Icon icon="trash" />
             </Button>
-          </TagRow>
+          </Tags.TagRow>
         );
       });
     }
@@ -93,11 +73,11 @@ class AllTags extends Component<any, any> {
 
   render() {
     return (
-      <Container>
-        <Wrapper>
-          <Header>
-            <SearchForm>
-              <Input
+      <Tags.Container>
+        <Tags.Wrapper>
+          <Tags.Header>
+            <Tags.SearchForm>
+              <TagInput
                 values={this.state.tagInput}
                 onChange={(tagInput: string[]) => this.setState({ tagInput })}
                 addOnBlur
@@ -106,20 +86,20 @@ class AllTags extends Component<any, any> {
                 leftIcon="tag"
                 placeholder="Filter by tags"
               />
-            </SearchForm>
-            <Filter>
+            </Tags.SearchForm>
+            <Tags.Filter>
               <Icon
                 color={Colors.GRAY2}
                 icon="sort-alphabetical"
                 iconSize={25}
               />
               <Icon color={Colors.GRAY2} icon="sort" iconSize={25} />
-            </Filter>
-          </Header>
+            </Tags.Filter>
+          </Tags.Header>
           {this.renderTags()}
           {this.renderPagination()}
-        </Wrapper>
-      </Container>
+        </Tags.Wrapper>
+      </Tags.Container>
     );
   }
 }
