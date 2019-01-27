@@ -1,20 +1,12 @@
 import React, { Component } from "react";
-import { TagInput as Input, Tag, Button } from "@blueprintjs/core";
-import api from "../../api";
+import { TagInput, Tag, Button } from "@blueprintjs/core";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
 import Gallery from "react-grid-gallery";
-import * as actions from "../../actions/";
-import {
-  Container,
-  Wrapper,
-  Header,
-  SearchForm,
-  TagRow,
-  Date,
-  Client
-} from "./PhotoListStyles";
+import * as actions from "../../actions";
+import * as Photos from "../../styles/AppStyles";
+import { tagStyles } from "../../styles/AppStyles";
+
 import baseUrl from "../../api/baseurl";
 
 class AllPhotos extends Component<any, any> {
@@ -65,37 +57,17 @@ class AllPhotos extends Component<any, any> {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
         return (
-          <TagRow key={id}>
+          <Photos.TagRow key={id}>
             <img src={photo.id} alt="" />
-            <Client>{photo.client}</Client>
-            <Date>
+            <Photos.Client>{photo.client}</Photos.Client>
+            <Photos.Date>
               <Moment format="MMMM D, YYYY">{photo.datetime}</Moment>
-            </Date>
+            </Photos.Date>
             {this.renderTags(photo.metadata)}
-          </TagRow>
+          </Photos.TagRow>
         );
       });
     }
-  }
-
-  renderPagination() {
-    return (
-      <div className="pagination">
-        <Button
-          icon="arrow-left"
-          text="Back"
-          disabled={!this.props.hasPrevPage}
-          onClick={this.prevPage}
-        />
-
-        <Button
-          rightIcon="arrow-right"
-          text="Next"
-          disabled={!this.props.hasNextPage}
-          onClick={this.nextPage}
-        />
-      </div>
-    );
   }
 
   prevPage = () => {
@@ -106,8 +78,7 @@ class AllPhotos extends Component<any, any> {
     this.setState({ pageNum: this.props.nextPage });
   };
 
-  // Tag Added
-  filter = value => {
+  filterPhotos = value => {
     const filterString = `${value}`;
     if (!filterString) {
       this.props.fetchPhotos(this.state.pageNum);
@@ -117,13 +88,9 @@ class AllPhotos extends Component<any, any> {
     this.setState({ tagInput: value });
   };
 
-  render() {
-    if (this.state.redirect) {
-      return <Redirect push to={`/tags/${this.state.tag}`} />;
-    }
-
+  getGalleryPhotos = allImages => {
     const images = [];
-    this.props.images.forEach(function(object) {
+    allImages.forEach(function(object) {
       images.push({
         src: baseUrl + "/photos/image/" + object._id,
         thumbnail: baseUrl + "/photos/image/" + object._id,
@@ -132,7 +99,7 @@ class AllPhotos extends Component<any, any> {
         caption: object.tags.map(tags => {
           const labels = tags.label.split(",").join(", ");
           return (
-            <Tag interactive style={{ marginRight: "5px" }}>
+            <Tag interactive style={tagStyles}>
               {labels}
             </Tag>
           );
@@ -143,40 +110,50 @@ class AllPhotos extends Component<any, any> {
         })
       });
     });
+    return images;
+  };
 
+  render() {
+    const images = this.getGalleryPhotos(this.props.images);
     return (
-      <Container>
-        <Wrapper>
-          <Header>
-            <SearchForm>
-              <Input
+      <Photos.Container>
+        <Photos.Wrapper>
+          <Photos.Header>
+            <Photos.SearchForm>
+              <TagInput
                 values={this.state.tagInput}
-                onChange={value => this.filter(value)}
+                onChange={value => this.filterPhotos(value)}
                 addOnBlur
                 fill
                 large
                 leftIcon="tag"
                 placeholder="Filter by tags"
               />
-            </SearchForm>
-            {this.renderPagination()}
-          </Header>
+            </Photos.SearchForm>
+            <Photos.Pagination>
+              <Button
+                icon="arrow-left"
+                text="Back"
+                disabled={!this.props.hasPrevPage}
+                onClick={this.prevPage}
+              />
+
+              <Button
+                rightIcon="arrow-right"
+                text="Next"
+                disabled={!this.props.hasNextPage}
+                onClick={this.nextPage}
+              />
+            </Photos.Pagination>
+          </Photos.Header>
           <div>
             <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
           </div>
-        </Wrapper>
-      </Container>
+        </Photos.Wrapper>
+      </Photos.Container>
     );
   }
 }
-
-const tagStyles = {
-  background: "#5c7080",
-  color: "#fff",
-  padding: " 2px 5px",
-  fontSize: "12px",
-  borderRadius: "5px"
-};
 
 const mapStateToProps = state => ({
   photos: state.photos.data.docs,

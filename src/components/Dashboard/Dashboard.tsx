@@ -2,26 +2,19 @@ import React from "react";
 import DashboardAnalytics from "./DashboardAnalytics";
 import DashboardGraph from "./DashboardGraph";
 import DashboardStats from "./DashboardStats";
-
-// Styles
-import {
-  Dashboard as Container,
-  Wrapper,
-  Featured,
-  Graph
-} from "./DashboardStyles";
+import * as Dashboard from "../../styles/AppStyles";
 
 export default () => {
   return (
-    <Container>
-      <Wrapper>
-        <Featured>
-          <Graph>
+    <Dashboard.Dashboard>
+      <Dashboard.DashboardWrapper>
+        <Dashboard.Featured>
+          <Dashboard.Graph>
             <DashboardGraph />
-          </Graph>
+          </Dashboard.Graph>
           <DashboardStats />
-        </Featured>
-      </Wrapper>
-    </Container>
+        </Dashboard.Featured>
+      </Dashboard.DashboardWrapper>
+    </Dashboard.Dashboard>
   );
 };

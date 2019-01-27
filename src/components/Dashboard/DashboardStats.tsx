@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Stats } from "./DashboardStyles";
+import { Stats } from "../../styles/AppStyles";
 import StatsItem from "./StatsItem";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
@@ -10,12 +10,10 @@ class DashboardStats extends PureComponent<any, any> {
     this.props.fetchTags(1);
   }
   render() {
-    console.log(this.props);
     return (
       <Stats>
         <StatsItem name={"Photos"} value={this.props.numPhotos} />
         <StatsItem name={"Tags"} value={this.props.numTags} />
-        <StatsItem name={"Flagged"} value={18} />
       </Stats>
     );
   }
