@@ -3,7 +3,7 @@ import { Icon } from "@blueprintjs/core";
 import { Navbar, NavbarBrand, NavbarNav, NavItems } from "../styles/AppStyles";
 import { NavItem } from "../styles/AppStyles";
 
-export default () => {
+const Sidebar = () => {
   return (
     <>
       <Navbar>
@@ -19,7 +19,7 @@ export default () => {
           </NavItems>
           <NavItems>
             <NavItem exact to="/photos">
-              <Icon icon="mugshot" iconSize={25} />
+              <Icon icon="media" iconSize={25} />
             </NavItem>
           </NavItems>
           <NavItems>
@@ -41,3 +41,5 @@ export default () => {
 NavItem.defaultProps = {
   activeClassName: "active"
 };
+
+export default Sidebar;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
-import api from '../../api/index'
+import api from "../../api/index";
 
-export default class DashboardGraph extends Component {
+class DashboardGraph extends Component<any, any> {
   state = {
     selection: "thirty_days",
     options: {
@@ -12,52 +12,43 @@ export default class DashboardGraph extends Component {
         horizontalAlign: "left"
       },
       chart: {
-        id: "Photo Analytics",
-        foreColor: "#FFFFFF"
+        id: "Sortal Analytics",
+        foreColor: "#FFFFFF",
+        animations: {
+          enabled: true,
+          easing: "linear",
+          dynamicAnimation: {
+            speed: 1000
+          }
+        }
       },
       grid: {
-        show: false
+        show: false,
+        padding: {
+          left: 0,
+          right: 0
+        }
+      },
+      markers: {
+        size: 0,
+        hover: {
+          size: 0
+        }
       },
       xaxis: {
-        type: "date",
+        labels: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        type: "datetime",
         title: {
           style: {
             color: "#FFF"
           }
         },
-        categories: [
-          "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18",
-          "19",
-          "20",
-          "21",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28",
-          "29",
-          "30"
-        ].reverse()
+        categories: []
       },
       tooltip: {
         x: {
@@ -71,32 +62,42 @@ export default class DashboardGraph extends Component {
       },
       theme: {
         palette: "palette1"
+      },
+      stroke: {
+        curve: "straight",
+        width: 5
       }
     },
-    // END OF OPTIONS
 
     series: [
       {
         name: "Tags Generated",
-        type: "bar",
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        type: "area",
+        data: []
       },
       {
         name: "Photos Uploaded",
         type: "line",
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        data: []
       }
     ]
   };
 
   componentDidMount() {
-    this.getTagStats()
+    this.getTagStats(20);
   }
 
-  getTagStats = () => {
-    console.log("fetching")
-    api.get('/tags/stats/30').then((res) => {
-      console.log(res)
+  getTagStats = numOfDays => {
+    api.get(`/tags/stats/${numOfDays}`).then(res => {
+      const data = [...new Array(res.data.length)].map((i, id) => {
+        return {
+          date: new Date(
+            new Date().setDate(new Date().getDate() - id)
+          ).toDateString(),
+          tags: res.data[id]
+        };
+      });
+      console.log(data);
       this.setState({
         series: [
           {
@@ -105,9 +106,18 @@ export default class DashboardGraph extends Component {
             data: res.data
           }
         ]
-      })
-    })
-  }
+      });
+      this.setState({
+        options: {
+          ...this.state.options,
+          xaxis: {
+            ...this.state.options.xaxis,
+            categories: data.map(date => date.date).reverse()
+          }
+        }
+      });
+    });
+  };
 
   render() {
     return (
@@ -119,3 +129,5 @@ export default class DashboardGraph extends Component {
     );
   }
 }
+
+export default DashboardGraph;

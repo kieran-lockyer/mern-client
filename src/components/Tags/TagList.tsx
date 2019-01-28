@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Colors, Icon, TagInput, Button, Intent } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import Moment from "react-moment";
 import * as actions from "../../actions";
 import * as Tags from "../../styles/AppStyles";
 
