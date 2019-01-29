@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.11.0",
+    "@blueprintjs/datetime": "^3.7.0",
     "@blueprintjs/icons": "^3.5.0",
     "@types/jest": "23.3.12",
     "@types/node": "10.12.18",
