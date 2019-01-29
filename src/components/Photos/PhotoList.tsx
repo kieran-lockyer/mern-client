@@ -15,8 +15,8 @@ import Gallery from "react-grid-gallery";
 import * as actions from "../../actions";
 import * as Photos from "../../styles/AppStyles";
 import { tagStyles } from "../../styles/AppStyles";
-
 import baseUrl from "../../api/baseurl";
+import history from "../../history";
 
 class AllPhotos extends Component<any, any> {
   state = {
@@ -106,8 +106,25 @@ class AllPhotos extends Component<any, any> {
         thumbnailHeight: "20%",
         caption: object.tags.map(tags => {
           const labels = tags.label.split(",").join(", ");
+          console.log(
+            tags.label
+              .split(",")
+              .map(tag => tag)
+              .join("")
+          );
           return (
-            <Tag interactive style={tagStyles}>
+            <Tag
+              interactive
+              style={tagStyles}
+              onClick={() =>
+                history.push(
+                  `/tags/${tags.label
+                    .split(",")
+                    .map(tag => tag)
+                    .join(",")}`
+                )
+              }
+            >
               {labels}
             </Tag>
           );
