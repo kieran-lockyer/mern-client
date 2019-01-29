@@ -53,8 +53,11 @@ class AllPhotos extends Component<any, any> {
       return (
         <div key={id}>
           <Tag
+            color={Colors.TURQUOISE3}
             round
+            style={{ marginRight: "5px", background: "#48bfb9" }}
             interactive
+            large
             onClick={() =>
               history.push(
                 `/tag/${tag.label
@@ -79,7 +82,7 @@ class AllPhotos extends Component<any, any> {
             <img
               src={baseUrl + "/photos/image/" + photo._id}
               alt=""
-              style={{ width: "50px" }}
+              className="photo-list-img"
             />
             <Photos.Date>
               <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
@@ -123,11 +126,13 @@ class AllPhotos extends Component<any, any> {
         thumbnail: baseUrl + "/photos/image/" + object._id,
         thumbnailWidth: "20%",
         thumbnailHeight: "20%",
-        caption: object.tags.map(tags => {
+        caption: object.tags.map((tags, id) => {
           const labels = tags.label.split(",").join(", ");
           return (
             <Tag
+              key={id}
               interactive
+              color={Colors.TURQUOISE3}
               style={tagStyles}
               onClick={() =>
                 history.push(
@@ -153,7 +158,7 @@ class AllPhotos extends Component<any, any> {
 
   handleGridSelection = () => {
     if (this.state.layoutType === "list") {
-      this.setState({ layoutType: "grid", isActive: Colors.LIME3 });
+      this.setState({ layoutType: "grid", isActive: Colors.TURQUOISE3 });
     } else {
       this.setState({ layoutType: "list", isActive: Colors.GRAY3 });
     }
@@ -175,7 +180,7 @@ class AllPhotos extends Component<any, any> {
             <Icon
               icon="grid-view"
               color={this.state.isActive}
-              style={{ margin: "0 1rem", cursor: "pointer" }}
+              style={{ marginRight: "1rem", cursor: "pointer" }}
               onClick={this.handleGridSelection}
               iconSize={25}
             />

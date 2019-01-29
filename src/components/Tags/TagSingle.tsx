@@ -53,7 +53,9 @@ class TagSingle extends React.Component<any, any> {
       <Tags.Container>
         <Tags.Wrapper>
           <Tags.Header>
-            <h2>{this.props.match.params.tagname}</h2>
+            <h2 style={{ color: "white" }}>
+              {this.props.match.params.tagname}
+            </h2>
           </Tags.Header>
           <div>
             <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />

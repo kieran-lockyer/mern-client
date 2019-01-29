@@ -95,6 +95,7 @@ class AllTags extends Component<any, any> {
                 values={this.state.tagInput}
                 onChange={(tagInput: string[]) => this.setState({ tagInput })}
                 addOnBlur
+                className="search-tags"
                 fill
                 large
                 leftIcon="tag"

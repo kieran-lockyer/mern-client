@@ -104,7 +104,8 @@ export const NavbarNavLink = styled.a`
 export const Pagination = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  padding: 2rem;
+  background: #172336;
 `;
 
 export const ImageCollection = styled.div`
@@ -143,7 +144,6 @@ export const Container = styled.div`
 
 export const Wrapper = styled.div`
   width: 85%;
-  padding: 2rem;
   background: #fff;
   max-width: 1300px;
 `;
@@ -159,6 +159,8 @@ export const Header = styled.div`
   height: 5rem;
   align-items: center;
   justify-content: space-between;
+  background: #172336;
+  padding: 1rem 2rem;
 `;
 
 export const SearchForm = styled.div`
@@ -177,6 +179,7 @@ export const Filter = styled.div`
 export const Date = styled.div`
   margin-right: auto;
   margin-left: 1rem;
+  color: gray;
 `;
 
 export const Client = styled.div`
@@ -191,11 +194,13 @@ export const TagRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
   border-bottom: 2px solid #eee;
   padding: 1rem 1.5rem;
   h3 {
     margin-right: auto;
+  }
+  &:not(:last-child) {
+    margin: 10px 0;
   }
 `;
 
