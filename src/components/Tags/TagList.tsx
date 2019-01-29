@@ -39,7 +39,7 @@ class AllTags extends Component<any, any> {
         return (
           <Tags.TagRow key={id}>
             <h3>{tags.label}</h3>
-            <Link to={`/tags/${tags.label}`}>
+            <Link to={`/tag/${tags.label}`}>
               <Button intent={Intent.PRIMARY} text="Show Details" />
             </Link>
             <Button intent={Intent.DANGER} style={{ marginLeft: "10px" }}>

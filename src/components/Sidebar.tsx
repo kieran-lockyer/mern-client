@@ -18,12 +18,12 @@ const Sidebar = () => {
             </NavItem>
           </NavItems>
           <NavItems>
-            <NavItem exact to="/photos">
+            <NavItem exact to="/photos/1">
               <Icon icon="media" iconSize={25} />
             </NavItem>
           </NavItems>
           <NavItems>
-            <NavItem exact to="/tags">
+            <NavItem exact to="/tags/1">
               <Icon icon="tag" iconSize={25} />
             </NavItem>
           </NavItems>

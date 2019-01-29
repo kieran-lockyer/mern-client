@@ -7,7 +7,7 @@ export default (state = initialState, { type, payload }) => {
     case "FETCH_PHOTOS":
       return { ...state, data: payload, images: payload.docs };
     case "FILTER_PHOTOS":
-      return { ...state, images: payload };
+      return { ...state, images: payload, data: { docs: payload } };
 
     default:
       return state;

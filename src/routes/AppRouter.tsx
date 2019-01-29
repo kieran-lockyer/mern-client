@@ -17,9 +17,9 @@ export default class App extends Component {
           <Sidebar />
           <Switch>
             <Route path="/" exact component={Dashboard} />
-            <Route path="/photos" exact component={Photos} />
-            <Route path="/tags" exact component={Tags} />
-            <Route path="/tags/:tagname" exact component={TagSingle} />
+            <Route path="/photos/:page" exact component={Photos} />
+            <Route path="/tags/:page" exact component={Tags} />
+            <Route path="/tag/:tagname" exact component={TagSingle} />
             <Route component={NotFound} />
           </Switch>
         </AppContainer>
