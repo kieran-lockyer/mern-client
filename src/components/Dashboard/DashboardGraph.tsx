@@ -85,7 +85,7 @@ class DashboardGraph extends Component<any, any> {
       },
       {
         name: "Photos Uploaded",
-        type: "line",
+        type: "bar",
         data: []
       }
     ]
@@ -105,16 +105,17 @@ class DashboardGraph extends Component<any, any> {
           tags: res.data[id]
         };
       });
-      console.log(data);
+
       this.setState({
         series: [
           {
             name: "Tags Generated",
-            type: "bar",
+            type: "area",
             data: res.data
           }
         ]
       });
+
       this.setState({
         options: {
           ...this.state.options,
@@ -123,6 +124,23 @@ class DashboardGraph extends Component<any, any> {
             categories: data.map(date => date.date).reverse()
           }
         }
+      });
+
+      this.getPhotoStats(numOfDays);
+    });
+  };
+
+  getPhotoStats = numOfDays => {
+    api.get(`/photos/stats/${numOfDays}`).then(res => {
+      this.setState({
+        series: [
+          ...this.state.series,
+          {
+            name: "Photos Uploaded",
+            type: "bar",
+            data: res.data
+          }
+        ]
       });
     });
   };
