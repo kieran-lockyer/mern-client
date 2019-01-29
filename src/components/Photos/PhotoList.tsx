@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { TagInput, Tag, Button } from "@blueprintjs/core";
+import {
+  TagInput,
+  Tag,
+  Button,
+  Popover,
+  Menu,
+  MenuItem,
+  Position,
+  Intent
+} from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import Gallery from "react-grid-gallery";
@@ -52,7 +61,6 @@ class AllPhotos extends Component<any, any> {
     });
   }
 
-  // I don't understand where this is being used... from Kieran...
   renderPhotos() {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
@@ -115,6 +123,13 @@ class AllPhotos extends Component<any, any> {
 
   render() {
     const images = this.getGalleryPhotos(this.props.images);
+    const filterMenu = (
+      <Menu>
+        <MenuItem icon="calendar" text="By Date" />
+        <MenuItem icon="sort-alphabetical" text="A-Z" />
+      </Menu>
+    );
+
     return (
       <Photos.Container>
         <Photos.Wrapper>
@@ -123,6 +138,7 @@ class AllPhotos extends Component<any, any> {
               <TagInput
                 values={this.state.tagInput}
                 onChange={value => this.filterPhotos(value)}
+                className="search-tags"
                 addOnBlur
                 fill
                 large
@@ -130,25 +146,29 @@ class AllPhotos extends Component<any, any> {
                 placeholder="Filter by tags"
               />
             </Photos.SearchForm>
-            <Photos.Pagination>
-              <Button
-                icon="arrow-left"
-                text="Back"
-                disabled={!this.props.hasPrevPage}
-                onClick={this.prevPage}
-              />
-
-              <Button
-                rightIcon="arrow-right"
-                text="Next"
-                disabled={!this.props.hasNextPage}
-                onClick={this.nextPage}
-              />
-            </Photos.Pagination>
+            <Popover content={filterMenu} position={Position.BOTTOM}>
+              <Button intent={Intent.PRIMARY} icon="filter" text="Filter" />
+            </Popover>
           </Photos.Header>
           <div>
             <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
           </div>
+          <Photos.Pagination>
+            <Button
+              icon="arrow-left"
+              text="Back"
+              disabled={!this.props.hasPrevPage}
+              onClick={this.prevPage}
+            />
+
+            <Button
+              rightIcon="arrow-right"
+              className="btn-next"
+              text="Next"
+              disabled={!this.props.hasNextPage}
+              onClick={this.nextPage}
+            />
+          </Photos.Pagination>
         </Photos.Wrapper>
       </Photos.Container>
     );

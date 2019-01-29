@@ -104,6 +104,7 @@ export const NavbarNavLink = styled.a`
 export const Pagination = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
 `;
 
 export const ImageCollection = styled.div`
@@ -162,7 +163,7 @@ export const Header = styled.div`
 
 export const SearchForm = styled.div`
   flex: 1 1;
-  margin: 0 5rem;
+  margin-right: 1rem;
 `;
 
 export const Filter = styled.div`
