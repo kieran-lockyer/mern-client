@@ -7,7 +7,9 @@ import {
   Menu,
   MenuItem,
   Position,
-  Intent
+  Intent,
+  Icon,
+  Colors
 } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
@@ -24,7 +26,9 @@ class AllPhotos extends Component<any, any> {
     redirect: false,
     tag: "",
     tagInput: [],
-    isMain: true
+    isMain: true,
+    layoutType: "list",
+    isActive: Colors.GRAY3
   };
 
   componentDidMount() {
@@ -48,34 +52,34 @@ class AllPhotos extends Component<any, any> {
     return tags.map((tag, id) => {
       return (
         <div key={id}>
-          <Tag
-            round
-            interactive
-            large
-            onClick={() => this.handleOnClick(tag.tag)}
-          >
-            {tag.tag}
+          <Tag round interactive onClick={() => this.handleOnClick(tag.tag)}>
+            {tag.label}
           </Tag>
         </div>
       );
     });
   }
 
-  renderPhotos() {
+  renderPhotosList() {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
         return (
           <Photos.TagRow key={id}>
-            <img src={photo.id} alt="" />
-            <Photos.Client>{photo.client}</Photos.Client>
-            <Photos.Date>
-              <Moment format="MMMM D, YYYY">{photo.datetime}</Moment>
-            </Photos.Date>
-            {this.renderTags(photo.metadata)}
+            <img
+              src={baseUrl + "/photos/image/" + photo._id}
+              alt=""
+              style={{ width: "50px" }}
+            />
+            <Photos.Date>{photo.dateAdded}</Photos.Date>
+            {this.renderTags(photo.tags)}
           </Photos.TagRow>
         );
       });
     }
+  }
+
+  renderPhotosGrid(images) {
+    return <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />;
   }
 
   prevPage = () => {
@@ -132,6 +136,14 @@ class AllPhotos extends Component<any, any> {
     return images;
   };
 
+  handleGridSelection = () => {
+    if (this.state.layoutType === "list") {
+      this.setState({ layoutType: "grid", isActive: Colors.LIME3 });
+    } else {
+      this.setState({ layoutType: "list", isActive: Colors.GRAY3 });
+    }
+  };
+
   render() {
     const images = this.getGalleryPhotos(this.props.images);
     const filterMenu = (
@@ -145,6 +157,13 @@ class AllPhotos extends Component<any, any> {
       <Photos.Container>
         <Photos.Wrapper>
           <Photos.Header>
+            <Icon
+              icon="grid-view"
+              color={this.state.isActive}
+              style={{ margin: "0 1rem", cursor: "pointer" }}
+              onClick={this.handleGridSelection}
+              iconSize={25}
+            />
             <Photos.SearchForm>
               <TagInput
                 values={this.state.tagInput}
@@ -162,10 +181,8 @@ class AllPhotos extends Component<any, any> {
             </Popover>
           </Photos.Header>
           <div>
-            <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
-            {this.state.tagInput[0] && images.length === 0 && (
-              <h2>NO PHOTOS FOUND!</h2>
-            )}
+            {this.state.layoutType === "list" && this.renderPhotosList()}
+            {this.state.layoutType === "grid" && this.renderPhotosGrid(images)}
           </div>
           {!this.state.tagInput[0] && (
             <Photos.Pagination>

@@ -10,6 +10,7 @@ class DashboardGraph extends Component<any, any> {
       chart: {
         id: "Sortal Analytics",
         foreColor: "#FFFFFF",
+        type: "area",
         animations: {
           enabled: true,
           easing: "linear",
@@ -65,7 +66,7 @@ class DashboardGraph extends Component<any, any> {
         palette: "palette1"
       },
       stroke: {
-        curve: "straight",
+        curve: "smooth",
         width: 5
       },
       legend: {
@@ -74,6 +75,15 @@ class DashboardGraph extends Component<any, any> {
         position: "bottom",
         horizontalAlign: "center",
         floating: true
+      },
+      fill: {
+        type: "pattern",
+        pattern: {
+          style: "slantedLines",
+          width: 3,
+          height: 2,
+          strokeWidth: 2
+        }
       }
     },
 
@@ -81,11 +91,6 @@ class DashboardGraph extends Component<any, any> {
       {
         name: "Tags Generated",
         type: "area",
-        data: []
-      },
-      {
-        name: "Photos Uploaded",
-        type: "bar",
         data: []
       }
     ]
@@ -97,7 +102,6 @@ class DashboardGraph extends Component<any, any> {
 
   getTagStats = numOfDays => {
     api.get(`/tags/stats/${numOfDays}`).then(res => {
-      this.getPhotoStats(numOfDays);
       const data = [...new Array(res.data.length)].map((i, id) => {
         return {
           date: new Date(
@@ -126,20 +130,18 @@ class DashboardGraph extends Component<any, any> {
           }
         }
       });
+      this.getPhotoStats(numOfDays);
     });
   };
 
   getPhotoStats = numOfDays => {
     api.get(`/photos/stats/${numOfDays}`).then(res => {
+      const updatedSeries = [
+        ...this.state.series,
+        { name: "Photos Uploaded", type: "bar", data: res.data }
+      ];
       this.setState({
-        series: [
-          ...this.state.series,
-          {
-            name: "Photos Uploaded",
-            type: "bar",
-            data: res.data
-          }
-        ]
+        series: updatedSeries
       });
     });
   };
@@ -199,11 +201,7 @@ class DashboardGraph extends Component<any, any> {
             1Y
           </Button>
         </ButtonGroup>
-        <Chart
-          options={this.state.options}
-          series={this.state.series}
-          type="line"
-        />
+        <Chart options={this.state.options} series={this.state.series} />
       </div>
     );
   }
