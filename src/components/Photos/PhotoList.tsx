@@ -22,7 +22,7 @@ import history from "../../history";
 
 class AllPhotos extends Component<any, any> {
   state = {
-    pageNum: 1,
+    pageNum: parseInt(this.props.match.params.page),
     redirect: false,
     tag: "",
     tagInput: [],
@@ -52,8 +52,19 @@ class AllPhotos extends Component<any, any> {
     return tags.map((tag, id) => {
       return (
         <div key={id}>
-          <Tag round interactive onClick={() => this.handleOnClick(tag.tag)}>
-            {tag.label}
+          <Tag
+            round
+            interactive
+            onClick={() =>
+              history.push(
+                `/tag/${tag.label
+                  .split(",")
+                  .map(t => t)
+                  .join(",")}`
+              )
+            }
+          >
+            {tag.label.split(",")[0]}
           </Tag>
         </div>
       );
@@ -70,7 +81,9 @@ class AllPhotos extends Component<any, any> {
               alt=""
               style={{ width: "50px" }}
             />
-            <Photos.Date>{photo.dateAdded}</Photos.Date>
+            <Photos.Date>
+              <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
+            </Photos.Date>
             {this.renderTags(photo.tags)}
           </Photos.TagRow>
         );
@@ -84,10 +97,12 @@ class AllPhotos extends Component<any, any> {
 
   prevPage = () => {
     this.setState({ pageNum: this.props.prevPage });
+    history.push(`/photos/${this.props.prevPage}`);
   };
 
   nextPage = () => {
     this.setState({ pageNum: this.props.nextPage });
+    history.push(`/photos/${this.props.nextPage}`);
   };
 
   filterPhotos = value => {
@@ -116,7 +131,7 @@ class AllPhotos extends Component<any, any> {
               style={tagStyles}
               onClick={() =>
                 history.push(
-                  `/tags/${tags.label
+                  `/tag/${tags.label
                     .split(",")
                     .map(tag => tag)
                     .join(",")}`
