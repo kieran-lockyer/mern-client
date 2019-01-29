@@ -242,7 +242,7 @@ export const StatsItem = styled.div`
   border-radius: 10px;
   flex-direction: column;
   color: #fff;
-
+  background: linear-gradient(to right bottom, #223f67, #192b44);
   & h2 {
     font-size: 30px;
   }
@@ -257,18 +257,6 @@ export const StatsItem = styled.div`
     border-radius: inherit;
     font-size: 14px;
     margin-top: 10px;
-  }
-
-  &:nth-child(1) {
-    background: linear-gradient(to right bottom, #3eeaea, #028586);
-  }
-
-  &:nth-child(2) {
-    background: linear-gradient(to right bottom, #04a9f4, #011acc);
-  }
-
-  &:nth-child(3) {
-    background: linear-gradient(to right bottom, #b53f9c, #263275);
   }
 
   &:not(:last-child) {

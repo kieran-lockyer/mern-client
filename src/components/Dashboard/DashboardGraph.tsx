@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
 import api from "../../api/index";
+import { ButtonGroup, Button } from "@blueprintjs/core";
 
 class DashboardGraph extends Component<any, any> {
   state = {
-    selection: "thirty_days",
+    selection: "one_week",
     options: {
       legend: {
         show: false,
@@ -20,6 +21,9 @@ class DashboardGraph extends Component<any, any> {
           dynamicAnimation: {
             speed: 1000
           }
+        },
+        toolbar: {
+          show: false
         }
       },
       grid: {
@@ -51,7 +55,9 @@ class DashboardGraph extends Component<any, any> {
         categories: []
       },
       tooltip: {
+        theme: "dark",
         x: {
+          show: false,
           format: "dd MMM yyyy"
         }
       },
@@ -84,7 +90,7 @@ class DashboardGraph extends Component<any, any> {
   };
 
   componentDidMount() {
-    this.getTagStats(20);
+    this.getTagStats(7);
   }
 
   getTagStats = numOfDays => {
@@ -119,13 +125,67 @@ class DashboardGraph extends Component<any, any> {
     });
   };
 
+  updateDate(timeline) {
+    this.setState({
+      selection: timeline
+    });
+
+    switch (timeline) {
+      case "one_month":
+        this.getTagStats(30);
+        break;
+      case "six_months":
+        this.getTagStats(180);
+        break;
+      case "one_year":
+        this.getTagStats(365);
+        break;
+      case "one_week":
+        this.getTagStats(7);
+        break;
+      default:
+    }
+  }
+
   render() {
     return (
-      <Chart
-        options={this.state.options}
-        series={this.state.series}
-        type="line"
-      />
+      <div>
+        <ButtonGroup fill>
+          <Button
+            onClick={() => this.updateDate("one_week")}
+            id="one_week"
+            className="date-button-group"
+          >
+            1W
+          </Button>
+          <Button
+            onClick={() => this.updateDate("one_month")}
+            id="one_month"
+            className="date-button-group"
+          >
+            1M
+          </Button>
+          <Button
+            onClick={() => this.updateDate("six_months")}
+            id="six_months"
+            className="date-button-group"
+          >
+            6M
+          </Button>
+          <Button
+            onClick={() => this.updateDate("one_year")}
+            id="one_year"
+            className="date-button-group"
+          >
+            1Y
+          </Button>
+        </ButtonGroup>
+        <Chart
+          options={this.state.options}
+          series={this.state.series}
+          type="line"
+        />
+      </div>
     );
   }
 }
