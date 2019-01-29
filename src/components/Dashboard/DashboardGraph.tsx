@@ -97,6 +97,7 @@ class DashboardGraph extends Component<any, any> {
 
   getTagStats = numOfDays => {
     api.get(`/tags/stats/${numOfDays}`).then(res => {
+      this.getPhotoStats(numOfDays);
       const data = [...new Array(res.data.length)].map((i, id) => {
         return {
           date: new Date(
@@ -125,8 +126,6 @@ class DashboardGraph extends Component<any, any> {
           }
         }
       });
-
-      this.getPhotoStats(numOfDays);
     });
   };
 

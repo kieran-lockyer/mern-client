@@ -9,8 +9,8 @@ class TagSingle extends React.Component<any, any> {
   componentDidMount() {
     this.props.fetchImages(this.props.match.params.tagname);
   }
+
   renderImages() {
-    console.log(this.props.images);
     return this.props.images.map(tag => {
       return (
         <img
@@ -24,7 +24,6 @@ class TagSingle extends React.Component<any, any> {
   }
 
   public render() {
-    console.log(this.props);
     const images = [];
     this.props.images.forEach(function(tag) {
       images.push({

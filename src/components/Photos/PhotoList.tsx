@@ -106,12 +106,6 @@ class AllPhotos extends Component<any, any> {
         thumbnailHeight: "20%",
         caption: object.tags.map(tags => {
           const labels = tags.label.split(",").join(", ");
-          console.log(
-            tags.label
-              .split(",")
-              .map(tag => tag)
-              .join("")
-          );
           return (
             <Tag
               interactive
@@ -169,23 +163,28 @@ class AllPhotos extends Component<any, any> {
           </Photos.Header>
           <div>
             <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
+            {this.state.tagInput[0] && images.length === 0 && (
+              <h2>NO PHOTOS FOUND!</h2>
+            )}
           </div>
-          <Photos.Pagination>
-            <Button
-              icon="arrow-left"
-              text="Back"
-              disabled={!this.props.hasPrevPage}
-              onClick={this.prevPage}
-            />
+          {!this.state.tagInput[0] && (
+            <Photos.Pagination>
+              <Button
+                icon="arrow-left"
+                text="Back"
+                disabled={!this.props.hasPrevPage}
+                onClick={this.prevPage}
+              />
 
-            <Button
-              rightIcon="arrow-right"
-              className="btn-next"
-              text="Next"
-              disabled={!this.props.hasNextPage}
-              onClick={this.nextPage}
-            />
-          </Photos.Pagination>
+              <Button
+                rightIcon="arrow-right"
+                className="btn-next"
+                text="Next"
+                disabled={!this.props.hasNextPage}
+                onClick={this.nextPage}
+              />
+            </Photos.Pagination>
+          )}
         </Photos.Wrapper>
       </Photos.Container>
     );
