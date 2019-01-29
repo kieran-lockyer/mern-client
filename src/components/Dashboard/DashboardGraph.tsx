@@ -7,11 +7,6 @@ class DashboardGraph extends Component<any, any> {
   state = {
     selection: "one_week",
     options: {
-      legend: {
-        show: false,
-        position: "top",
-        horizontalAlign: "left"
-      },
       chart: {
         id: "Sortal Analytics",
         foreColor: "#FFFFFF",
@@ -72,6 +67,13 @@ class DashboardGraph extends Component<any, any> {
       stroke: {
         curve: "straight",
         width: 5
+      },
+      legend: {
+        show: true,
+        showForSingleSeries: true,
+        position: "bottom",
+        horizontalAlign: "center",
+        floating: true
       }
     },
 

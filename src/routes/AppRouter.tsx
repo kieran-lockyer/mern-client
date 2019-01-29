@@ -5,13 +5,14 @@ import Photos from "../components/Photos/PhotoList";
 import Tags from "../components/Tags/TagList";
 import TagSingle from "../components/Tags/TagSingle";
 import NotFound from "../components/NotFound";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
+import history from "../history";
 import { AppContainer } from "../styles/AppStyles";
 
 export default class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <AppContainer>
           <Sidebar />
           <Switch>
