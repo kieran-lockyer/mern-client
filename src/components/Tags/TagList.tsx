@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Colors, Icon, TagInput, Button, Intent } from "@blueprintjs/core";
+import {
+  Popover,
+  Position,
+  Menu,
+  MenuItem,
+  Icon,
+  TagInput,
+  Button,
+  Intent
+} from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
@@ -44,7 +53,7 @@ class AllTags extends Component<any, any> {
 
   renderPagination() {
     return (
-      <div className="pagination">
+      <Tags.Pagination>
         <Button
           icon="arrow-left"
           text="Back"
@@ -58,7 +67,7 @@ class AllTags extends Component<any, any> {
           disabled={!this.props.hasNextPage}
           onClick={this.nextPage}
         />
-      </div>
+      </Tags.Pagination>
     );
   }
 
@@ -71,6 +80,12 @@ class AllTags extends Component<any, any> {
   };
 
   render() {
+    const filterMenu = (
+      <Menu>
+        <MenuItem icon="calendar" text="By Date" />
+        <MenuItem icon="sort-alphabetical" text="A-Z" />
+      </Menu>
+    );
     return (
       <Tags.Container>
         <Tags.Wrapper>
@@ -86,14 +101,9 @@ class AllTags extends Component<any, any> {
                 placeholder="Filter by tags"
               />
             </Tags.SearchForm>
-            <Tags.Filter>
-              <Icon
-                color={Colors.GRAY2}
-                icon="sort-alphabetical"
-                iconSize={25}
-              />
-              <Icon color={Colors.GRAY2} icon="sort" iconSize={25} />
-            </Tags.Filter>
+            <Popover content={filterMenu} position={Position.BOTTOM}>
+              <Button intent={Intent.PRIMARY} icon="filter" text="Filter" />
+            </Popover>
           </Tags.Header>
           {this.renderTags()}
           {this.renderPagination()}
