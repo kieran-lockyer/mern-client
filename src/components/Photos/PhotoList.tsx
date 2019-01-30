@@ -7,32 +7,31 @@ import {
   Menu,
   MenuItem,
   Position,
+  HTMLTable,
   Intent,
   Icon,
   Colors
 } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import Gallery from "react-grid-gallery";
 import * as actions from "../../actions";
 import * as Photos from "../../styles/AppStyles";
-import { tagStyles } from "../../styles/AppStyles";
 import baseUrl from "../../api/baseurl";
 import history from "../../history";
+import PhotoGrid from "./PhotoGrid";
+import { Link } from "react-router-dom";
 
 class AllPhotos extends Component<any, any> {
   state = {
     pageNum: parseInt(this.props.match.params.page),
-    limit: undefined,
+    limit: 30,
     field: "",
     order: "",
     tags: "",
     filterString: "",
-    redirect: false,
     tag: "",
     option: "",
     tagInput: [],
-    isMain: true,
     layoutType: "list",
     isActive: Colors.GRAY3
   };
@@ -43,8 +42,9 @@ class AllPhotos extends Component<any, any> {
 
   componentDidUpdate() {
     if (
-      this.state.pageNum === this.props.nextPage ||
-      this.state.pageNum === this.props.prevPage
+      (this.state.pageNum === this.props.nextPage ||
+        this.state.pageNum === this.props.prevPage) &&
+      this.state.tagInput.length === 0
     ) {
       this.props.sortPhotos(
         this.state.pageNum,
@@ -56,20 +56,15 @@ class AllPhotos extends Component<any, any> {
     }
   }
 
-  handleOnClick = tag => {
-    this.setState({ redirect: true, tag });
-  };
-
   renderTags(tags) {
     return tags.map((tag, id) => {
       return (
-        <div key={id}>
+        <span key={id}>
           <Tag
             color={Colors.TURQUOISE3}
             round
             style={{ marginRight: "5px", background: "#48bfb9" }}
             interactive
-            large
             onClick={() =>
               history.push(
                 `/tag/${tag.label
@@ -81,33 +76,53 @@ class AllPhotos extends Component<any, any> {
           >
             {tag.label.split(",")[0]}
           </Tag>
-        </div>
+        </span>
       );
     });
   }
 
   renderPhotosList() {
     if (this.props.photos) {
-      console.log(this.props);
       return this.props.photos.map((photo, id) => {
         return (
-          <Photos.TagRow key={id}>
-            <img
-              src={baseUrl + "/photos/image/" + photo._id}
-              alt=""
-              className="photo-list-img"
-            />
-            <Photos.Date>
+          <tr key={id}>
+            <td className="tag-image">
+              <img
+                src={baseUrl + "/photos/image/" + photo._id}
+                alt=""
+                className="photo-list-img"
+              />
+            </td>
+            <td className="tag-name">{photo._id}</td>
+            <td className="tag-date">
               <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
-            </Photos.Date>
-            {this.renderTags(photo.tags)}
-          </Photos.TagRow>
+            </td>
+            <td className="tag-group">{this.renderTags(photo.tags)}</td>
+          </tr>
         );
       });
     }
   }
 
-  prevPage = event => {
+  renderTableView() {
+    if (this.props.photos) {
+      return (
+        <HTMLTable condensed striped style={{ overflowX: "auto" }}>
+          <thead>
+            <tr>
+              <th className="tag-image">Image</th>
+              <th className="tag-name">ID</th>
+              <th className="tag-date">Date</th>
+              <th className="tag-group">Tags</th>
+            </tr>
+          </thead>
+          <tbody>{this.renderPhotosList()}</tbody>
+        </HTMLTable>
+      );
+    }
+  }
+
+  prevPage = () => {
     this.setState({ pageNum: this.props.prevPage });
     history.push(`/photos/${this.props.prevPage}`);
     this.props.sortPhotos(this.props.prevPage);
@@ -157,54 +172,17 @@ class AllPhotos extends Component<any, any> {
       this.props.sortPhotos(this.state.pageNum);
     } else {
       this.props.sortPhotos(
-        this.state.pageNum,
-        10,
-        "dateAdded",
-        "asc",
+        1,
+        (this.state.limit = 30),
+        (this.state.field = "dateAdded"),
+        (this.state.order = "asc"),
         filterString
       );
     }
     this.setState({ tagInput: value });
   };
 
-  getGalleryPhotos = allImages => {
-    const images = [];
-    allImages.forEach(function(object) {
-      images.push({
-        src: baseUrl + "/photos/image/" + object._id,
-        thumbnail: baseUrl + "/photos/image/" + object._id,
-        thumbnailWidth: "20%",
-        thumbnailHeight: "20%",
-        caption: object.tags.map((tags, id) => {
-          const labels = tags.label.split(",").join(", ");
-          return (
-            <Tag
-              key={id}
-              interactive
-              color={Colors.TURQUOISE3}
-              style={tagStyles}
-              onClick={() =>
-                history.push(
-                  `/tag/${tags.label
-                    .split(",")
-                    .map(tag => tag)
-                    .join(",")}`
-                )
-              }
-            >
-              {labels}
-            </Tag>
-          );
-        }),
-        tags: object.tags.map(tags => {
-          const label = tags.label.split(",");
-          return { value: label[0] };
-        })
-      });
-    });
-    return <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />;
-  };
-
+  // Changes the layout from list to grid
   handleGridSelection = () => {
     if (this.state.layoutType === "list") {
       this.setState({ layoutType: "grid", isActive: Colors.TURQUOISE3 });
@@ -213,19 +191,37 @@ class AllPhotos extends Component<any, any> {
     }
   };
 
-  menuClick(pageNum, limit = 30, field, order, tags = "", option) {
+  sortBy(pageNum, limit = 30, field, order, tags = "", option) {
     this.setState({ field, order, tags, limit, option });
     this.props.sortPhotos(pageNum, limit, field, order, tags);
   }
 
   render() {
+    if (this.props.match.params.page > this.props.totalPages) {
+      return (
+        <Photos.Container
+          style={{
+            margin: "10rem auto",
+            textAlign: "center"
+          }}
+        >
+          <h2>This page number doesn't exist!</h2>
+          <Button intent={Intent.PRIMARY}>
+            <Link style={{ color: "white" }} to="/photos">
+              Go Back
+            </Link>
+          </Button>
+        </Photos.Container>
+      );
+    }
+
     const filterMenu = (
       <Menu>
         <MenuItem
           icon="sort-desc"
           text="Newest to Oldest"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "dateAdded",
@@ -239,7 +235,7 @@ class AllPhotos extends Component<any, any> {
           icon="sort-asc"
           text="Oldest to Newest"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "dateAdded",
@@ -253,7 +249,7 @@ class AllPhotos extends Component<any, any> {
           icon="sort-numerical-desc"
           text="Highest Confidence to Lowest Confidence"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "tags.0.confidence",
@@ -267,7 +263,7 @@ class AllPhotos extends Component<any, any> {
           icon="sort-numerical"
           text="Lowest Confidence to Highest Confidence"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "tags.0.confidence",
@@ -281,7 +277,7 @@ class AllPhotos extends Component<any, any> {
           icon="sort-alphabetical"
           text="Tag A-Z"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "tags.0.label",
@@ -295,7 +291,7 @@ class AllPhotos extends Component<any, any> {
           icon="sort-alphabetical-desc"
           text="Tag Z-A"
           onClick={() =>
-            this.menuClick(
+            this.sortBy(
               1,
               30,
               "tags.0.label",
@@ -335,29 +331,46 @@ class AllPhotos extends Component<any, any> {
               <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
             </Popover>
           </Photos.Header>
-          <div>
-            {this.state.layoutType === "list" && this.renderPhotosList()}
-            {this.state.layoutType === "grid" &&
-              this.getGalleryPhotos(this.props.photos)}
-          </div>
-          {!this.state.tagInput[0] && (
-            <Photos.Pagination>
-              <Button
-                icon="arrow-left"
-                text="Back"
-                disabled={!this.props.hasPrevPage}
-                onClick={event => this.prevPage(event)}
-              />
 
-              <Button
-                rightIcon="arrow-right"
-                className="btn-next"
-                text="Next"
-                disabled={!this.props.hasNextPage}
-                onClick={this.nextPage}
-              />
-            </Photos.Pagination>
-          )}
+          <div>
+            {this.state.layoutType === "list" && this.renderTableView()}
+            {this.state.layoutType === "grid" && (
+              <PhotoGrid photos={this.props.photos} />
+            )}
+            {this.props.match.params.page > this.props.totalPages && (
+              <div
+                style={{
+                  margin: "10rem auto",
+                  textAlign: "center"
+                }}
+              >
+                <h2>This page number doesn't exist!</h2>
+              </div>
+            )}
+          </div>
+          <Photos.Pagination>
+            {!this.state.tagInput[0] &&
+              this.props.match.params.page <= this.props.totalPages && (
+                <>
+                  <Button
+                    icon="arrow-left"
+                    intent={Intent.PRIMARY}
+                    text="Back"
+                    disabled={!this.props.hasPrevPage}
+                    onClick={this.prevPage}
+                  />
+
+                  <Button
+                    rightIcon="arrow-right"
+                    intent={Intent.PRIMARY}
+                    className="btn-next"
+                    text="Next"
+                    disabled={!this.props.hasNextPage}
+                    onClick={this.nextPage}
+                  />
+                </>
+              )}
+          </Photos.Pagination>
         </Photos.Wrapper>
       </Photos.Container>
     );
@@ -370,7 +383,8 @@ const mapStateToProps = state => ({
   nextPage: state.photos.data.nextPage,
   prevPage: state.photos.data.prevPage,
   hasPrevPage: state.photos.data.hasPrevPage,
-  hasNextPage: state.photos.data.hasNextPage
+  hasNextPage: state.photos.data.hasNextPage,
+  totalPages: state.photos.data.totalPages
 });
 
 export default connect(
