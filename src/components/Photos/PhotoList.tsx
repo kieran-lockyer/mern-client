@@ -23,8 +23,14 @@ import history from "../../history";
 class AllPhotos extends Component<any, any> {
   state = {
     pageNum: parseInt(this.props.match.params.page),
+    limit: undefined,
+    field: "",
+    order: "",
+    tags: "",
+    filterString: "",
     redirect: false,
     tag: "",
+    option: "",
     tagInput: [],
     isMain: true,
     layoutType: "list",
@@ -32,7 +38,7 @@ class AllPhotos extends Component<any, any> {
   };
 
   componentDidMount() {
-    this.props.fetchPhotos(this.state.pageNum);
+    this.props.sortPhotos(this.state.pageNum);
   }
 
   componentDidUpdate() {
@@ -40,7 +46,13 @@ class AllPhotos extends Component<any, any> {
       this.state.pageNum === this.props.nextPage ||
       this.state.pageNum === this.props.prevPage
     ) {
-      this.props.fetchPhotos(this.state.pageNum);
+      this.props.sortPhotos(
+        this.state.pageNum,
+        this.state.limit,
+        this.state.field,
+        this.state.order,
+        this.state.tagInput.join(",")
+      );
     }
   }
 
@@ -76,6 +88,7 @@ class AllPhotos extends Component<any, any> {
 
   renderPhotosList() {
     if (this.props.photos) {
+      console.log(this.props);
       return this.props.photos.map((photo, id) => {
         return (
           <Photos.TagRow key={id}>
@@ -94,26 +107,62 @@ class AllPhotos extends Component<any, any> {
     }
   }
 
-  renderPhotosGrid(images) {
-    return <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />;
-  }
-
-  prevPage = () => {
+  prevPage = event => {
     this.setState({ pageNum: this.props.prevPage });
     history.push(`/photos/${this.props.prevPage}`);
+    this.props.sortPhotos(this.props.prevPage);
   };
 
   nextPage = () => {
+    switch (this.state.option) {
+      case "Newest to Oldest":
+        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "desc");
+        break;
+      case "Oldest to Newest":
+        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "asc");
+        break;
+      case "Highest Confidence to Lowest Confidence":
+        this.props.sortPhotos(
+          this.props.nextPage,
+          30,
+          "tag.0.confidence",
+          "desc"
+        );
+        break;
+      case "Lowest Confidence to Highest Confidence":
+        this.props.sortPhotos(
+          this.props.nextPage,
+          30,
+          "tag.0.confidence",
+          "asc"
+        );
+        break;
+      case "Tag A-Z":
+        this.props.sortPhotos(this.props.nextPage, 30, "tag.0.label", "asc");
+        break;
+      case "Tag Z-A":
+        this.props.sortPhotos(this.props.nextPage, 30, "tag.0.label", "desc");
+        break;
+      default:
+        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "desc");
+    }
     this.setState({ pageNum: this.props.nextPage });
     history.push(`/photos/${this.props.nextPage}`);
   };
 
   filterPhotos = value => {
     const filterString = `${value}`;
+    this.setState({ filterString });
     if (!filterString) {
-      this.props.fetchPhotos(this.state.pageNum);
+      this.props.sortPhotos(this.state.pageNum);
     } else {
-      this.props.filterPhotos(filterString);
+      this.props.sortPhotos(
+        this.state.pageNum,
+        10,
+        "dateAdded",
+        "asc",
+        filterString
+      );
     }
     this.setState({ tagInput: value });
   };
@@ -153,7 +202,7 @@ class AllPhotos extends Component<any, any> {
         })
       });
     });
-    return images;
+    return <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />;
   };
 
   handleGridSelection = () => {
@@ -164,12 +213,98 @@ class AllPhotos extends Component<any, any> {
     }
   };
 
+  menuClick(pageNum, limit = 30, field, order, tags = "", option) {
+    this.setState({ field, order, tags, limit, option });
+    this.props.sortPhotos(pageNum, limit, field, order, tags);
+  }
+
   render() {
-    const images = this.getGalleryPhotos(this.props.images);
     const filterMenu = (
       <Menu>
-        <MenuItem icon="calendar" text="By Date" />
-        <MenuItem icon="sort-alphabetical" text="A-Z" />
+        <MenuItem
+          icon="sort-desc"
+          text="Newest to Oldest"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "dateAdded",
+              "desc",
+              this.state.tagInput.join(","),
+              "Newest to Oldest"
+            )
+          }
+        />
+        <MenuItem
+          icon="sort-asc"
+          text="Oldest to Newest"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "dateAdded",
+              "asc",
+              this.state.tagInput.join(","),
+              "Oldest to Newest"
+            )
+          }
+        />
+        <MenuItem
+          icon="sort-numerical-desc"
+          text="Highest Confidence to Lowest Confidence"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "tags.0.confidence",
+              "desc",
+              this.state.tagInput.join(","),
+              "Highest Confidence to Lowest Confidence"
+            )
+          }
+        />
+        <MenuItem
+          icon="sort-numerical"
+          text="Lowest Confidence to Highest Confidence"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "tags.0.confidence",
+              "asc",
+              this.state.tagInput.join(","),
+              "Lowest Confidence to Highest Confidence"
+            )
+          }
+        />
+        <MenuItem
+          icon="sort-alphabetical"
+          text="Tag A-Z"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "tags.0.label",
+              "asc",
+              this.state.tagInput.join(","),
+              "Tag A-Z"
+            )
+          }
+        />
+        <MenuItem
+          icon="sort-alphabetical-desc"
+          text="Tag Z-A"
+          onClick={() =>
+            this.menuClick(
+              1,
+              30,
+              "tags.0.label",
+              "desc",
+              this.state.tagInput.join(","),
+              "Tag Z-A"
+            )
+          }
+        />
       </Menu>
     );
 
@@ -197,12 +332,13 @@ class AllPhotos extends Component<any, any> {
               />
             </Photos.SearchForm>
             <Popover content={filterMenu} position={Position.BOTTOM}>
-              <Button intent={Intent.PRIMARY} icon="filter" text="Filter" />
+              <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
             </Popover>
           </Photos.Header>
           <div>
             {this.state.layoutType === "list" && this.renderPhotosList()}
-            {this.state.layoutType === "grid" && this.renderPhotosGrid(images)}
+            {this.state.layoutType === "grid" &&
+              this.getGalleryPhotos(this.props.photos)}
           </div>
           {!this.state.tagInput[0] && (
             <Photos.Pagination>
@@ -210,7 +346,7 @@ class AllPhotos extends Component<any, any> {
                 icon="arrow-left"
                 text="Back"
                 disabled={!this.props.hasPrevPage}
-                onClick={this.prevPage}
+                onClick={event => this.prevPage(event)}
               />
 
               <Button
@@ -234,8 +370,7 @@ const mapStateToProps = state => ({
   nextPage: state.photos.data.nextPage,
   prevPage: state.photos.data.prevPage,
   hasPrevPage: state.photos.data.hasPrevPage,
-  hasNextPage: state.photos.data.hasNextPage,
-  images: state.photos.images
+  hasNextPage: state.photos.data.hasNextPage
 });
 
 export default connect(
