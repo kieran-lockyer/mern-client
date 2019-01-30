@@ -83,3 +83,65 @@ body {
 .bp3-input.bp3-active {
   width: 75% !important;
 }
+
+tr {
+  width: 100%;
+  display: flex;
+}
+
+th {
+  display: flex;
+  justify-content: center;
+}
+
+th,
+td {
+  flex: 1;
+}
+
+table.bp3-html-table.bp3-html-table-condensed.bp3-html-table-striped {
+  width: 100%;
+}
+
+
+td.tag-image,
+.tag-name,
+.tag-date {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+td.tag-date {
+  margin-right: auto;
+}
+
+td.tag-group,
+th.tag-group {
+  display: flex;
+  flex: 0 1 30%;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+td.tag-image,
+th.tag-image {
+  display: flex;
+  flex: 0 0 100px;
+  align-items: center;
+}
+
+td.tag-date,
+th.tag-date>div {
+  display: flex;
+  flex: 1 1 5%;
+  align-items: center;
+  justify-content: center;
+}
+
+td.tag-name,
+th.tag-name {
+  display: flex;
+  flex: 1 1 100px;
+  align-items: center;
+}
