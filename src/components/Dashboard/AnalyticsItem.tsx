@@ -51,7 +51,7 @@ function popoverContent() {
   );
 }
 
-export default ({ tag }) => {
+export default ({ tag, count }) => {
   return (
     <CardItem>
       <CardLeft>
@@ -59,7 +59,7 @@ export default ({ tag }) => {
       </CardLeft>
       <CardDetails>
         <CardTitle>{tag}</CardTitle>
-        <CardCount>700 Images</CardCount>
+        <CardCount>{count}</CardCount>
       </CardDetails>
       <CardRight>
         <Popover

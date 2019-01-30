@@ -1,16 +1,19 @@
-import React from "react";
-import AnalyticsCard from "./AnalyticsCard";
-import { DashboardAnalytics } from "../../styles/AppStyles";
-
-const tags = ["tag1", "tag2", "tag3", "tag4", "tag5"];
+import React from "react"
+import AnalyticsCard from "./AnalyticsCard"
+import { Stats } from "../../styles/AppStyles";
+import StatsItem from "./StatsItem";
+import { DashboardAnalytics } from "../../styles/AppStyles"
+import { applyMiddleware } from "redux";
 
 export default () => {
   return (
     <DashboardAnalytics>
-      <AnalyticsCard title="Most Popular" tags={tags} />
-      <AnalyticsCard title="Most Recent" tags={tags} />
-      <AnalyticsCard title="Trending" tags={tags} />
-      <AnalyticsCard title="Top Clients" tags={tags} />
+      <AnalyticsCard title="Most Popular Tags" />
+      <AnalyticsCard title="Trending Tags" />
+      <Stats>
+        <StatsItem name="Average Photos Per Day" />
+        <StatsItem name="Average Tags Per Day" />
+      </Stats>
     </DashboardAnalytics>
-  );
-};
+  )
+}

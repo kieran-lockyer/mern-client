@@ -14,6 +14,7 @@ export default () => {
           </Dashboard.Graph>
           <DashboardStats />
         </Dashboard.Featured>
+        <DashboardAnalytics />
       </Dashboard.DashboardWrapper>
     </Dashboard.Dashboard>
   );
