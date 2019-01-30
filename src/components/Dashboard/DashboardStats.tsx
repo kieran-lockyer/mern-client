@@ -12,8 +12,8 @@ class DashboardStats extends PureComponent<any, any> {
   render() {
     return (
       <Stats>
-        <StatsItem name={"Photos"} value={this.props.numPhotos} />
-        <StatsItem name={"Tags"} value={this.props.numTags} />
+        <StatsItem mainIcon="media" value={this.props.numPhotos} />
+        <StatsItem mainIcon="tag" value={this.props.numTags} />
       </Stats>
     );
   }

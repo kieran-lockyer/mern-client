@@ -145,3 +145,44 @@ th.tag-name {
   flex: 1 1 100px;
   align-items: center;
 }
+
+.avg-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.avg-stats-single {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: linear-gradient(to bottom, #223f67, #192b44);
+  border-radius: 15px;
+  color: white;
+  padding: 1rem;
+  position: relative;
+
+  &:nth-child(1) {
+    margin-right: 10px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.avg-stats-icon {
+  opacity: 0.2;
+  position: absolute;
+  left: -5px;
+  top: -10px;
+}
+
+.avg-stats-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0
+}

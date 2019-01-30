@@ -255,7 +255,6 @@ export const StatsItem = styled.div`
 
   & > span {
     padding: 10px;
-    background: #0000004f;
     width: 100%;
     font-weight: bold;
     text-transform: uppercase;
@@ -263,6 +262,12 @@ export const StatsItem = styled.div`
     border-radius: inherit;
     font-size: 14px;
     margin-top: 10px;
+    justify-content: center;
+    display: flex;
+    color: #51c7c1;
+    &:last-child {
+      background: #0000004f;
+    }
   }
 
   &:not(:last-child) {
@@ -291,7 +296,7 @@ export const Card = styled.div`
 
 export const CardHeading = styled.div`
   color: #fff;
-  background: #172336;
+  background: linear-gradient(to bottom, #223f67, #192b44);
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
   border-bottom: 1px solid #eee;

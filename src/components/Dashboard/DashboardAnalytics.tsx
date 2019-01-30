@@ -1,8 +1,8 @@
-import React from "react"
-import AnalyticsCard from "./AnalyticsCard"
+import React from "react";
+import AnalyticsCard from "./AnalyticsCard";
 import { Stats } from "../../styles/AppStyles";
 import StatsItem from "./StatsItem";
-import { DashboardAnalytics } from "../../styles/AppStyles"
+import { DashboardAnalytics } from "../../styles/AppStyles";
 import { applyMiddleware } from "redux";
 
 export default () => {
@@ -10,10 +10,10 @@ export default () => {
     <DashboardAnalytics>
       <AnalyticsCard title="Most Popular Tags" />
       <AnalyticsCard title="Trending Tags" />
-      <Stats>
-        <StatsItem name="Average Photos Per Day" />
-        <StatsItem name="Average Tags Per Day" />
-      </Stats>
+      <div className="avg-stats">
+        <StatsItem name="Average Photos Per Day" statsIcon="media" />
+        <StatsItem name="Average Tags Per Day" statsIcon="tag" />
+      </div>
     </DashboardAnalytics>
-  )
-}
+  );
+};
