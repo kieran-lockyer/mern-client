@@ -24,3 +24,17 @@ export const fetchPhotos = pageNum => async dispatch => {
   const response = await api.get(`/photos?pageNo=${pageNum}`);
   dispatch({ type: type.FETCH_PHOTOS, payload: response.data });
 };
+
+// Fetch List of Photos
+export const sortPhotos = (
+  pageNum,
+  limit = 30,
+  field = "dateAdded",
+  order = "desc",
+  tags = ""
+) => async dispatch => {
+  const response = await api.get(
+    `photos?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&tags=${tags}`
+  );
+  dispatch({ type: "SORT_PHOTOS", payload: response.data });
+};

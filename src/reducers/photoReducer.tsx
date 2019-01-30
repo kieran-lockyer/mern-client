@@ -1,14 +1,14 @@
 const initialState = {
-  data: {},
-  images: []
+  data: {}
 };
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case "FETCH_PHOTOS":
-      return { ...state, data: payload, images: payload.docs };
+      return { ...state, data: payload };
     case "FILTER_PHOTOS":
-      return { ...state, images: payload, data: { docs: payload } };
-
+      return { ...state, data: { docs: payload } };
+    case "SORT_PHOTOS":
+      return { ...state, data: payload };
     default:
       return state;
   }
