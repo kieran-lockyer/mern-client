@@ -4,10 +4,11 @@ import * as actions from "../../actions";
 import { connect } from "react-redux";
 import baseUrl from "../../api/baseurl";
 import Gallery from "react-grid-gallery";
+import Moment from "moment";
 
 class TagSingle extends React.Component<any, any> {
   componentDidMount() {
-    this.props.fetchImages(this.props.match.params.tagname);
+    this.props.fetchTagPhotos(this.props.match.params.tagname);
   }
 
   renderImages() {
@@ -31,11 +32,11 @@ class TagSingle extends React.Component<any, any> {
         thumbnail: baseUrl + "/photos/image/" + tag.imageId,
         thumbnailWidth: "60%",
         thumbnailHeight: "60%",
-        caption: [
-          "Model: " + tag.source.model + " | ",
-          "Confidence: " + (tag.confidence * 100).toFixed(2) + "% | ",
-          "Date: " + tag.dateAdded
-        ],
+        caption: `
+          Model: ${tag.source.model} |
+          Confidence: ${(tag.confidence * 100).toFixed(2)} |
+          Date: ${tag.dateAdded}
+        `,
         tags: [{ value: tag.source.type }]
       });
     });
@@ -58,7 +59,13 @@ class TagSingle extends React.Component<any, any> {
             </h2>
           </Tags.Header>
           <div>
-            <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />
+            {images[0] && (
+              <Gallery
+                images={images}
+                backdropClosesModal
+                tagStyle={tagStyles}
+              />
+            )}
           </div>
         </Tags.Wrapper>
       </Tags.Container>

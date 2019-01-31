@@ -37,7 +37,7 @@ class AllPhotos extends Component<any, any> {
   };
 
   componentDidMount() {
-    this.props.sortPhotos(this.state.pageNum);
+    this.props.fetchPhotos(this.state.pageNum);
   }
 
   componentDidUpdate() {
@@ -46,7 +46,7 @@ class AllPhotos extends Component<any, any> {
         this.state.pageNum === this.props.prevPage) &&
       this.state.tagInput.length === 0
     ) {
-      this.props.sortPhotos(
+      this.props.fetchPhotos(
         this.state.pageNum,
         this.state.limit,
         this.state.field,
@@ -125,19 +125,19 @@ class AllPhotos extends Component<any, any> {
   prevPage = () => {
     this.setState({ pageNum: this.props.prevPage });
     history.push(`/photos/${this.props.prevPage}`);
-    this.props.sortPhotos(this.props.prevPage);
+    this.props.fetchPhotos(this.props.prevPage);
   };
 
   nextPage = () => {
     switch (this.state.option) {
       case "Newest to Oldest":
-        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "desc");
+        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "desc");
         break;
       case "Oldest to Newest":
-        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "asc");
+        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "asc");
         break;
       case "Highest Confidence to Lowest Confidence":
-        this.props.sortPhotos(
+        this.props.fetchPhotos(
           this.props.nextPage,
           30,
           "tag.0.confidence",
@@ -145,7 +145,7 @@ class AllPhotos extends Component<any, any> {
         );
         break;
       case "Lowest Confidence to Highest Confidence":
-        this.props.sortPhotos(
+        this.props.fetchPhotos(
           this.props.nextPage,
           30,
           "tag.0.confidence",
@@ -153,13 +153,13 @@ class AllPhotos extends Component<any, any> {
         );
         break;
       case "Tag A-Z":
-        this.props.sortPhotos(this.props.nextPage, 30, "tag.0.label", "asc");
+        this.props.fetchPhotos(this.props.nextPage, 30, "tag.0.label", "asc");
         break;
       case "Tag Z-A":
-        this.props.sortPhotos(this.props.nextPage, 30, "tag.0.label", "desc");
+        this.props.fetchPhotos(this.props.nextPage, 30, "tag.0.label", "desc");
         break;
       default:
-        this.props.sortPhotos(this.props.nextPage, 30, "dateAdded", "desc");
+        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "desc");
     }
     this.setState({ pageNum: this.props.nextPage });
     history.push(`/photos/${this.props.nextPage}`);
@@ -169,9 +169,9 @@ class AllPhotos extends Component<any, any> {
     const filterString = `${value}`;
     this.setState({ filterString });
     if (!filterString) {
-      this.props.sortPhotos(this.state.pageNum);
+      this.props.fetchPhotos(this.state.pageNum);
     } else {
-      this.props.sortPhotos(
+      this.props.fetchPhotos(
         1,
         (this.state.limit = 30),
         (this.state.field = "dateAdded"),
@@ -193,7 +193,7 @@ class AllPhotos extends Component<any, any> {
 
   sortBy(pageNum, limit = 30, field, order, tags = "", option) {
     this.setState({ field, order, tags, limit, option });
-    this.props.sortPhotos(pageNum, limit, field, order, tags);
+    this.props.fetchPhotos(pageNum, limit, field, order, tags);
   }
 
   render() {

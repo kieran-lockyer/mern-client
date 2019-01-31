@@ -23,7 +23,11 @@ export default class App extends Component {
               render={() => <Redirect from="/photos" exact to="/photos/1" />}
             />
             <Route path="/photos/:page" exact component={Photos} />
-            <Redirect from="/tags" exact push to="/tags/1" />
+            <Route
+              path="/tags"
+              exact
+              render={() => <Redirect from="/tags" exact to="/tags/1" />}
+            />
             <Route path="/tags/:page" exact component={Tags} />
             <Route path="/tag/:tagname" exact component={TagSingle} />
             <Route component={NotFound} />
