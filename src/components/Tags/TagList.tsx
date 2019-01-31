@@ -47,10 +47,7 @@ class AllTags extends Component<any, any> {
         return (
           <tr key={id}>
             <td className="tag-label">
-              <Link
-                to={`/tag/${tags.label}`}
-                style={{ textDecoration: "none" }}
-              >
+              <Link to={`/tag/${tags._id}`} style={{ textDecoration: "none" }}>
                 <Tag
                   large
                   interactive

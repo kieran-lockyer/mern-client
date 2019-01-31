@@ -29,8 +29,8 @@ export const fetchPhotos = (
   dispatch({ type: "SORT_PHOTOS", payload: response.data });
 };
 
-// Fetch images attached to specific tag
-export const fetchTagPhotos = tag => async dispatch => {
-  const response = await api.get(`/tags/images/${tag}`);
+// Fetch single image from tag id
+export const fetchTagPhotos = tagId => async dispatch => {
+  const response = await api.get(`/tags/images/single/${tagId}`);
   dispatch({ type: type.FETCH_TAG_IMAGES, payload: response.data });
 };

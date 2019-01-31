@@ -9,6 +9,7 @@ import Moment from "moment";
 class TagSingle extends React.Component<any, any> {
   componentDidMount() {
     this.props.fetchTagPhotos(this.props.match.params.tagname);
+    console.log(this.props);
   }
 
   renderImages() {
