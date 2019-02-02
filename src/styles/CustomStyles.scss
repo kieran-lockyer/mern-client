@@ -327,3 +327,36 @@ $gl-sm : "screen and (max-width: 48em)"; // max 768px
     }
   }
 }
+
+.tag-sw {
+  display: block;
+
+
+  &>.tile {
+    margin-right: 2rem;
+    width: 100% !important;
+  }
+
+  .tag-single-details {
+    margin-left: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+.tag-block {
+  display: grid;
+  grid-template-columns: 30vw 1fr;
+  grid-template-rows: 20vw;
+  grid-gap: 1.5rem;
+  margin: 2rem;
+}
+
+.tag-img {
+  grid-column: 1 / 2;
+  grid-row: 1 / -1;
+}
+
+.tag-details {
+  grid-column: 2 / -1;
+  grid-row: 1 / -1;
+}
