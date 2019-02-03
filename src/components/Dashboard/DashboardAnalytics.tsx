@@ -1,19 +1,32 @@
 import React from "react";
 import AnalyticsCard from "./AnalyticsCard";
-import { Stats } from "../../styles/AppStyles";
 import StatsItem from "./StatsItem";
-import { DashboardAnalytics } from "../../styles/AppStyles";
-import { applyMiddleware } from "redux";
+import styled from "styled-components";
 
-export default () => {
+export default props => {
+  const { popTags, trendingTags } = props;
   return (
-    <DashboardAnalytics>
-      <AnalyticsCard title="Most Popular Tags" />
-      <AnalyticsCard title="Trending Tags" />
+    <Container>
+      <AnalyticsCard
+        popular={popTags}
+        trending={trendingTags}
+        title="Most Popular Tags"
+      />
+      <AnalyticsCard
+        popular={popTags}
+        trending={trendingTags}
+        title="Trending Tags"
+      />
       <div className="avg-stats">
         <StatsItem name="Average Photos Per Day" statsIcon="media" />
         <StatsItem name="Average Tags Per Day" statsIcon="tag" />
       </div>
-    </DashboardAnalytics>
+    </Container>
   );
 };
+
+const Container = styled.section`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;

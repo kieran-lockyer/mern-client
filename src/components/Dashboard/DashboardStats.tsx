@@ -1,30 +1,26 @@
-import React, { PureComponent } from "react";
-import { Stats } from "../../styles/AppStyles";
+import React from "react";
 import StatsItem from "./StatsItem";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import styled from "styled-components";
 
-class DashboardStats extends PureComponent<any, any> {
-  componentDidMount() {
-    this.props.fetchPhotos(1);
-    this.props.fetchTags(1);
-  }
-  render() {
-    return (
-      <Stats>
-        <StatsItem mainIcon="media" value={this.props.numPhotos} />
-        <StatsItem mainIcon="tag" value={this.props.numTags} />
-      </Stats>
-    );
-  }
-}
+const DashboardStats = props => (
+  <Stats>
+    <StatsItem mainIcon="media" value={props.totalPhotos} />
+    <StatsItem mainIcon="tag" value={props.totalTags} />
+  </Stats>
+);
+
+const Stats = styled.div`
+  flex-grow: 1;
+  margin-left: 2rem;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+`;
 
 const mapStateToProps = state => ({
-  numPhotos: state.photos.data.totalDocs,
-  numTags: state.tags.data.totalDocs
+  totalPhotos: state.photos.totalDocs,
+  totalTags: state.tags.totalDocs
 });
 
-export default connect(
-  mapStateToProps,
-  actions
-)(DashboardStats);
+export default connect(mapStateToProps)(DashboardStats);

@@ -7,9 +7,7 @@ import AppRouter from "./routes/AppRouter";
 import thunk from "redux-thunk";
 
 // Styles
-import "normalize.css/normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/table/lib/css/table.css";
 import "./styles/CustomStyles.scss";
 
 // Redux Config

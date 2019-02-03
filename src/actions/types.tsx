@@ -1,5 +1,0 @@
-export const FETCH_TAGS = "FETCH_TAGS";
-export const FILTER_PHOTOS = "FILTER_PHOTOS";
-export const FETCH_TAG_IMAGES = "FETCH_TAG_IMAGES";
-export const FETCH_PHOTOS = "FETCH_PHOTOS";
-export const FETCH_GRAPH_STATS = "FETCH_GRAPH_STATS";

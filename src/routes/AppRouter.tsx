@@ -7,13 +7,13 @@ import TagSingle from "../components/Tags/TagSingle";
 import NotFound from "../components/NotFound";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import history from "../history";
-import { AppContainer } from "../styles/AppStyles";
+import styled from "styled-components";
 
 export default class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <AppContainer>
+        <Container>
           <Sidebar />
           <Switch>
             <Route path="/" exact component={Dashboard} />
@@ -32,8 +32,15 @@ export default class App extends Component {
             <Route path="/tag/:tagname" exact component={TagSingle} />
             <Route component={NotFound} />
           </Switch>
-        </AppContainer>
+        </Container>
       </Router>
     );
   }
 }
+
+const Container = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  background: #eee;
+`;

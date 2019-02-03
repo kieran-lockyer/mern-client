@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import Gallery from "react-grid-gallery";
-import { tagStyles } from "../../styles/AppStyles";
 import baseUrl from "../../api/baseurl";
 import { Colors, Tag } from "@blueprintjs/core";
 import history from "../../history";
@@ -43,6 +42,13 @@ const getGalleryPhotos = imagesArr => {
   return <Gallery images={images} backdropClosesModal tagStyle={tagStyles} />;
 };
 
-const PhotoGrid = props => getGalleryPhotos(props.photos);
+const tagStyles = {
+  background: "#1d928b",
+  color: "#fff",
+  padding: " 2px 5px",
+  fontSize: "12px",
+  borderRadius: "5px",
+  marginRight: "3px"
+};
 
-export default PhotoGrid;
+export default props => getGalleryPhotos(props.photos);

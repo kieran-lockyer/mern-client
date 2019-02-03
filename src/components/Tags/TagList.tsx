@@ -1,25 +1,26 @@
 import React, { Component } from "react";
+import * as actions from "../../actions";
+import history from "../../history";
+import TagSort from "./TagSort";
+
+// 3rd Party Packages
 import {
   Popover,
   Position,
-  Menu,
-  MenuItem,
   Tag,
-  Icon,
   TagInput,
   Button,
-  Intent,
-  HTMLTable
+  Intent
 } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
-import * as Tags from "../../styles/AppStyles";
 import Moment from "react-moment";
-import history from "../../history";
+import styled from "styled-components";
+import { Cube } from "react-preloaders";
 
 class AllTags extends Component<any, any> {
   state = {
+    isLoading: true,
     pageNum: parseInt(this.props.match.params.page),
     tagInput: [],
     limit: 30,
@@ -29,7 +30,14 @@ class AllTags extends Component<any, any> {
   };
 
   componentDidMount() {
-    this.props.fetchTags(1);
+    this.props
+      .fetchTags(1)
+      .then(() =>
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 1000)
+      )
+      .catch(() => this.setState({ isLoading: false }));
   }
 
   componentDidUpdate() {
@@ -41,55 +49,35 @@ class AllTags extends Component<any, any> {
     }
   }
 
-  renderTags() {
+  // Single row within the table
+  tagRow() {
     if (this.props.tags) {
       return this.props.tags.map((tags, id) => {
         return (
-          <tr key={id}>
-            <td className="tag-label">
+          <GridRow key={id}>
+            <GridLabel>
               <Link to={`/tag/${tags._id}`} style={{ textDecoration: "none" }}>
-                <Tag
-                  large
-                  interactive
-                  style={{ background: "#2fa7a2", color: "white" }}
-                >
+                <Label large interactive>
                   {tags.label}
-                </Tag>
+                </Label>
               </Link>
-            </td>
-            <td className="tag-date">
+            </GridLabel>
+            <span>
               <Moment format="D MMM YYYY">{tags.dateAdded}</Moment>
-            </td>
-            <td className="tag-imageid">{tags.source.type}</td>
-            <td>{(tags.confidence * 100).toFixed(2)}</td>
-          </tr>
+            </span>
+            <span>{tags.source.type}</span>
+            <span>{(tags.confidence * 100).toFixed(2)}</span>
+          </GridRow>
         );
       });
     }
   }
 
-  renderTableView() {
-    if (this.props.tags) {
-      return (
-        <HTMLTable condensed striped style={{ overflowX: "auto" }}>
-          <thead>
-            <tr>
-              <th className="tag-label">Label</th>
-              <th className="tag-date">Date</th>
-              <th className="tag-type">Type</th>
-              <th className="tag-confidence">Confidence</th>
-            </tr>
-          </thead>
-          <tbody>{this.renderTags()}</tbody>
-        </HTMLTable>
-      );
-    }
-  }
-
+  // Filter tags by tag input
   filterTags = value => {
-    const filterString = `${value}`;
-    this.setState({ filterString });
-    if (!filterString) {
+    const filterByString = `${value}`;
+    this.setState({ filterByString });
+    if (!filterByString) {
       this.props.fetchTags(this.state.pageNum);
     } else {
       this.props.fetchTags(
@@ -97,40 +85,20 @@ class AllTags extends Component<any, any> {
         (this.state.limit = 30),
         (this.state.field = "dateAdded"),
         (this.state.order = "asc"),
-        filterString
+        filterByString
       );
     }
     this.setState({ tagInput: value });
   };
 
-  renderPagination() {
-    return (
-      <Tags.Pagination>
-        <Button
-          icon="arrow-left"
-          text="Back"
-          intent={Intent.PRIMARY}
-          disabled={!this.props.hasPrevPage}
-          onClick={this.prevPage}
-        />
-
-        <Button
-          rightIcon="arrow-right"
-          intent={Intent.PRIMARY}
-          text="Next"
-          disabled={!this.props.hasNextPage}
-          onClick={this.nextPage}
-        />
-      </Tags.Pagination>
-    );
-  }
-
+  // Back button
   prevPage = () => {
     this.setState({ pageNum: this.props.prevPage });
     history.push(`/tags/${this.props.prevPage}`);
     this.props.fetchTags(this.props.prevPage);
   };
 
+  // Next button
   nextPage = () => {
     switch (this.state.option) {
       case "Newest to Oldest":
@@ -158,159 +126,196 @@ class AllTags extends Component<any, any> {
     history.push(`/tags/${this.props.nextPage}`);
   };
 
-  sortBy(pageNum, limit = 30, field, order, tags = "", option) {
-    this.setState({ field, order, tags, limit, option });
-    this.props.fetchTags(pageNum, limit, field, order, tags);
-  }
-
   render() {
-    const filterMenu = (
-      <Menu>
-        <MenuItem
-          icon="sort-desc"
-          text="Newest to Oldest"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "dateAdded",
-              "desc",
-              this.state.tagInput.join(","),
-              "Newest to Oldest"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-asc"
-          text="Oldest to Newest"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "dateAdded",
-              "asc",
-              this.state.tagInput.join(","),
-              "Oldest to Newest"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-numerical-desc"
-          text="Highest Confidence to Lowest Confidence"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "confidence",
-              "desc",
-              this.state.tagInput.join(","),
-              "Highest Confidence to Lowest Confidence"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-numerical"
-          text="Lowest Confidence to Highest Confidence"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "confidence",
-              "asc",
-              this.state.tagInput.join(","),
-              "Lowest Confidence to Highest Confidence"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-alphabetical"
-          text="Tag A-Z"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "label",
-              "asc",
-              this.state.tagInput.join(","),
-              "Tag A-Z"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-alphabetical-desc"
-          text="Tag Z-A"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "label",
-              "desc",
-              this.state.tagInput.join(","),
-              "Tag Z-A"
-            )
-          }
-        />
-      </Menu>
-    );
+    const { tags, hasNextPage, hasPrevPage } = this.props;
+    const { tagInput, isLoading } = this.state;
 
-    return (
-      <Tags.Container>
-        <Tags.Wrapper>
-          <Tags.Header>
-            <Tags.SearchForm>
-              <TagInput
-                values={this.state.tagInput}
-                onChange={value => this.filterTags(value)}
-                addOnBlur
-                className="search-tags"
-                fill
-                large
-                leftIcon="tag"
-                placeholder="Filter by tags"
+    if (!isLoading && tags) {
+      return (
+        <Container>
+          <Wrapper>
+            <Header>
+              <SearchForm>
+                <SearchInput
+                  values={tagInput}
+                  onChange={value => this.filterTags(value)}
+                  addOnBlur
+                  fill
+                  large
+                  leftIcon="tag"
+                  placeholder="Filter by tags"
+                />
+              </SearchForm>
+              <Popover
+                content={<TagSort tagInput={tagInput} />}
+                position={Position.BOTTOM}
+              >
+                <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
+              </Popover>
+            </Header>
+
+            <Table>
+              <GridHeader>
+                <span>Label</span>
+                <span>Date</span>
+                <span>Type</span>
+                <span>Confidence</span>
+              </GridHeader>
+              <GridBody>{this.tagRow()}</GridBody>
+            </Table>
+
+            <Pagination>
+              <Button
+                icon="arrow-left"
+                intent={Intent.PRIMARY}
+                text="Back"
+                disabled={!hasPrevPage || tagInput[0]}
+                onClick={this.prevPage}
               />
-            </Tags.SearchForm>
-            <Popover content={filterMenu} position={Position.BOTTOM}>
-              <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
-            </Popover>
-          </Tags.Header>
-          {this.renderTableView()}
-          <Tags.Pagination>
-            {!this.state.tagInput[0] &&
-              this.props.match.params.page <= this.props.totalPages && (
-                <>
-                  <Button
-                    icon="arrow-left"
-                    intent={Intent.PRIMARY}
-                    text="Back"
-                    disabled={!this.props.hasPrevPage}
-                    onClick={this.prevPage}
-                  />
 
-                  <Button
-                    rightIcon="arrow-right"
-                    intent={Intent.PRIMARY}
-                    className="btn-next"
-                    text="Next"
-                    disabled={!this.props.hasNextPage}
-                    onClick={this.nextPage}
-                  />
-                </>
-              )}
-          </Tags.Pagination>
-        </Tags.Wrapper>
-      </Tags.Container>
-    );
+              <Button
+                rightIcon="arrow-right"
+                intent={Intent.PRIMARY}
+                className="btn-next"
+                text="Next"
+                disabled={!hasNextPage || tagInput[0]}
+                onClick={this.nextPage}
+              />
+            </Pagination>
+          </Wrapper>
+        </Container>
+      );
+    } else if (this.state.isLoading) {
+      return (
+        <Container>
+          <Cube color={"#48c0b9"} bgColor={"transparent"} />
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <h2>This page doesn't exist!</h2>
+        </Container>
+      );
+    }
   }
 }
 
+// Styled Components
+const Table = styled.div`
+  display: block;
+  font-size: 14px;
+`;
+
+const GridRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr repeat(3, minmax(max-content, 150px));
+  justify-items: center;
+  align-items: center;
+  padding: 10px 0;
+
+  &:nth-child(2n) {
+    background: #f6f8fa;
+  }
+
+  @media only screen and (max-width: 1049px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const GridLabel = styled.div`
+  justify-self: flex-start;
+  margin-left: 1vw;
+`;
+
+const GridHeader = styled.div`
+  display: grid;
+  grid-template-columns: 1fr repeat(3, minmax(max-content, 150px));
+  justify-items: center;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding: 5px 0;
+  font-size: 14px;
+  @media only screen and (max-width: 1049px) {
+    display: none;
+  }
+`;
+
+const GridBody = styled.div`
+  margin-bottom: 10px;
+`;
+
+const Container = styled.div`
+  flex: 1 1 100%;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Label = styled(Tag)`
+  background: #2fa7a2 !important;
+  color: white;
+  text-decoration: none !important;
+`;
+
+const Wrapper = styled.div`
+  width: 85%;
+  background: #fff;
+  max-width: 1300px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  justify-content: space-between;
+  background: #172336;
+  padding: 1rem 2rem;
+`;
+
+const SearchInput = styled(TagInput)`
+  box-shadow: none !important;
+  width: 65% !important;
+  margin: 0 auto;
+  background: #172336;
+  border: 2px solid #919498;
+  border-radius: 100px;
+  transition: all 0.3s;
+  & .bp3-tag {
+    background: #2fa7a2 !important;
+    color: white;
+    text-decoration: none !important;
+  }
+`;
+
+const SearchForm = styled.div`
+  flex: 1 1;
+  margin-right: 1rem;
+  transition: all 0.3s;
+
+  & .bp3-input.bp3-active {
+    width: 75% !important;
+  }
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  background: #172336;
+`;
+
+// react-redux
 const mapStateToProps = state => ({
-  tags: state.tags.data.docs,
-  page: state.tags.data.page,
-  nextPage: state.tags.data.nextPage,
-  prevPage: state.tags.data.prevPage,
-  hasPrevPage: state.tags.data.hasPrevPage,
-  hasNextPage: state.tags.data.hasNextPage,
-  totalPages: state.tags.data.totalPages
+  tags: state.tags.docs,
+  page: state.tags.page,
+  nextPage: state.tags.nextPage,
+  prevPage: state.tags.prevPage,
+  hasPrevPage: state.tags.hasPrevPage,
+  hasNextPage: state.tags.hasNextPage,
+  totalPages: state.tags.totalPages
 });
 
 export default connect(

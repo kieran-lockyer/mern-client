@@ -1,13 +1,21 @@
 import React from "react";
-import * as Errors from "../styles/AppStyles";
+import styled from "styled-components";
 
 const Error = () => {
   return (
-    <Errors.Container>
+    <Container>
       <h1>Error 404</h1>
       <p>The page you are looking for could not be found.</p>
-    </Errors.Container>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  flex: 1 1 100%;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default Error;

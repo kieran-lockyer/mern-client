@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StatsItem as Stats } from "../../styles/AppStyles";
+import styled from "styled-components";
 import api from "../../api/index";
 import { Icon } from "@blueprintjs/core";
 
@@ -13,7 +13,6 @@ export default class StatsItem extends Component<any, any> {
   };
 
   componentDidMount() {
-    console.log(this.props.name);
     switch (this.props.name) {
       case "Average Tags Per Day":
         api
@@ -42,16 +41,12 @@ export default class StatsItem extends Component<any, any> {
           title: this.props.name,
           photos: this.props.value
         });
-        console.log("Photos");
-        console.log(this.state);
         break;
       case "Tags":
         this.setState({
           title: this.props.name,
           tags: this.props.value
         });
-        console.log("Tags");
-        console.log(this.state);
         break;
     }
   }
@@ -89,3 +84,41 @@ export default class StatsItem extends Component<any, any> {
     }
   }
 }
+
+const Stats = styled.div`
+  padding: 2rem;
+  background: #fff;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 10px;
+  flex-direction: column;
+  color: #fff;
+  background: linear-gradient(to right bottom, #223f67, #192b44);
+  & h2 {
+    font-size: 30px;
+  }
+
+  & > span {
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: inherit;
+    font-size: 14px;
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+    color: #51c7c1;
+    &:last-child {
+      background: #0000004f;
+    }
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 0.9rem;
+  }
+`;

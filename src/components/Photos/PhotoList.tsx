@@ -1,25 +1,25 @@
 import React, { Component } from "react";
+import * as actions from "../../actions";
+import baseUrl from "../../api/baseurl";
+import history from "../../history";
+import PhotoGrid from "./PhotoGrid";
+import PhotoTags from "./PhotoTags";
+import PhotoSort from "./PhotoSort";
+
+// 3rd party packages
 import {
   TagInput,
-  Tag,
   Button,
   Popover,
-  Menu,
-  MenuItem,
   Position,
-  HTMLTable,
   Intent,
   Icon,
   Colors
 } from "@blueprintjs/core";
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import * as actions from "../../actions";
-import * as Photos from "../../styles/AppStyles";
-import baseUrl from "../../api/baseurl";
-import history from "../../history";
-import PhotoGrid from "./PhotoGrid";
-import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { Cube } from "react-preloaders";
 
 class AllPhotos extends Component<any, any> {
   state = {
@@ -27,24 +27,32 @@ class AllPhotos extends Component<any, any> {
     limit: 30,
     field: "",
     order: "",
-    tags: "",
     filterString: "",
-    tag: "",
     option: "",
     tagInput: [],
+    tag: "",
+    tags: "",
     layoutType: "list",
-    isActive: Colors.GRAY3
+    isActive: Colors.GRAY3,
+    isLoading: true
   };
 
   componentDidMount() {
-    this.props.fetchPhotos(this.state.pageNum);
+    this.props
+      .fetchPhotos(this.state.pageNum)
+      .then(() =>
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 1000)
+      )
+      .catch(() => this.setState({ isLoading: false }));
   }
 
   componentDidUpdate() {
     if (
-      (this.state.pageNum === this.props.nextPage ||
-        this.state.pageNum === this.props.prevPage) &&
-      this.state.tagInput.length === 0
+      this.state.pageNum === this.props.nextPage ||
+      (this.state.pageNum === this.props.prevPage &&
+        this.state.tagInput.length === 0)
     ) {
       this.props.fetchPhotos(
         this.state.pageNum,
@@ -56,78 +64,37 @@ class AllPhotos extends Component<any, any> {
     }
   }
 
-  renderTags(tags) {
-    return tags.map((tag, id) => {
-      return (
-        <span key={id}>
-          <Tag
-            color={Colors.TURQUOISE3}
-            round
-            style={{ marginRight: "5px", background: "#48bfb9" }}
-            interactive
-            onClick={() =>
-              history.push(
-                `/tag/${tag.label
-                  .split(",")
-                  .map(t => t)
-                  .join(",")}`
-              )
-            }
-          >
-            {tag.label.split(",")[0]}
-          </Tag>
-        </span>
-      );
-    });
-  }
-
-  renderPhotosList() {
+  photoRow() {
     if (this.props.photos) {
       return this.props.photos.map((photo, id) => {
         return (
-          <tr key={id}>
-            <td className="tag-image">
+          <GridRow key={id}>
+            <span>
               <img
                 src={baseUrl + "/photos/image/" + photo._id}
                 alt=""
-                className="photo-list-img"
+                style={photoListImg}
               />
-            </td>
-            <td className="tag-name">{photo._id}</td>
-            <td className="tag-date">
+            </span>
+            <span>{photo._id}</span>
+            <span>
               <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
-            </td>
-            <td className="tag-group">{this.renderTags(photo.tags)}</td>
-          </tr>
+            </span>
+            <GridLabel>{<PhotoTags tags={photo.tags} />}</GridLabel>
+          </GridRow>
         );
       });
     }
   }
 
-  renderTableView() {
-    if (this.props.photos) {
-      return (
-        <HTMLTable condensed striped style={{ overflowX: "auto" }}>
-          <thead>
-            <tr>
-              <th className="tag-image">Image</th>
-              <th className="tag-name">ID</th>
-              <th className="tag-date">Date</th>
-              <th className="tag-group">Tags</th>
-            </tr>
-          </thead>
-          <tbody>{this.renderPhotosList()}</tbody>
-        </HTMLTable>
-      );
-    }
-  }
-
+  // Back button
   prevPage = () => {
     this.setState({ pageNum: this.props.prevPage });
     history.push(`/photos/${this.props.prevPage}`);
     this.props.fetchPhotos(this.props.prevPage);
   };
 
+  // Next button
   nextPage = () => {
     switch (this.state.option) {
       case "Newest to Oldest":
@@ -165,6 +132,7 @@ class AllPhotos extends Component<any, any> {
     history.push(`/photos/${this.props.nextPage}`);
   };
 
+  // Filter photos by tag input
   filterPhotos = value => {
     const filterString = `${value}`;
     this.setState({ filterString });
@@ -183,7 +151,7 @@ class AllPhotos extends Component<any, any> {
   };
 
   // Changes the layout from list to grid
-  handleGridSelection = () => {
+  handleLayout = () => {
     if (this.state.layoutType === "list") {
       this.setState({ layoutType: "grid", isActive: Colors.TURQUOISE3 });
     } else {
@@ -191,200 +159,206 @@ class AllPhotos extends Component<any, any> {
     }
   };
 
-  sortBy(pageNum, limit = 30, field, order, tags = "", option) {
-    this.setState({ field, order, tags, limit, option });
-    this.props.fetchPhotos(pageNum, limit, field, order, tags);
-  }
-
   render() {
-    if (this.props.match.params.page > this.props.totalPages) {
+    const { isActive, tagInput, layoutType, isLoading } = this.state;
+    const { photos, hasPrevPage, hasNextPage } = this.props;
+    if (!isLoading && photos) {
       return (
-        <Photos.Container
-          style={{
-            margin: "10rem auto",
-            textAlign: "center"
-          }}
-        >
-          <h2>This page number doesn't exist!</h2>
-          <Button intent={Intent.PRIMARY}>
-            <Link style={{ color: "white" }} to="/photos">
-              Go Back
-            </Link>
-          </Button>
-        </Photos.Container>
+        <Container>
+          <Wrapper>
+            <Header>
+              <Icon
+                icon="grid-view"
+                color={isActive}
+                style={{ marginRight: "1rem", cursor: "pointer" }}
+                onClick={this.handleLayout}
+                iconSize={25}
+              />
+              <SearchForm>
+                <SearchInput
+                  values={tagInput}
+                  onChange={value => this.filterPhotos(value)}
+                  addOnBlur
+                  fill
+                  large
+                  leftIcon="tag"
+                  placeholder="Filter by tags"
+                />
+              </SearchForm>
+              <Popover
+                content={<PhotoSort tagInput={tagInput} />}
+                position={Position.BOTTOM}
+              >
+                <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
+              </Popover>
+            </Header>
+
+            <div>
+              {layoutType === "list" && (
+                <Table>
+                  <GridHeader>
+                    <span>Image</span>
+                    <span>ID</span>
+                    <span>Date</span>
+                    <span>Tags</span>
+                  </GridHeader>
+                  <GridBody>{this.photoRow()}</GridBody>
+                </Table>
+              )}
+              {layoutType === "grid" && <PhotoGrid photos={photos} />}
+            </div>
+
+            <Pagination>
+              <Button
+                icon="arrow-left"
+                intent={Intent.PRIMARY}
+                text="Back"
+                disabled={!hasPrevPage || tagInput[0]}
+                onClick={this.prevPage}
+              />
+
+              <Button
+                rightIcon="arrow-right"
+                intent={Intent.PRIMARY}
+                className="btn-next"
+                text="Next"
+                disabled={!hasNextPage || tagInput[0]}
+                onClick={this.nextPage}
+              />
+            </Pagination>
+          </Wrapper>
+        </Container>
+      );
+    } else if (isLoading) {
+      return (
+        <Container>
+          <Cube color={"#48c0b9"} bgColor={"transparent"} />
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <h2>This page doesn't exist!</h2>
+        </Container>
       );
     }
-
-    const filterMenu = (
-      <Menu>
-        <MenuItem
-          icon="sort-desc"
-          text="Newest to Oldest"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "dateAdded",
-              "desc",
-              this.state.tagInput.join(","),
-              "Newest to Oldest"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-asc"
-          text="Oldest to Newest"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "dateAdded",
-              "asc",
-              this.state.tagInput.join(","),
-              "Oldest to Newest"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-numerical-desc"
-          text="Highest Confidence to Lowest Confidence"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "tags.0.confidence",
-              "desc",
-              this.state.tagInput.join(","),
-              "Highest Confidence to Lowest Confidence"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-numerical"
-          text="Lowest Confidence to Highest Confidence"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "tags.0.confidence",
-              "asc",
-              this.state.tagInput.join(","),
-              "Lowest Confidence to Highest Confidence"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-alphabetical"
-          text="Tag A-Z"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "tags.0.label",
-              "asc",
-              this.state.tagInput.join(","),
-              "Tag A-Z"
-            )
-          }
-        />
-        <MenuItem
-          icon="sort-alphabetical-desc"
-          text="Tag Z-A"
-          onClick={() =>
-            this.sortBy(
-              1,
-              30,
-              "tags.0.label",
-              "desc",
-              this.state.tagInput.join(","),
-              "Tag Z-A"
-            )
-          }
-        />
-      </Menu>
-    );
-
-    return (
-      <Photos.Container>
-        <Photos.Wrapper>
-          <Photos.Header>
-            <Icon
-              icon="grid-view"
-              color={this.state.isActive}
-              style={{ marginRight: "1rem", cursor: "pointer" }}
-              onClick={this.handleGridSelection}
-              iconSize={25}
-            />
-            <Photos.SearchForm>
-              <TagInput
-                values={this.state.tagInput}
-                onChange={value => this.filterPhotos(value)}
-                className="search-tags"
-                addOnBlur
-                fill
-                large
-                leftIcon="tag"
-                placeholder="Filter by tags"
-              />
-            </Photos.SearchForm>
-            <Popover content={filterMenu} position={Position.BOTTOM}>
-              <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
-            </Popover>
-          </Photos.Header>
-
-          <div>
-            {this.state.layoutType === "list" && this.renderTableView()}
-            {this.state.layoutType === "grid" && (
-              <PhotoGrid photos={this.props.photos} />
-            )}
-            {this.props.match.params.page > this.props.totalPages && (
-              <div
-                style={{
-                  margin: "10rem auto",
-                  textAlign: "center"
-                }}
-              >
-                <h2>This page number doesn't exist!</h2>
-              </div>
-            )}
-          </div>
-          <Photos.Pagination>
-            {!this.state.tagInput[0] &&
-              this.props.match.params.page <= this.props.totalPages && (
-                <>
-                  <Button
-                    icon="arrow-left"
-                    intent={Intent.PRIMARY}
-                    text="Back"
-                    disabled={!this.props.hasPrevPage}
-                    onClick={this.prevPage}
-                  />
-
-                  <Button
-                    rightIcon="arrow-right"
-                    intent={Intent.PRIMARY}
-                    className="btn-next"
-                    text="Next"
-                    disabled={!this.props.hasNextPage}
-                    onClick={this.nextPage}
-                  />
-                </>
-              )}
-          </Photos.Pagination>
-        </Photos.Wrapper>
-      </Photos.Container>
-    );
   }
 }
 
+// Styled Components
+const Table = styled.div`
+  display: block;
+  font-size: 14px;
+`;
+
+const GridRow = styled.div`
+  display: grid;
+  grid-template-columns: 100px repeat(3, minmax(max-content, 1fr));
+  justify-items: center;
+  align-items: center;
+  padding: 10px 0;
+
+  &:nth-child(2n) {
+    background: #f6f8fa;
+  }
+
+  @media only screen and (max-width: 1049px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const GridLabel = styled.div`
+  justify-self: flex-end;
+  margin-right: 1vw;
+`;
+
+const GridHeader = styled.div`
+  display: grid;
+  grid-template-columns: 100px repeat(3, minmax(max-content, 1fr));
+  justify-items: center;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding: 5px 0;
+  font-size: 14px;
+  @media only screen and (max-width: 1049px) {
+    display: none;
+  }
+`;
+
+const GridBody = styled.div`
+  margin-bottom: 10px;
+`;
+
+const Container = styled.div`
+  flex: 1 1 100%;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Wrapper = styled.div`
+  width: 85%;
+  background: #fff;
+  max-width: 1300px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  justify-content: space-between;
+  background: #172336;
+  padding: 1rem 2rem;
+`;
+
+const SearchInput = styled(TagInput)`
+  box-shadow: none !important;
+  width: 65% !important;
+  margin: 0 auto;
+  background: #172336;
+  border: 2px solid #919498;
+  border-radius: 100px;
+  transition: all 0.3s;
+  & .bp3-tag {
+    background: #2fa7a2 !important;
+    color: white;
+    text-decoration: none !important;
+  }
+`;
+
+const SearchForm = styled.div`
+  flex: 1 1;
+  margin-right: 1rem;
+  transition: all 0.3s;
+
+  & .bp3-input.bp3-active {
+    width: 75% !important;
+  }
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  background: #172336;
+`;
+
+const photoListImg = {
+  height: "50px",
+  width: "50px",
+  borderRadius: "50%"
+};
+
 const mapStateToProps = state => ({
-  photos: state.photos.data.docs,
-  page: state.photos.data.page,
-  nextPage: state.photos.data.nextPage,
-  prevPage: state.photos.data.prevPage,
-  hasPrevPage: state.photos.data.hasPrevPage,
-  hasNextPage: state.photos.data.hasNextPage,
-  totalPages: state.photos.data.totalPages
+  photos: state.photos.docs,
+  page: state.photos.page,
+  nextPage: state.photos.nextPage,
+  prevPage: state.photos.prevPage,
+  hasPrevPage: state.photos.hasPrevPage,
+  hasNextPage: state.photos.hasNextPage,
+  totalPages: state.photos.totalPages
 });
 
 export default connect(

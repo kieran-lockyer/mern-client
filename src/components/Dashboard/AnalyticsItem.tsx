@@ -1,55 +1,6 @@
 import React from "react";
-import {
-  Icon,
-  Colors,
-  Popover,
-  Button,
-  PopoverInteractionKind
-} from "@blueprintjs/core";
-
-import {
-  CardItem,
-  CardLeft,
-  CardRight,
-  CardDetails,
-  CardTitle,
-  CardCount
-} from "../../styles/AppStyles";
-
-function popoverContent() {
-  return (
-    <div>
-      <Button
-        style={{ background: "red", color: "white", fontWeight: "bold" }}
-        className="bp3-button bp3-popover-dismiss"
-      >
-        <Icon icon="trash" color={Colors.WHITE} iconSize={20} />
-      </Button>
-      <Button
-        style={{
-          background: "lightseagreen",
-          color: "white",
-          fontWeight: "bold",
-          marginLeft: "5px"
-        }}
-        className="bp3-button bp3-popover-dismiss"
-      >
-        <Icon icon="flag" color={Colors.WHITE} iconSize={20} />
-      </Button>
-      <Button
-        style={{
-          background: "cornflowerblue",
-          color: "white",
-          fontWeight: "bold",
-          marginLeft: "5px"
-        }}
-        className="bp3-button bp3-popover-dismiss"
-      >
-        <Icon icon="edit" color={Colors.WHITE} iconSize={20} />
-      </Button>
-    </div>
-  );
-}
+import { Icon, Colors } from "@blueprintjs/core";
+import styled from "styled-components";
 
 export default ({ tag, count }) => {
   return (
@@ -61,15 +12,40 @@ export default ({ tag, count }) => {
         <CardTitle>{tag}</CardTitle>
         <CardCount>{count}</CardCount>
       </CardDetails>
-      <CardRight>
-        <Popover
-          popoverClassName="bp3-popover-content-sizing bp3-dark"
-          interactionKind={PopoverInteractionKind.HOVER}
-          content={popoverContent()}
-        >
-          <Icon icon="more" iconSize={24} />
-        </Popover>
-      </CardRight>
     </CardItem>
   );
 };
+
+const CardItem = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 5rem;
+  padding: 0 1rem;
+
+  &:last-child {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+  }
+
+  &:hover {
+    background: #f9f9f9;
+  }
+`;
+
+const CardLeft = styled.div`
+  margin-right: 1rem;
+`;
+
+const CardDetails = styled.div`
+  margin-right: auto;
+`;
+
+const CardTitle = styled.h3`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const CardCount = styled.p`
+  font-size: 0.875rem;
+  color: #ccc;
+`;

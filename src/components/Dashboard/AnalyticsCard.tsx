@@ -1,43 +1,25 @@
 import React, { Component } from "react";
 import AnalyticsItem from "./AnalyticsItem";
-import { Card, CardHeading } from "../../styles/AppStyles";
-import api from '../../api/index'
+import styled from "styled-components";
 
 export default class AnalyticsCard extends Component<any, any> {
-  state = {
-    poptags: [],
-    trendingtags: [],
-  }
-
-  componentDidMount() {
-    api.get('/tags/stats/get/poptags').then(res => {
-      this.setState({
-        poptags: res.data
-      })
-    })
-
-    api.get('/tags/stats/get/trendingtags').then(res => {
-      this.setState({
-        trendingtags: res.data
-      })
-    })
-  }
-
   renderPopTags = () => {
-    return this.state.poptags.map(item => {
+    return this.props.popular.map(item => {
       return <AnalyticsItem tag={item._id} count={item.count} key={item._id} />;
-    })
-  }
+    });
+  };
 
   renderTrendingTags = () => {
-    return this.state.trendingtags.map(item => {
+    return this.props.trending.map(item => {
       return <AnalyticsItem tag={item._id} count={item.count} key={item._id} />;
-    })
-  }
+    });
+  };
 
   renderCard = () => {
-    return this.props.title === "Most Popular Tags" ? this.renderPopTags() : this.renderTrendingTags()
-  }
+    return this.props.title === "Most Popular Tags"
+      ? this.renderPopTags()
+      : this.renderTrendingTags();
+  };
 
   render() {
     return (
@@ -50,3 +32,27 @@ export default class AnalyticsCard extends Component<any, any> {
     );
   }
 }
+
+const Card = styled.div`
+  background: #fff;
+  flex: 1 1 calc(100% / 6 * 2);
+  margin: 10px 10px 30px 0;
+  border-radius: 15px;
+  align-self: start;
+  box-shadow: 0 0 5px 2px #dedede;
+  &:nth-child(2n),
+  &:last-child {
+    margin-right: 0;
+  }
+`;
+
+const CardHeading = styled.div`
+  color: #fff;
+  background: linear-gradient(to bottom, #223f67, #192b44);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+`;
