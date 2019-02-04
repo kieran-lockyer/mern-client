@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as actions from "../../actions";
 import baseUrl from "../../api/baseurl";
+import history from "../../history";
 
 // 3rd party packages
 import { connect } from "react-redux";
@@ -64,7 +65,14 @@ class TagSingle extends Component<any, any> {
                 </p>
               </TagDetails>
             </TagBlock>
-            <Button intent={Intent.DANGER}>Go Back</Button>
+            <div style={{ margin: "2rem" }}>
+              <Button
+                intent={Intent.PRIMARY}
+                onClick={() => history.push("/tags")}
+              >
+                Go Back
+              </Button>
+            </div>
           </Wrapper>
         </Container>
       );

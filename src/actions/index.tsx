@@ -36,3 +36,30 @@ export const fetchTagPhoto = tagId => async dispatch => {
     payload: response.data
   });
 };
+
+// Fetch stats for dashboard
+export const fetchStats = () => async dispatch => {
+  const popTags = await api.get("/tags/stats/get/poptags");
+  const trendingTags = await api.get("/tags/stats/get/trendingtags");
+  const avgTags = await api.get("/tags/stats/get/avgtags");
+  const avgPhotos = await api.get("/photos/stats/get/avgphotos");
+
+  dispatch({
+    type: "FETCH_STATS",
+    popTags: popTags.data,
+    trendingTags: trendingTags.data,
+    avgTags: avgTags.data,
+    avgPhoto: avgPhotos.data
+  });
+};
+
+// Fetch data for the dashboard graph
+export const fetchGraphData = numOfDays => async dispatch => {
+  const tagData = await api.get(`/tags/stats/${numOfDays}`);
+  const photoData = await api.get(`/photos/stats/${numOfDays}`);
+  dispatch({
+    type: "FETCH_GRAPH_DATA",
+    tagData: tagData.data,
+    photoData: photoData.data
+  });
+};

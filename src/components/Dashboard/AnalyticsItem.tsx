@@ -42,7 +42,8 @@ const CardDetails = styled.div`
 
 const CardTitle = styled.h3`
   font-weight: bold;
-  margin-bottom: 5px;
+  margin: 0;
+  font-size: 15px;
 `;
 
 const CardCount = styled.p`

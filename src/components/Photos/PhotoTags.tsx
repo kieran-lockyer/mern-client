@@ -16,18 +16,7 @@ const Label = styled(Tag)`
 const PhotoTags = props => {
   return props.tags.map((tag, id) => (
     <span key={id}>
-      <Label
-        large
-        interactive
-        onClick={() =>
-          history.push(
-            `/tag/${tag.label
-              .split(",")
-              .map(t => t)
-              .join(",")}`
-          )
-        }
-      >
+      <Label interactive onClick={() => history.push(`/tag/${tag.tagId}`)}>
         {tag.label.split(",")[0]}
       </Label>
     </span>
