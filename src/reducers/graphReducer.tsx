@@ -4,8 +4,8 @@ const initialState = {
     chart: {
       id: "Sortal Analytics",
       foreColor: "#FFFFFF",
-      type: "area",
       stacked: true,
+      type: "bar",
       animations: {
         enabled: true,
         easing: "linear",
@@ -15,6 +15,11 @@ const initialState = {
       },
       toolbar: {
         show: false
+      }
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: "100%"
       }
     },
     grid: {
@@ -61,8 +66,7 @@ const initialState = {
       palette: "palette1"
     },
     stroke: {
-      curve: "smooth",
-      width: 5
+      width: [0, 0]
     },
     legend: {
       show: true,
@@ -70,6 +74,17 @@ const initialState = {
       position: "bottom",
       horizontalAlign: "center",
       floating: true
+    },
+    fill: {
+      opacity: [0.8, 0.9, 1],
+      gradient: {
+        inverseColors: false,
+        shade: "light",
+        type: "vertical",
+        opacityFrom: 0.95,
+        opacityTo: 0.65,
+        stops: [0, 100, 100, 100]
+      }
     }
   },
 
@@ -82,12 +97,12 @@ export default (state = initialState, { type, tagData, photoData }) => {
       const newSeries = [
         {
           name: "Tags Generated",
-          type: "area",
+          type: "column",
           data: tagData
         },
         {
           name: "Photos Uploaded",
-          type: "bar",
+          type: "column",
           data: photoData
         }
       ];
