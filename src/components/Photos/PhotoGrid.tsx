@@ -20,14 +20,7 @@ const getGalleryPhotos = imagesArr => {
             interactive
             color={Colors.TURQUOISE3}
             style={tagStyles}
-            onClick={() =>
-              history.push(
-                `/tag/${tags.label
-                  .split(",")
-                  .map(tag => tag)
-                  .join(",")}`
-              )
-            }
+            onClick={() => history.push(`/tag/${tags.tagId}`)}
           >
             {labels}
           </Tag>

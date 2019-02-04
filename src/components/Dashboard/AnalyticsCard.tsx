@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import AnalyticsItem from "./AnalyticsItem";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
-export default class AnalyticsCard extends Component<any, any> {
+class AnalyticsCard extends Component<any, any> {
   renderPopTags = () => {
     return this.props.popular.map(item => {
       return <AnalyticsItem tag={item._id} count={item.count} key={item._id} />;
@@ -35,24 +36,38 @@ export default class AnalyticsCard extends Component<any, any> {
 
 const Card = styled.div`
   background: #fff;
-  flex: 1 1 calc(100% / 6 * 2);
+  flex: 1 1 48%;
   margin: 10px 10px 30px 0;
   border-radius: 15px;
   align-self: start;
-  box-shadow: 0 0 5px 2px #dedede;
   &:nth-child(2n),
   &:last-child {
     margin-right: 0;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    flex-basis: 100%;
   }
 `;
 
 const CardHeading = styled.div`
   color: #fff;
-  background: linear-gradient(to bottom, #223f67, #192b44);
+  background: linear-gradient(to right bottom, #223f67, #192b44);
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
   border-bottom: 1px solid #eee;
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
+
+  h3 {
+    margin: 0;
+  }
 `;
+
+const mapStateToProps = state => ({
+  popular: state.stats.popTags,
+  trending: state.stats.trendingTags
+});
+
+export default connect(mapStateToProps)(AnalyticsCard);

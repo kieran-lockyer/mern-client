@@ -5,36 +5,24 @@ import DashboardStats from "./DashboardStats";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import api from "../../api";
 import { Cube } from "react-preloaders";
 
 class Dashboard extends Component<any, any> {
-  state = {
-    popTags: [],
-    trendingTags: [],
-    isLoading: true
-  };
-
-  async componentDidMount() {
+  componentDidMount() {
     try {
       this.props.fetchPhotos(1);
       this.props.fetchTags(1);
-      const popTags = await api.get("/tags/stats/get/poptags");
-      const trendingTags = await api.get("/tags/stats/get/trendingtags");
-      this.setState({
-        popTags: popTags.data,
-        trendingTags: trendingTags.data
-      });
-      setTimeout(() => {
-        this.setState({ isLoading: false });
-      }, 1500);
+      this.props.fetchStats();
+      this.props.fetchGraphData(7);
     } catch {
       err => console.log(err);
     }
   }
 
   render() {
-    if (!this.state.isLoading) {
+    const { isLoading } = this.props;
+
+    if (!isLoading) {
       return (
         <Container>
           <Wrapper>
@@ -44,7 +32,7 @@ class Dashboard extends Component<any, any> {
               </Graph>
               <DashboardStats />
             </Header>
-            <DashboardAnalytics {...this.state} />
+            <DashboardAnalytics />
           </Wrapper>
         </Container>
       );
@@ -90,7 +78,11 @@ const Graph = styled.div`
   margin-right: auto;
 `;
 
+const mapStateToProps = state => ({
+  isLoading: state.stats.isLoading
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(Dashboard);

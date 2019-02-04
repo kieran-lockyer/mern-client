@@ -2,26 +2,20 @@ import React from "react";
 import AnalyticsCard from "./AnalyticsCard";
 import StatsItem from "./StatsItem";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
-export default props => {
-  const { popTags, trendingTags } = props;
+const DashboardAnalytics = props => {
   return (
-    <Container>
-      <AnalyticsCard
-        popular={popTags}
-        trending={trendingTags}
-        title="Most Popular Tags"
-      />
-      <AnalyticsCard
-        popular={popTags}
-        trending={trendingTags}
-        title="Trending Tags"
-      />
-      <div className="avg-stats">
-        <StatsItem name="Average Photos Per Day" statsIcon="media" />
-        <StatsItem name="Average Tags Per Day" statsIcon="tag" />
-      </div>
-    </Container>
+    <>
+      <AvgStats>
+        <StatsItem icon="media" avgPhotos={props.avgPhotos} />
+        <StatsItem icon="tag" avgTags={props.avgTags} />
+      </AvgStats>
+      <Container>
+        <AnalyticsCard title="Popular Tags" />
+        <AnalyticsCard title="Trending Tags" />
+      </Container>
+    </>
   );
 };
 
@@ -30,3 +24,17 @@ const Container = styled.section`
   justify-content: center;
   flex-wrap: wrap;
 `;
+
+const AvgStats = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const mapStateToProps = state => ({
+  avgTags: state.stats.avgTags,
+  avgPhotos: state.stats.avgPhoto
+});
+
+export default connect(mapStateToProps)(DashboardAnalytics);

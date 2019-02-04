@@ -3,13 +3,14 @@ import StatsItem from "./StatsItem";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-const DashboardStats = props => (
-  <Stats>
-    <StatsItem mainIcon="media" value={props.totalPhotos} />
-    <StatsItem mainIcon="tag" value={props.totalTags} />
-  </Stats>
-);
-
+const DashboardStats = props => {
+  return (
+    <Stats>
+      <StatsItem icon="media" totalPhotos={props.totalPhotos} />
+      <StatsItem icon="tag" totalTags={props.totalTags} />
+    </Stats>
+  );
+};
 const Stats = styled.div`
   flex-grow: 1;
   margin-left: 2rem;
