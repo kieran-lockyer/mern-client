@@ -19,33 +19,18 @@ import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
 class AllTags extends Component<any, any> {
-  state = {
-    isLoading: true,
-    pageNum: parseInt(this.props.match.params.page),
-    tagInput: [],
-    limit: 30,
-    field: "",
-    order: "",
-    option: ""
-  };
-
   componentDidMount() {
-    this.props
-      .fetchTags(1)
-      .then(() =>
-        setTimeout(() => {
-          this.setState({ isLoading: false });
-        }, 1000)
-      )
-      .catch(() => this.setState({ isLoading: false }));
-  }
-
-  componentDidUpdate() {
-    if (
-      this.state.pageNum === this.props.nextPage ||
-      this.state.pageNum === this.props.prevPage
-    ) {
-      this.props.fetchTags(this.state.pageNum);
+    const { filterData, fetchTags } = this.props;
+    try {
+      fetchTags(
+        parseInt(this.props.match.params.id),
+        filterData.limit,
+        filterData.field,
+        filterData.order,
+        filterData.filterString
+      );
+    } catch {
+      err => console.error(err);
     }
   }
 
@@ -75,62 +60,62 @@ class AllTags extends Component<any, any> {
 
   // Filter tags by tag input
   filterTags = value => {
-    const filterByString = `${value}`;
-    this.setState({ filterByString });
-    if (!filterByString) {
-      this.props.fetchTags(this.state.pageNum);
+    const { limit, order, field } = this.props.filterData;
+    const { page, tagFilter } = this.props;
+    const filterString = value.toString() || "";
+    tagFilter(value);
+
+    if (!filterString) {
+      this.props.fetchTags(page, limit, field, order, filterString);
     } else {
-      this.props.fetchTags(
-        1,
-        (this.state.limit = 30),
-        (this.state.field = "dateAdded"),
-        (this.state.order = "asc"),
-        filterByString
-      );
+      this.props.fetchTags(1, limit, field, order, filterString);
     }
-    this.setState({ tagInput: value });
   };
 
   // Back button
   prevPage = () => {
-    this.setState({ pageNum: this.props.prevPage });
-    history.push(`/tags/${this.props.prevPage}`);
-    this.props.fetchTags(this.props.prevPage);
+    const { filterData, prevPage } = this.props;
+    const { limit, order, field, filterString } = filterData;
+    history.push(`/tags/${prevPage}`);
+    this.props.fetchTags(prevPage, limit, field, order, filterString);
   };
 
   // Next button
   nextPage = () => {
-    switch (this.state.option) {
+    const {
+      nextPage,
+      filterData: { filterString }
+    } = this.props;
+
+    switch (this.props.filterData.option) {
       case "Newest to Oldest":
-        this.props.fetchTags(this.props.nextPage, 30, "dateAdded", "desc");
-        break;
+        this.props.fetchTags(nextPage, 30, "dateAdded", "desc", filterString);
       case "Oldest to Newest":
-        this.props.fetchTags(this.props.nextPage, 30, "dateAdded", "asc");
+        this.props.fetchTags(nextPage, 30, "dateAdded", "asc", filterString);
         break;
       case "Highest Confidence to Lowest Confidence":
-        this.props.fetchTags(this.props.nextPage, 30, "confidence", "desc");
+        this.props.fetchTags(nextPage, 30, "confidence", "desc", filterString);
         break;
       case "Lowest Confidence to Highest Confidence":
-        this.props.fetchTags(this.props.nextPage, 30, "confidence", "asc");
+        this.props.fetchTags(nextPage, 30, "confidence", "asc", filterString);
         break;
       case "Tag A-Z":
-        this.props.fetchTags(this.props.nextPage, 30, "label", "asc");
+        this.props.fetchTags(nextPage, 30, "label", "asc", filterString);
         break;
       case "Tag Z-A":
-        this.props.fetchTags(this.props.nextPage, 30, "label", "desc");
+        this.props.fetchTags(nextPage, 30, "label", "desc", filterString);
         break;
       default:
-        this.props.fetchTags(this.props.nextPage, 30, "dateAdded", "desc");
+        this.props.fetchTags(nextPage, 30, "dateAdded", "desc", filterString);
     }
-    this.setState({ pageNum: this.props.nextPage });
-    history.push(`/tags/${this.props.nextPage}`);
+    history.push(`/tags/${nextPage}`);
   };
 
   render() {
     const { tags, hasNextPage, hasPrevPage } = this.props;
-    const { tagInput, isLoading } = this.state;
+    const { tagInput } = this.props.filterData;
 
-    if (!isLoading && tags) {
+    if (tags) {
       return (
         <Container>
           <Wrapper>
@@ -147,7 +132,12 @@ class AllTags extends Component<any, any> {
                 />
               </SearchForm>
               <Popover
-                content={<TagSort tagInput={tagInput} />}
+                content={
+                  <TagSort
+                    tagInput={tagInput}
+                    pageId={parseInt(this.props.match.params.id)}
+                  />
+                }
                 position={Position.BOTTOM}
               >
                 <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
@@ -169,7 +159,7 @@ class AllTags extends Component<any, any> {
                 icon="arrow-left"
                 intent={Intent.PRIMARY}
                 text="Back"
-                disabled={!hasPrevPage || tagInput[0]}
+                disabled={!hasPrevPage}
                 onClick={this.prevPage}
               />
 
@@ -178,28 +168,34 @@ class AllTags extends Component<any, any> {
                 intent={Intent.PRIMARY}
                 className="btn-next"
                 text="Next"
-                disabled={!hasNextPage || tagInput[0]}
+                disabled={!hasNextPage}
                 onClick={this.nextPage}
               />
             </Pagination>
           </Wrapper>
         </Container>
       );
-    } else if (this.state.isLoading) {
+    } else {
       return (
         <Container>
           <Cube color={"#48c0b9"} bgColor={"transparent"} />
         </Container>
       );
-    } else {
-      return (
-        <Container>
-          <h2>This page doesn't exist!</h2>
-        </Container>
-      );
     }
   }
 }
+
+// react-redux
+const mapStateToProps = state => ({
+  tags: state.tags.tagData.docs,
+  page: state.tags.tagData.page,
+  nextPage: state.tags.tagData.nextPage,
+  prevPage: state.tags.tagData.prevPage,
+  hasPrevPage: state.tags.tagData.hasPrevPage,
+  hasNextPage: state.tags.tagData.hasNextPage,
+  totalPages: state.tags.tagData.totalPages,
+  filterData: state.tags.filterData
+});
 
 // Styled Components
 const Table = styled.div`
@@ -306,17 +302,6 @@ const Pagination = styled.div`
   padding: 2rem;
   background: #172336;
 `;
-
-// react-redux
-const mapStateToProps = state => ({
-  tags: state.tags.docs,
-  page: state.tags.page,
-  nextPage: state.tags.nextPage,
-  prevPage: state.tags.prevPage,
-  hasPrevPage: state.tags.hasPrevPage,
-  hasNextPage: state.tags.hasNextPage,
-  totalPages: state.tags.totalPages
-});
 
 export default connect(
   mapStateToProps,

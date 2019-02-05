@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 
 class PhotoSort extends Component<any, any> {
   sortBy(pageNum, limit, field, order, tags, option) {
-    this.props.setCurrentOption(option);
+    this.props.setPhotoOption(option);
     this.props.fetchPhotos(pageNum, limit, field, order, tags);
   }
 
   render() {
-    const { tagInput } = this.props;
+    const { tagInput, pageId } = this.props;
     return (
       <Menu>
         <MenuItem
@@ -18,7 +18,7 @@ class PhotoSort extends Component<any, any> {
           text="Newest to Oldest"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "dateAdded",
               "desc",
@@ -32,7 +32,7 @@ class PhotoSort extends Component<any, any> {
           text="Oldest to Newest"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "dateAdded",
               "asc",
@@ -46,7 +46,7 @@ class PhotoSort extends Component<any, any> {
           text="Highest Confidence to Lowest Confidence"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "tags.0.confidence",
               "desc",
@@ -60,7 +60,7 @@ class PhotoSort extends Component<any, any> {
           text="Lowest Confidence to Highest Confidence"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "tags.0.confidence",
               "asc",
@@ -74,7 +74,7 @@ class PhotoSort extends Component<any, any> {
           text="Tag A-Z"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "tags.0.label",
               "asc",
@@ -88,7 +88,7 @@ class PhotoSort extends Component<any, any> {
           text="Tag Z-A"
           onClick={() =>
             this.sortBy(
-              this.props.pageId,
+              pageId,
               30,
               "tags.0.label",
               "desc",
@@ -103,7 +103,6 @@ class PhotoSort extends Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  page: state.photos.filterData.pageNum,
   tagInput: state.photos.filterData.tagInput
 });
 
