@@ -3,21 +3,29 @@ import api from "../api";
 // Fetch List of Tags + sort + pagination
 export const fetchTags = (
   pageNum,
-  limit = 30,
-  field = "dateAdded",
-  order = "desc",
-  label = ""
+  limit,
+  field,
+  order,
+  filterString
 ) => async dispatch => {
   const response = await api.get(
-    `tags?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&label=${label}`
+    `tags?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&label=${filterString}`
   );
-  dispatch({ type: "FETCH_TAGS", tags: response.data });
+  dispatch({
+    type: "FETCH_TAGS",
+    tagData: response.data,
+    pageNum,
+    limit,
+    field,
+    order,
+    filterString
+  });
 };
 
 // Fetch List of Photos + sort + pagination
 export const fetchPhotos = (
   pageNum,
-  limit = 30,
+  limit,
   field,
   order,
   filterString
@@ -82,12 +90,23 @@ export const changeLayoutType = layoutType => ({
 });
 
 // Saves the tag input from search form
-export const addToTagInput = tag => ({
-  type: "ADD_TAG_INPUT",
+export const photoFilter = tag => ({
+  type: "PHOTO_FILTER",
   tagInput: tag
 });
 
-export const setCurrentOption = option => ({
-  type: "SET_OPTION",
-  currentOption: option
+// Saves the tag input from search form
+export const tagFilter = tag => ({
+  type: "TAG_FILTER",
+  tagInput: tag
+});
+
+export const setPhotoOption = option => ({
+  type: "SET_PHOTO_OPTION",
+  option
+});
+
+export const setTagOption = option => ({
+  type: "SET_TAG_OPTION",
+  option
 });

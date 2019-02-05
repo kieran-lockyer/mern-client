@@ -24,13 +24,17 @@ import { Cube } from "react-preloaders";
 class AllPhotos extends Component<any, any> {
   componentDidMount() {
     const { filterData, fetchPhotos } = this.props;
-    fetchPhotos(
-      parseInt(this.props.match.params.id),
-      filterData.limit,
-      filterData.field,
-      filterData.order,
-      filterData.filterString
-    );
+    try {
+      fetchPhotos(
+        parseInt(this.props.match.params.id),
+        filterData.limit,
+        filterData.field,
+        filterData.order,
+        filterData.filterString
+      );
+    } catch {
+      err => console.error(err);
+    }
   }
 
   photoRow() {
@@ -122,9 +126,9 @@ class AllPhotos extends Component<any, any> {
   // Filter photos by tag input
   filterPhotos = value => {
     const { limit, order, field } = this.props.filterData;
-    const { page, addToTagInput } = this.props;
+    const { page, photoFilter } = this.props;
     const filterString = value.toString() || "";
-    addToTagInput(value);
+    photoFilter(value);
 
     if (!filterString) {
       this.props.fetchPhotos(page, limit, field, order, filterString);

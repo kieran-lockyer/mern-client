@@ -7,8 +7,7 @@ const initialState = {
     option: "",
     tagInput: [],
     filterString: "",
-    layoutType: "list",
-    isLoading: true
+    layoutType: "list"
   },
   photoData: {}
 };
@@ -25,7 +24,7 @@ export default (
     field,
     order,
     filterString,
-    currentOption
+    option
   }
 ) => {
   switch (type) {
@@ -50,7 +49,7 @@ export default (
           layoutType
         }
       };
-    case "ADD_TAG_INPUT":
+    case "PHOTO_FILTER":
       return {
         ...state,
         filterData: {
@@ -58,12 +57,12 @@ export default (
           tagInput
         }
       };
-    case "SET_OPTION":
+    case "SET_PHOTO_OPTION":
       return {
         ...state,
         filterData: {
           ...state.filterData,
-          option: currentOption
+          option
         }
       };
     default:

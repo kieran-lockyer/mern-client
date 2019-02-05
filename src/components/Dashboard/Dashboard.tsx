@@ -12,7 +12,7 @@ class Dashboard extends Component<any, any> {
     const { field, order, filterString } = this.props.photoFilterData;
     try {
       this.props.fetchPhotos(1, 30, field, order, filterString);
-      this.props.fetchTags(1, 30, "dateAdded", "desc");
+      this.props.fetchTags(1, 30, field, order, filterString);
       this.props.fetchStats();
       this.props.fetchGraphData(30);
     } catch {

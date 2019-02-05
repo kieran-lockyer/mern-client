@@ -17,7 +17,7 @@ class TagSingle extends Component<any, any> {
   }
 
   public render() {
-    const { tag, isLoading, relatedTags } = this.props;
+    const { tag, isLoading, relatedTags, page } = this.props;
 
     if (!isLoading && tag && relatedTags) {
       return (
@@ -57,7 +57,7 @@ class TagSingle extends Component<any, any> {
             <div style={{ margin: "2rem" }}>
               <Button
                 intent={Intent.PRIMARY}
-                onClick={() => history.push("/tags")}
+                onClick={() => history.push(`/tags/${page}`)}
               >
                 Go Back
               </Button>
@@ -140,7 +140,8 @@ const Related = styled.div`
 const mapStateToProps = state => ({
   tag: state.tags.tag,
   relatedTags: state.tags.relatedTags,
-  isLoading: state.tags.isLoading
+  isLoading: state.tags.isLoading,
+  page: state.tags.filterData.pageNum
 });
 
 export default connect(

@@ -21,7 +21,7 @@ const Stats = styled.div`
 
 const mapStateToProps = state => ({
   totalPhotos: state.photos.photoData.totalDocs,
-  totalTags: state.tags.totalDocs
+  totalTags: state.tags.tagData.totalDocs
 });
 
 export default connect(mapStateToProps)(DashboardStats);
