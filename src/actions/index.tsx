@@ -11,21 +11,29 @@ export const fetchTags = (
   const response = await api.get(
     `tags?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&label=${label}`
   );
-  dispatch({ type: "FETCH_TAGS", tags: response.data, isLoading: false });
+  dispatch({ type: "FETCH_TAGS", tags: response.data });
 };
 
 // Fetch List of Photos + sort + pagination
 export const fetchPhotos = (
   pageNum,
   limit = 30,
-  field = "dateAdded",
-  order = "desc",
-  tags = ""
+  field,
+  order,
+  filterString
 ) => async dispatch => {
   const response = await api.get(
-    `photos?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&tags=${tags}`
+    `photos?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&tags=${filterString}`
   );
-  dispatch({ type: "FETCH_PHOTOS", payload: response.data, isLoading: false });
+  dispatch({
+    type: "FETCH_PHOTOS",
+    photoData: response.data,
+    pageNum,
+    limit,
+    field,
+    order,
+    filterString
+  });
 };
 
 // Fetch single image from tag id
@@ -36,8 +44,7 @@ export const fetchTagPhoto = tagId => async dispatch => {
   dispatch({
     type: "FETCH_TAG_IMAGE",
     tag: tag.data[0],
-    relatedTags: relatedTags.data,
-    isLoading: false
+    relatedTags: relatedTags.data
   });
 };
 
@@ -53,8 +60,7 @@ export const fetchStats = () => async dispatch => {
     popTags: popTags.data,
     trendingTags: trendingTags.data,
     avgTags: avgTags.data,
-    avgPhoto: avgPhotos.data,
-    isLoading: false
+    avgPhoto: avgPhotos.data
   });
 };
 
@@ -65,7 +71,23 @@ export const fetchGraphData = numOfDays => async dispatch => {
   dispatch({
     type: "FETCH_GRAPH_DATA",
     tagData: tagData.data,
-    photoData: photoData.data,
-    isLoading: false
+    photoData: photoData.data
   });
 };
+
+// Change photo layout from list to grid
+export const changeLayoutType = layoutType => ({
+  type: "CHANGE_LAYOUT",
+  layoutType
+});
+
+// Saves the tag input from search form
+export const addToTagInput = tag => ({
+  type: "ADD_TAG_INPUT",
+  tagInput: tag
+});
+
+export const setCurrentOption = option => ({
+  type: "SET_OPTION",
+  currentOption: option
+});

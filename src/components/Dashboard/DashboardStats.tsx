@@ -20,7 +20,7 @@ const Stats = styled.div`
 `;
 
 const mapStateToProps = state => ({
-  totalPhotos: state.photos.totalDocs,
+  totalPhotos: state.photos.photoData.totalDocs,
   totalTags: state.tags.totalDocs
 });
 

@@ -22,7 +22,7 @@ export default class App extends Component {
               exact
               render={() => <Redirect from="/photos" exact to="/photos/1" />}
             />
-            <Route path="/photos/:page" exact component={Photos} />
+            <Route path="/photos/:id" exact component={Photos} />
             <Route
               path="/tags"
               exact

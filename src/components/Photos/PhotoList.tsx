@@ -22,46 +22,15 @@ import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
 class AllPhotos extends Component<any, any> {
-  state = {
-    pageNum: parseInt(this.props.match.params.page),
-    limit: 30,
-    field: "",
-    order: "",
-    filterString: "",
-    option: "",
-    tagInput: [],
-    tag: "",
-    tags: "",
-    layoutType: "list",
-    isActive: Colors.GRAY3,
-    isLoading: true
-  };
-
   componentDidMount() {
-    this.props
-      .fetchPhotos(this.state.pageNum)
-      .then(() =>
-        setTimeout(() => {
-          this.setState({ isLoading: false });
-        }, 1000)
-      )
-      .catch(() => this.setState({ isLoading: false }));
-  }
-
-  componentDidUpdate() {
-    if (
-      this.state.pageNum === this.props.nextPage ||
-      (this.state.pageNum === this.props.prevPage &&
-        this.state.tagInput.length === 0)
-    ) {
-      this.props.fetchPhotos(
-        this.state.pageNum,
-        this.state.limit,
-        this.state.field,
-        this.state.order,
-        this.state.tagInput.join(",")
-      );
-    }
+    const { filterData, fetchPhotos } = this.props;
+    fetchPhotos(
+      parseInt(this.props.match.params.id),
+      filterData.limit,
+      filterData.field,
+      filterData.order,
+      filterData.filterString
+    );
   }
 
   photoRow() {
@@ -89,87 +58,102 @@ class AllPhotos extends Component<any, any> {
 
   // Back button
   prevPage = () => {
-    this.setState({ pageNum: this.props.prevPage });
-    history.push(`/photos/${this.props.prevPage}`);
-    this.props.fetchPhotos(this.props.prevPage);
+    const { filterData, prevPage } = this.props;
+    const { limit, order, field, filterString } = filterData;
+    history.push(`/photos/${prevPage}`);
+    this.props.fetchPhotos(prevPage, limit, field, order, filterString);
   };
 
   // Next button
   nextPage = () => {
-    switch (this.state.option) {
+    const {
+      nextPage,
+      filterData: { filterString }
+    } = this.props;
+
+    switch (this.props.filterData.option) {
       case "Newest to Oldest":
-        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "desc");
-        break;
+        this.props.fetchPhotos(nextPage, 30, "dateAdded", "desc", filterString);
       case "Oldest to Newest":
-        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "asc");
+        this.props.fetchPhotos(nextPage, 30, "dateAdded", "asc", filterString);
         break;
       case "Highest Confidence to Lowest Confidence":
         this.props.fetchPhotos(
-          this.props.nextPage,
+          nextPage,
           30,
-          "tag.0.confidence",
-          "desc"
+          "tags.0.confidence",
+          "desc",
+          filterString
         );
         break;
       case "Lowest Confidence to Highest Confidence":
         this.props.fetchPhotos(
-          this.props.nextPage,
+          nextPage,
           30,
-          "tag.0.confidence",
-          "asc"
+          "tags.0.confidence",
+          "asc",
+          filterString
         );
         break;
       case "Tag A-Z":
-        this.props.fetchPhotos(this.props.nextPage, 30, "tag.0.label", "asc");
+        this.props.fetchPhotos(
+          nextPage,
+          30,
+          "tags.0.label",
+          "asc",
+          filterString
+        );
         break;
       case "Tag Z-A":
-        this.props.fetchPhotos(this.props.nextPage, 30, "tag.0.label", "desc");
+        this.props.fetchPhotos(
+          nextPage,
+          30,
+          "tags.0.label",
+          "desc",
+          filterString
+        );
         break;
       default:
-        this.props.fetchPhotos(this.props.nextPage, 30, "dateAdded", "desc");
+        this.props.fetchPhotos(nextPage, 30, "dateAdded", "desc", filterString);
     }
-    this.setState({ pageNum: this.props.nextPage });
-    history.push(`/photos/${this.props.nextPage}`);
+    history.push(`/photos/${nextPage}`);
   };
 
   // Filter photos by tag input
   filterPhotos = value => {
-    const filterString = `${value}`;
-    this.setState({ filterString });
+    const { limit, order, field } = this.props.filterData;
+    const { page, addToTagInput } = this.props;
+    const filterString = value.toString() || "";
+    addToTagInput(value);
+
     if (!filterString) {
-      this.props.fetchPhotos(this.state.pageNum);
+      this.props.fetchPhotos(page, limit, field, order, filterString);
     } else {
-      this.props.fetchPhotos(
-        1,
-        (this.state.limit = 30),
-        (this.state.field = "dateAdded"),
-        (this.state.order = "asc"),
-        filterString
-      );
+      this.props.fetchPhotos(1, limit, field, order, filterString);
     }
-    this.setState({ tagInput: value });
   };
 
   // Changes the layout from list to grid
   handleLayout = () => {
-    if (this.state.layoutType === "list") {
-      this.setState({ layoutType: "grid", isActive: Colors.TURQUOISE3 });
+    if (this.props.filterData && this.props.filterData.layoutType === "list") {
+      this.props.changeLayoutType("grid");
     } else {
-      this.setState({ layoutType: "list", isActive: Colors.GRAY3 });
+      this.props.changeLayoutType("list");
     }
   };
 
   render() {
-    const { isActive, tagInput, layoutType, isLoading } = this.state;
-    const { photos, hasPrevPage, hasNextPage } = this.props;
-    if (!isLoading && photos) {
+    const { photos, hasPrevPage, hasNextPage, filterData } = this.props;
+    const { layoutType, tagInput } = this.props.filterData;
+
+    if (photos && filterData) {
       return (
         <Container>
           <Wrapper>
             <Header>
               <Icon
                 icon="grid-view"
-                color={isActive}
+                color={layoutType === "grid" ? Colors.TURQUOISE3 : Colors.GRAY3}
                 style={{ marginRight: "1rem", cursor: "pointer" }}
                 onClick={this.handleLayout}
                 iconSize={25}
@@ -186,7 +170,12 @@ class AllPhotos extends Component<any, any> {
                 />
               </SearchForm>
               <Popover
-                content={<PhotoSort tagInput={tagInput} />}
+                content={
+                  <PhotoSort
+                    pageId={parseInt(this.props.match.params.id)}
+                    tagInput={tagInput}
+                  />
+                }
                 position={Position.BOTTOM}
               >
                 <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />
@@ -213,7 +202,7 @@ class AllPhotos extends Component<any, any> {
                 icon="arrow-left"
                 intent={Intent.PRIMARY}
                 text="Back"
-                disabled={!hasPrevPage || tagInput[0]}
+                disabled={!hasPrevPage}
                 onClick={this.prevPage}
               />
 
@@ -222,28 +211,33 @@ class AllPhotos extends Component<any, any> {
                 intent={Intent.PRIMARY}
                 className="btn-next"
                 text="Next"
-                disabled={!hasNextPage || tagInput[0]}
+                disabled={!hasNextPage}
                 onClick={this.nextPage}
               />
             </Pagination>
           </Wrapper>
         </Container>
       );
-    } else if (isLoading) {
+    } else {
       return (
         <Container>
           <Cube color={"#48c0b9"} bgColor={"transparent"} />
         </Container>
       );
-    } else {
-      return (
-        <Container>
-          <h2>This page doesn't exist!</h2>
-        </Container>
-      );
     }
   }
 }
+
+const mapStateToProps = state => ({
+  photos: state.photos.photoData.docs,
+  page: state.photos.photoData.page,
+  nextPage: state.photos.photoData.nextPage,
+  prevPage: state.photos.photoData.prevPage,
+  hasPrevPage: state.photos.photoData.hasPrevPage,
+  hasNextPage: state.photos.photoData.hasNextPage,
+  totalPages: state.photos.photoData.totalPages,
+  filterData: state.photos.filterData
+});
 
 // Styled Components
 const Table = styled.div`
@@ -350,16 +344,6 @@ const photoListImg = {
   width: "50px",
   borderRadius: "50%"
 };
-
-const mapStateToProps = state => ({
-  photos: state.photos.docs,
-  page: state.photos.page,
-  nextPage: state.photos.nextPage,
-  prevPage: state.photos.prevPage,
-  hasPrevPage: state.photos.hasPrevPage,
-  hasNextPage: state.photos.hasNextPage,
-  totalPages: state.photos.totalPages
-});
 
 export default connect(
   mapStateToProps,

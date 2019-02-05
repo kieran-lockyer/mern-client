@@ -10,8 +10,8 @@ const getGalleryPhotos = imagesArr => {
     images.push({
       src: baseUrl + "/photos/image/" + object._id,
       thumbnail: baseUrl + "/photos/image/" + object._id,
-      thumbnailWidth: "20%",
-      thumbnailHeight: "20%",
+      thumbnailWidth: "auto",
+      thumbnailHeight: "auto",
       caption: object.tags.map((tags, id) => {
         const labels = tags.label.split(",").join(", ");
         return (
