@@ -47,12 +47,12 @@ export const fetchPhotos = (
 // Fetch single image from tag id
 export const fetchTagPhoto = tagId => async dispatch => {
   const tag = await api.get(`/tags/image/${tagId}`);
-  const relatedTags = await api.get(`/tags/related/${tag.data[0].label}`);
+  const relatedTags = (await api.get(`/tags/related/${tag.data[0].label}`)).data.filter(tag => tag._id !== tagId);
 
   dispatch({
     type: "FETCH_TAG_IMAGE",
     tag: tag.data[0],
-    relatedTags: relatedTags.data
+    relatedTags: relatedTags
   });
 };
 
