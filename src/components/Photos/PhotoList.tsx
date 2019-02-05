@@ -25,7 +25,7 @@ class AllPhotos extends Component<any, any> {
   componentDidMount() {
     const { filterData, fetchPhotos } = this.props;
     fetchPhotos(
-      filterData.pageNum,
+      parseInt(this.props.match.params.id),
       filterData.limit,
       filterData.field,
       filterData.order,
@@ -81,7 +81,7 @@ class AllPhotos extends Component<any, any> {
         this.props.fetchPhotos(
           nextPage,
           30,
-          "tag.0.confidence",
+          "tags.0.confidence",
           "desc",
           filterString
         );
@@ -90,7 +90,7 @@ class AllPhotos extends Component<any, any> {
         this.props.fetchPhotos(
           nextPage,
           30,
-          "tag.0.confidence",
+          "tags.0.confidence",
           "asc",
           filterString
         );
@@ -99,7 +99,7 @@ class AllPhotos extends Component<any, any> {
         this.props.fetchPhotos(
           nextPage,
           30,
-          "tag.0.label",
+          "tags.0.label",
           "asc",
           filterString
         );
@@ -108,7 +108,7 @@ class AllPhotos extends Component<any, any> {
         this.props.fetchPhotos(
           nextPage,
           30,
-          "tag.0.label",
+          "tags.0.label",
           "desc",
           filterString
         );
@@ -170,7 +170,12 @@ class AllPhotos extends Component<any, any> {
                 />
               </SearchForm>
               <Popover
-                content={<PhotoSort tagInput={tagInput} />}
+                content={
+                  <PhotoSort
+                    pageId={parseInt(this.props.match.params.id)}
+                    tagInput={tagInput}
+                  />
+                }
                 position={Position.BOTTOM}
               >
                 <Button intent={Intent.PRIMARY} icon="sort" text="Sort" />

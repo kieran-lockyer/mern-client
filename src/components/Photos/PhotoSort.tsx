@@ -10,7 +10,7 @@ class PhotoSort extends Component<any, any> {
   }
 
   render() {
-    const { page, tagInput } = this.props;
+    const { tagInput } = this.props;
     return (
       <Menu>
         <MenuItem
@@ -18,7 +18,7 @@ class PhotoSort extends Component<any, any> {
           text="Newest to Oldest"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "dateAdded",
               "desc",
@@ -32,7 +32,7 @@ class PhotoSort extends Component<any, any> {
           text="Oldest to Newest"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "dateAdded",
               "asc",
@@ -46,7 +46,7 @@ class PhotoSort extends Component<any, any> {
           text="Highest Confidence to Lowest Confidence"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "tags.0.confidence",
               "desc",
@@ -60,7 +60,7 @@ class PhotoSort extends Component<any, any> {
           text="Lowest Confidence to Highest Confidence"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "tags.0.confidence",
               "asc",
@@ -74,7 +74,7 @@ class PhotoSort extends Component<any, any> {
           text="Tag A-Z"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "tags.0.label",
               "asc",
@@ -88,7 +88,7 @@ class PhotoSort extends Component<any, any> {
           text="Tag Z-A"
           onClick={() =>
             this.sortBy(
-              page,
+              this.props.pageId,
               30,
               "tags.0.label",
               "desc",
