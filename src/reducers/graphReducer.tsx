@@ -6,13 +6,6 @@ const initialState = {
       foreColor: "#FFFFFF",
       stacked: true,
       type: "bar",
-      animations: {
-        enabled: true,
-        easing: "linear",
-        dynamicAnimation: {
-          speed: 1000
-        }
-      },
       toolbar: {
         show: false
       }

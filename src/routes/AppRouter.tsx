@@ -29,7 +29,7 @@ export default class App extends Component {
               render={() => <Redirect from="/tags" exact to="/tags/1" />}
             />
             <Route path="/tags/:page" exact component={Tags} />
-            <Route path="/tag/:tagname" exact component={TagSingle} />
+            <Route path="/tag/:tagId" exact component={TagSingle} />
             <Route component={NotFound} />
           </Switch>
         </Container>
