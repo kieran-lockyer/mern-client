@@ -9,9 +9,10 @@ import { Cube } from "react-preloaders";
 
 class Dashboard extends Component<any, any> {
   componentDidMount() {
+    const { field, order, filterString } = this.props.photoFilterData;
     try {
-      this.props.fetchPhotos(1, 0, "dateAdded", "desc");
-      this.props.fetchTags(1, 0, "dateAdded", "desc");
+      this.props.fetchPhotos(1, 30, field, order, filterString);
+      this.props.fetchTags(1, 30, "dateAdded", "desc");
       this.props.fetchStats();
       this.props.fetchGraphData(30);
     } catch {
@@ -79,7 +80,8 @@ const Graph = styled.div`
 `;
 
 const mapStateToProps = state => ({
-  isLoading: state.stats.isLoading
+  isLoading: state.stats.isLoading,
+  photoFilterData: state.photos.filterData
 });
 
 export default connect(

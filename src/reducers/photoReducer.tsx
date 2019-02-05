@@ -20,7 +20,6 @@ export default (
     photoData,
     layoutType,
     tagInput,
-    currentPage,
     pageNum,
     limit,
     field,
