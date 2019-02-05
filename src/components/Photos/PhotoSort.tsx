@@ -4,16 +4,13 @@ import * as actions from "../../actions";
 import { connect } from "react-redux";
 
 class PhotoSort extends Component<any, any> {
-  state = {
-    tagInput: this.props.tagInput
-  };
-
-  sortBy(pageNum, limit = 30, field, order, tags = "", option) {
-    this.setState({ field, order, tags, limit, option });
+  sortBy(pageNum, limit, field, order, tags, option) {
+    this.props.setCurrentOption(option);
     this.props.fetchPhotos(pageNum, limit, field, order, tags);
   }
 
   render() {
+    const { page, tagInput } = this.props;
     return (
       <Menu>
         <MenuItem
@@ -21,11 +18,11 @@ class PhotoSort extends Component<any, any> {
           text="Newest to Oldest"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "dateAdded",
               "desc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Newest to Oldest"
             )
           }
@@ -35,11 +32,11 @@ class PhotoSort extends Component<any, any> {
           text="Oldest to Newest"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "dateAdded",
               "asc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Oldest to Newest"
             )
           }
@@ -49,11 +46,11 @@ class PhotoSort extends Component<any, any> {
           text="Highest Confidence to Lowest Confidence"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "tags.0.confidence",
               "desc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Highest Confidence to Lowest Confidence"
             )
           }
@@ -63,11 +60,11 @@ class PhotoSort extends Component<any, any> {
           text="Lowest Confidence to Highest Confidence"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "tags.0.confidence",
               "asc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Lowest Confidence to Highest Confidence"
             )
           }
@@ -77,11 +74,11 @@ class PhotoSort extends Component<any, any> {
           text="Tag A-Z"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "tags.0.label",
               "asc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Tag A-Z"
             )
           }
@@ -91,11 +88,11 @@ class PhotoSort extends Component<any, any> {
           text="Tag Z-A"
           onClick={() =>
             this.sortBy(
-              1,
+              page,
               30,
               "tags.0.label",
               "desc",
-              this.state.tagInput.join(","),
+              tagInput.join(","),
               "Tag Z-A"
             )
           }
@@ -105,7 +102,12 @@ class PhotoSort extends Component<any, any> {
   }
 }
 
+const mapStateToProps = state => ({
+  page: state.photos.filterData.pageNum,
+  tagInput: state.photos.filterData.tagInput
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(PhotoSort);

@@ -10,8 +10,8 @@ import { Cube } from "react-preloaders";
 class Dashboard extends Component<any, any> {
   componentDidMount() {
     try {
-      this.props.fetchPhotos(1);
-      this.props.fetchTags(1);
+      this.props.fetchPhotos(1, 0, "dateAdded", "desc");
+      this.props.fetchTags(1, 0, "dateAdded", "desc");
       this.props.fetchStats();
       this.props.fetchGraphData(30);
     } catch {
