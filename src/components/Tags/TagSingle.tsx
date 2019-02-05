@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as actions from "../../actions";
 import baseUrl from "../../api/baseurl";
 import history from "../../history";
+import RelatedTags from "./RelatedTags";
 
 // 3rd party packages
 import { connect } from "react-redux";
@@ -11,35 +12,24 @@ import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
 class TagSingle extends Component<any, any> {
-  state = {
-    isLoading: true
-  };
-
   componentDidMount() {
-    this.props
-      .fetchTagPhoto(this.props.match.params.tagname)
-      .then(() =>
-        setTimeout(() => {
-          this.setState({ isLoading: false });
-        }, 1000)
-      )
-      .catch(() => this.setState({ isLoading: false }));
+    this.props.fetchTagPhoto(this.props.match.params.tagId);
   }
 
   public render() {
-    const { image } = this.props;
+    const { tag, isLoading, relatedTags } = this.props;
 
-    if (!this.state.isLoading && image) {
+    if (!isLoading && tag && relatedTags) {
       return (
         <Container>
           <Wrapper>
             <Header>
-              <h3>{image[0].label}</h3>
+              <h3>{tag.label}</h3>
             </Header>
             <TagBlock>
               <TagImg>
                 <img
-                  src={baseUrl + "/photos/image/" + image[0].imageId}
+                  src={baseUrl + "/photos/image/" + tag.imageId}
                   alt=""
                   style={{
                     width: "100%",
@@ -50,18 +40,17 @@ class TagSingle extends Component<any, any> {
               </TagImg>
               <TagDetails>
                 <p>
-                  Date:{" "}
-                  <Moment format="D MMM YYYY">{image[0].dateAdded}</Moment>
+                  Date: <Moment format="D MMM YYYY">{tag.dateAdded}</Moment>
                 </p>
                 <p>
-                  <strong>Type:</strong> {image[0].source.type}
+                  <strong>Type:</strong> {tag.source.type}
                 </p>
                 <p>
-                  <strong>Model:</strong> {image[0].source.model}
+                  <strong>Model:</strong> {tag.source.model}
                 </p>
                 <p>
                   <strong>Confidence:</strong>{" "}
-                  {(image[0].confidence * 100).toFixed(2)}
+                  {(tag.confidence * 100).toFixed(2)}
                 </p>
               </TagDetails>
             </TagBlock>
@@ -73,19 +62,18 @@ class TagSingle extends Component<any, any> {
                 Go Back
               </Button>
             </div>
+
+            <Related>
+              <h3>Related Tags</h3>
+              <RelatedTags />
+            </Related>
           </Wrapper>
-        </Container>
-      );
-    } else if (this.state.isLoading) {
-      return (
-        <Container>
-          <Cube color={"#48c0b9"} bgColor={"transparent"} />
         </Container>
       );
     } else {
       return (
         <Container>
-          <h2>This page doesn't exist!</h2>
+          <Cube color={"#48c0b9"} bgColor={"transparent"} />
         </Container>
       );
     }
@@ -144,8 +132,15 @@ const TagDetails = styled.div`
   grid-row: 1 / -1;
 `;
 
+const Related = styled.div`
+  color: black;
+  margin: 2rem;
+`;
+
 const mapStateToProps = state => ({
-  image: state.tags.image
+  tag: state.tags.tag,
+  relatedTags: state.tags.relatedTags,
+  isLoading: state.tags.isLoading
 });
 
 export default connect(
