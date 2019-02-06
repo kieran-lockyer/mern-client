@@ -24,7 +24,8 @@ export default (
     field,
     order,
     filterString,
-    option
+    option,
+    photo
   }
 ) => {
   switch (type) {
@@ -41,6 +42,8 @@ export default (
           filterString
         }
       };
+    case "FETCH_SINGLE_PHOTO":
+      return { ...state, photo };
     case "CHANGE_LAYOUT":
       return {
         ...state,

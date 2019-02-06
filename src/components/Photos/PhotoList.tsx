@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import Moment from "react-moment";
 import styled from "styled-components";
 import { Cube } from "react-preloaders";
+import { Link } from "react-router-dom";
 
 class AllPhotos extends Component<any, any> {
   componentDidMount() {
@@ -49,7 +50,7 @@ class AllPhotos extends Component<any, any> {
                 style={photoListImg}
               />
             </span>
-            <span>{photo._id}</span>
+            <Link to={`/photo/${photo._id}`}>{photo._id}</Link>
             <span>
               <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
             </span>

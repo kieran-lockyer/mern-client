@@ -57,7 +57,7 @@ export default (
           option
         }
       };
-    case "FETCH_TAG_IMAGE":
+    case "FETCH_SINGLE_TAG":
       return { ...state, tag, relatedTags };
     default:
       return state;
