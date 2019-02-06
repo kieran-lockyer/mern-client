@@ -6,7 +6,7 @@ import history from "../../history";
 // 3rd party packages
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import { Button, Intent, Tag, Icon } from "@blueprintjs/core";
+import { Button, Intent, Tag, Icon, Alert } from "@blueprintjs/core";
 import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
@@ -37,6 +37,11 @@ class PhotoSingle extends Component<any, any> {
     });
   }
 
+  handlePhotoDelete = photoId => {
+    this.props.toggleAlertBox(false);
+    this.props.deletePhoto(photoId);
+  };
+
   public render() {
     const { photo } = this.props;
 
@@ -46,6 +51,26 @@ class PhotoSingle extends Component<any, any> {
           <Wrapper>
             <Header>
               <h3>{photo._id}</h3>
+              <Button
+                intent={Intent.DANGER}
+                onClick={() => this.props.toggleAlertBox(true)}
+              >
+                <Icon icon="trash" iconSize={21} />
+              </Button>
+              <Alert
+                cancelButtonText="Cancel"
+                confirmButtonText="Move to Trash"
+                icon="trash"
+                isOpen={this.props.isOpen}
+                onCancel={() => this.props.toggleAlertBox(false)}
+                onConfirm={() => this.handlePhotoDelete(photo._id)}
+                intent={Intent.DANGER}
+              >
+                <p>
+                  Are you sure you want to delete this photo: <br />{" "}
+                  <strong>{photo._id}</strong>?
+                </p>
+              </Alert>
             </Header>
             <PhotoBlock>
               <PhotoImg>
@@ -84,6 +109,11 @@ class PhotoSingle extends Component<any, any> {
     }
   }
 }
+
+const mapStateToProps = state => ({
+  photo: state.photos.photo,
+  isOpen: state.photos.alertIsOpen
+});
 
 // Styled Components
 const Container = styled.div`
@@ -157,10 +187,6 @@ const Row = styled.div`
   padding: 1rem 0;
   border-bottom: 2px solid #eee;
 `;
-
-const mapStateToProps = state => ({
-  photo: state.photos.photo
-});
 
 export default connect(
   mapStateToProps,

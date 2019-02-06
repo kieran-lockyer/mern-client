@@ -134,6 +134,14 @@ export const deleteTag = tagId => dispatch => {
     .then(() => dispatch({ type: "DELETE_TAG", tagId }));
 };
 
+// Delete Photo
+export const deletePhoto = photoId => dispatch => {
+  history.push("/photos");
+  return api
+    .delete(`/photos/${photoId}`)
+    .then(() => dispatch({ type: "DELETE_PHOTO", photoId }));
+};
+
 // Open Alert Box for Delete Button
 export const toggleAlertBox = bool => ({
   type: "TOGGLE_ALERT",
