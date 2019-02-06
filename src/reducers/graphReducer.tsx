@@ -1,5 +1,5 @@
 const initialState = {
-  selection: "one_week",
+  selection: "one_month",
   options: {
     chart: {
       id: "Sortal Analytics",
@@ -8,6 +8,19 @@ const initialState = {
       type: "bar",
       toolbar: {
         show: false
+      },
+      animations: {
+        enabled: true,
+        easing: "easeinout",
+        speed: 800,
+        animateGradually: {
+          enabled: true,
+          delay: 150
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350
+        }
       }
     },
     plotOptions: {
@@ -84,7 +97,10 @@ const initialState = {
   series: []
 };
 
-export default (state = initialState, { type, tagData, photoData }) => {
+export default (
+  state = initialState,
+  { type, tagData, photoData, selection }
+) => {
   switch (type) {
     case "FETCH_GRAPH_DATA":
       const newSeries = [
@@ -110,6 +126,7 @@ export default (state = initialState, { type, tagData, photoData }) => {
 
       return {
         ...state,
+        selection,
         series: newSeries,
         options: {
           ...state.options,

@@ -108,8 +108,7 @@ const Header = styled.div`
 
 const TagBlock = styled.div`
   display: grid;
-  grid-template-columns: minmax(200px, 30vw) 1fr;
-  grid-template-rows: 20vw;
+  grid-template-columns: minmax(200px, 40%) 1fr;
   grid-gap: 1.5rem;
   margin: 2rem;
   @media only screen and (max-width: 50em) {

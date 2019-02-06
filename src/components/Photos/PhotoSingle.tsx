@@ -116,8 +116,7 @@ const Header = styled.div`
 
 const PhotoBlock = styled.div`
   display: grid;
-  grid-template-columns: minmax(200px, 50%) 1fr;
-  grid-template-rows: 20vw;
+  grid-template-columns: minmax(200px, 40%) 1fr;
   grid-gap: 1.5rem;
   margin: 2rem;
   @media only screen and (max-width: 50em) {
@@ -147,7 +146,7 @@ const Label = styled(Tag)`
 `;
 
 const Confidence = styled.p`
-  margin: 0;
+  margin: 7px 0;
 `;
 
 const TagID = styled.p`
