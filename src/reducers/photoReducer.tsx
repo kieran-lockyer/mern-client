@@ -1,4 +1,5 @@
 const initialState = {
+  alertIsOpen: false,
   filterData: {
     pageNum: 1,
     limit: 30,
@@ -9,7 +10,7 @@ const initialState = {
     filterString: "",
     layoutType: "list"
   },
-  photoData: {}
+  photoData: { docs: [] }
 };
 
 export default (
@@ -25,7 +26,9 @@ export default (
     order,
     filterString,
     option,
-    photo
+    photo,
+    photoId,
+    alertIsOpen
   }
 ) => {
   switch (type) {
@@ -68,6 +71,15 @@ export default (
           option
         }
       };
+    case "DELETE_PHOTO":
+      return {
+        ...state,
+        photoData: {
+          docs: state.photoData.docs.filter(photo => photo._id !== photoId)
+        }
+      };
+    case "TOGGLE_ALERT":
+      return { ...state, alertIsOpen };
     default:
       return state;
   }

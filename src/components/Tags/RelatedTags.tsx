@@ -7,9 +7,9 @@ import baseUrl from "../../api/baseurl";
 class RelatedTags extends Component<any, any> {
   renderRelatedTags() {
     if (this.props.tags) {
-      return this.props.tags.map(tag => {
+      return this.props.tags.map((tag, id) => {
         return (
-          <div style={{ display: "grid", gridTemplateRows: "300px 1fr" }}>
+          <div key={id} style={{ display: "grid", gridTemplateRows: "180px" }}>
             <div>
               <img
                 src={baseUrl + "/photos/image/" + tag.imageId}
@@ -21,7 +21,7 @@ class RelatedTags extends Component<any, any> {
                 }}
               />
             </div>
-            <h3>{tag.label}</h3>
+            <h3 style={{ lineHeight: "1.5", marginTop: "7px" }}>{tag.label}</h3>
             <p>
               Date: <Moment format="D MMM YYYY">{tag.dateAdded}</Moment>
             </p>

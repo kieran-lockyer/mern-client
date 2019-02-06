@@ -65,7 +65,6 @@ export default (
     case "DELETE_TAG":
       return {
         ...state,
-        filterData: { ...state.filterData, tagInput: [] },
         tagData: { docs: state.tagData.docs.filter(tag => tag._id !== tagId) }
       };
     case "TOGGLE_ALERT":
