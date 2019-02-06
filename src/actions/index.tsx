@@ -84,13 +84,14 @@ export const fetchStats = () => async dispatch => {
 };
 
 // Fetch data for the dashboard graph
-export const fetchGraphData = numOfDays => async dispatch => {
+export const fetchGraphData = (numOfDays, selection) => async dispatch => {
   const tagData = await api.get(`/stats?model=tags&days=${numOfDays}`);
   const photoData = await api.get(`/stats?model=photos&days=${numOfDays}`);
   dispatch({
     type: "FETCH_GRAPH_DATA",
     tagData: tagData.data,
-    photoData: photoData.data
+    photoData: photoData.data,
+    selection
   });
 };
 

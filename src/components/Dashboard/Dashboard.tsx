@@ -14,7 +14,7 @@ class Dashboard extends Component<any, any> {
       this.props.fetchPhotos(1, 30, field, order, "");
       this.props.fetchTags(1, 30, field, order, "");
       this.props.fetchStats();
-      this.props.fetchGraphData(30);
+      this.props.fetchGraphData(30, "one_month");
     } catch {
       err => console.log(err);
     }
