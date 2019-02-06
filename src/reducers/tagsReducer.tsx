@@ -1,4 +1,5 @@
 const initialState = {
+  alertIsOpen: false,
   filterData: {
     pageNum: 1,
     limit: 30,
@@ -8,7 +9,7 @@ const initialState = {
     tagInput: [],
     filterString: ""
   },
-  tagData: {}
+  tagData: { docs: [] }
 };
 
 export default (
@@ -24,7 +25,9 @@ export default (
     tag,
     relatedTags,
     tagInput,
-    option
+    option,
+    tagId,
+    alertIsOpen
   }
 ) => {
   switch (type) {
@@ -59,6 +62,14 @@ export default (
       };
     case "FETCH_SINGLE_TAG":
       return { ...state, tag, relatedTags };
+    case "DELETE_TAG":
+      return {
+        ...state,
+        filterData: { ...state.filterData, tagInput: [] },
+        tagData: { docs: state.tagData.docs.filter(tag => tag._id !== tagId) }
+      };
+    case "TOGGLE_ALERT":
+      return { ...state, alertIsOpen };
     default:
       return state;
   }
