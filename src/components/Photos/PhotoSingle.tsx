@@ -40,7 +40,7 @@ class PhotoSingle extends Component<any, any> {
   public render() {
     const { photo } = this.props;
 
-    if (photo) {
+    if (photo && photo._id === this.props.match.params.photoId) {
       return (
         <Container>
           <Wrapper>

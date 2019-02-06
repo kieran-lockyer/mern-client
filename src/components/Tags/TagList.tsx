@@ -114,7 +114,7 @@ class AllTags extends Component<any, any> {
   };
 
   render() {
-    const { tags, hasNextPage, hasPrevPage } = this.props;
+    const { tags, hasNextPage, hasPrevPage, filterData } = this.props;
     const { tagInput } = this.props.filterData;
 
     if (tags) {

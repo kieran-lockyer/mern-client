@@ -7,7 +7,7 @@ import RelatedTags from "./RelatedTags";
 // 3rd party packages
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, Icon, Alert } from "@blueprintjs/core";
 import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
@@ -16,15 +16,40 @@ class TagSingle extends Component<any, any> {
     this.props.fetchSingleTag(this.props.match.params.tagId);
   }
 
-  public render() {
-    const { tag, relatedTags } = this.props;
+  handleTagDelete = tagId => {
+    this.props.toggleAlertBox(false);
+    this.props.deleteTag(tagId);
+  };
 
-    if (tag && relatedTags) {
+  public render() {
+    const { tag } = this.props;
+
+    if (tag && tag._id === this.props.match.params.tagId) {
       return (
         <Container>
           <Wrapper>
             <Header>
               <h3>{tag.label}</h3>
+              <Button
+                intent={Intent.DANGER}
+                onClick={() => this.props.toggleAlertBox(true)}
+              >
+                <Icon icon="trash" iconSize={21} />
+              </Button>
+              <Alert
+                cancelButtonText="Cancel"
+                confirmButtonText="Move to Trash"
+                icon="trash"
+                isOpen={this.props.isOpen}
+                onCancel={() => this.props.toggleAlertBox(false)}
+                onConfirm={() => this.handleTagDelete(tag._id)}
+                intent={Intent.DANGER}
+              >
+                <p>
+                  Are you sure you want to delete this tag: <br />{" "}
+                  <strong>{tag.label}</strong>?
+                </p>
+              </Alert>
             </Header>
             <TagBlock>
               <TagImg>
@@ -38,6 +63,7 @@ class TagSingle extends Component<any, any> {
                   }}
                 />
               </TagImg>
+
               <TagDetails>
                 <p>
                   Date: <Moment format="D MMM YYYY">{tag.dateAdded}</Moment>
@@ -135,7 +161,8 @@ const Related = styled.div`
 
 const mapStateToProps = state => ({
   tag: state.tags.tag,
-  relatedTags: state.tags.relatedTags
+  relatedTags: state.tags.relatedTags,
+  isOpen: state.tags.alertIsOpen
 });
 
 export default connect(

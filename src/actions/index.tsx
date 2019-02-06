@@ -1,4 +1,5 @@
 import api from "../api";
+import history from "../history";
 
 // Fetch List of Tags + sort + pagination
 export const fetchTags = (
@@ -8,12 +9,12 @@ export const fetchTags = (
   order,
   filterString
 ) => async dispatch => {
-  const response = await api.get(
+  const tagData = (await api.get(
     `tags?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&label=${filterString}`
-  );
+  )).data;
   dispatch({
     type: "FETCH_TAGS",
-    tagData: response.data,
+    tagData,
     pageNum,
     limit,
     field,
@@ -30,12 +31,12 @@ export const fetchPhotos = (
   order,
   filterString
 ) => async dispatch => {
-  const response = await api.get(
+  const photoData = (await api.get(
     `photos?pageNo=${pageNum}&limit=${limit}&field=${field}&order=${order}&tags=${filterString}`
-  );
+  )).data;
   dispatch({
     type: "FETCH_PHOTOS",
-    photoData: response.data,
+    photoData,
     pageNum,
     limit,
     field,
@@ -56,9 +57,9 @@ export const fetchSinglePhoto = photoId => async dispatch => {
 // Fetch single image from tag id
 export const fetchSingleTag = tagId => async dispatch => {
   const tag = (await api.get(`/tags/image/${tagId}`)).data[0];
-  const relatedTags = (await api.get(`/tags/related/${tag.label}`)).data.filter(
-    tag => tag._id !== tagId
-  );
+  const relatedTags = (await api.get(
+    `/tags/related/${tag && tag.label}`
+  )).data.filter(tag => tag._id !== tagId);
 
   dispatch({
     type: "FETCH_SINGLE_TAG",
@@ -69,28 +70,29 @@ export const fetchSingleTag = tagId => async dispatch => {
 
 // Fetch stats for dashboard
 export const fetchStats = () => async dispatch => {
-  const popTags = await api.get("/stats/poptags");
-  const trendingTags = await api.get("/stats/trendingtags");
-  const avgTags = await api.get("/stats/avgtags");
-  const avgPhotos = await api.get("/stats/avgphotos");
+  const popTags = (await api.get("/stats/poptags")).data;
+  const trendingTags = (await api.get("/stats/trendingtags")).data;
+  const avgTags = (await api.get("/stats/avgtags")).data;
+  const avgPhoto = (await api.get("/stats/avgphotos")).data;
 
   dispatch({
     type: "FETCH_STATS",
-    popTags: popTags.data,
-    trendingTags: trendingTags.data,
-    avgTags: avgTags.data,
-    avgPhoto: avgPhotos.data
+    popTags,
+    trendingTags,
+    avgTags,
+    avgPhoto
   });
 };
 
 // Fetch data for the dashboard graph
 export const fetchGraphData = (numOfDays, selection) => async dispatch => {
-  const tagData = await api.get(`/stats?model=tags&days=${numOfDays}`);
-  const photoData = await api.get(`/stats?model=photos&days=${numOfDays}`);
+  const tagData = (await api.get(`/stats?model=tags&days=${numOfDays}`)).data;
+  const photoData = (await api.get(`/stats?model=photos&days=${numOfDays}`))
+    .data;
   dispatch({
     type: "FETCH_GRAPH_DATA",
-    tagData: tagData.data,
-    photoData: photoData.data,
+    tagData,
+    photoData,
     selection
   });
 };
@@ -113,12 +115,27 @@ export const tagFilter = tag => ({
   tagInput: tag
 });
 
+// Set sorting option for photos e.g. by Confidence, A-Z
 export const setPhotoOption = option => ({
   type: "SET_PHOTO_OPTION",
   option
 });
-
+// Set sorting option for tags e.g. by Confidence, A-Z
 export const setTagOption = option => ({
   type: "SET_TAG_OPTION",
   option
+});
+
+// Delete Tag
+export const deleteTag = tagId => dispatch => {
+  history.push("/tags");
+  return api
+    .delete(`/tags/${tagId}`)
+    .then(() => dispatch({ type: "DELETE_TAG", tagId }));
+};
+
+// Open Alert Box for Delete Button
+export const toggleAlertBox = bool => ({
+  type: "TOGGLE_ALERT",
+  alertIsOpen: bool
 });
