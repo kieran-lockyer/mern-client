@@ -2,34 +2,55 @@ import React, { Component } from "react";
 import * as actions from "../../actions";
 import baseUrl from "../../api/baseurl";
 import history from "../../history";
-import RelatedTags from "./RelatedTags";
 
 // 3rd party packages
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, Tag, Icon } from "@blueprintjs/core";
 import styled from "styled-components";
 import { Cube } from "react-preloaders";
 
-class TagSingle extends Component<any, any> {
+class PhotoSingle extends Component<any, any> {
   componentDidMount() {
-    this.props.fetchSingleTag(this.props.match.params.tagId);
+    this.props.fetchSinglePhoto(this.props.match.params.photoId);
+  }
+
+  renderTags() {
+    const { photo } = this.props;
+    return photo.tags.map((tag, id) => {
+      return (
+        <Row key={id}>
+          <Label
+            large
+            interactive
+            onClick={() => history.push(`/tag/${tag.tagId}`)}
+          >
+            <Icon icon="tag" style={{ marginRight: "7px" }} />
+            {tag.label}
+          </Label>
+          <Confidence>
+            Confidence: {(tag.confidence * 100).toFixed(2)}
+          </Confidence>
+          <TagID>Tag ID: {tag.tagId}</TagID>
+        </Row>
+      );
+    });
   }
 
   public render() {
-    const { tag, relatedTags } = this.props;
+    const { photo } = this.props;
 
-    if (tag && relatedTags) {
+    if (photo) {
       return (
         <Container>
           <Wrapper>
             <Header>
-              <h3>{tag.label}</h3>
+              <h3>{photo._id}</h3>
             </Header>
-            <TagBlock>
-              <TagImg>
+            <PhotoBlock>
+              <PhotoImg>
                 <img
-                  src={baseUrl + "/photos/image/" + tag.imageId}
+                  src={baseUrl + "/photos/image/" + photo._id}
                   alt=""
                   style={{
                     width: "100%",
@@ -37,33 +58,20 @@ class TagSingle extends Component<any, any> {
                     objectFit: "cover"
                   }}
                 />
-              </TagImg>
-              <TagDetails>
+              </PhotoImg>
+              <PhotoDetails>
                 <p>
-                  Date: <Moment format="D MMM YYYY">{tag.dateAdded}</Moment>
+                  Date: <Moment format="D MMM YYYY">{photo.dateAdded}</Moment>
                 </p>
-                <p>
-                  <strong>Type:</strong> {tag.source.type}
-                </p>
-                <p>
-                  <strong>Model:</strong> {tag.source.model}
-                </p>
-                <p>
-                  <strong>Confidence:</strong>{" "}
-                  {(tag.confidence * 100).toFixed(2)}
-                </p>
-              </TagDetails>
-            </TagBlock>
+                <h3>Tags</h3>
+                {this.renderTags()}
+              </PhotoDetails>
+            </PhotoBlock>
             <div style={{ margin: "2rem" }}>
               <Button intent={Intent.PRIMARY} onClick={() => history.goBack()}>
                 Go Back
               </Button>
             </div>
-
-            <Related>
-              <h3>Related Tags</h3>
-              <RelatedTags />
-            </Related>
           </Wrapper>
         </Container>
       );
@@ -106,9 +114,9 @@ const Header = styled.div`
   }
 `;
 
-const TagBlock = styled.div`
+const PhotoBlock = styled.div`
   display: grid;
-  grid-template-columns: minmax(200px, 30vw) 1fr;
+  grid-template-columns: minmax(200px, 50%) 1fr;
   grid-template-rows: 20vw;
   grid-gap: 1.5rem;
   margin: 2rem;
@@ -118,28 +126,44 @@ const TagBlock = styled.div`
   }
 `;
 
-const TagImg = styled.div`
+const PhotoImg = styled.div`
   grid-column: 1 / 2;
   grid-row: 1 / -1;
 `;
 
-const TagDetails = styled.div`
+const PhotoDetails = styled.div`
   color: #16263d;
   grid-column: 2 / -1;
   grid-row: 1 / -1;
 `;
 
-const Related = styled.div`
-  color: black;
-  margin: 2rem;
+const Label = styled(Tag)`
+  background: #2fa7a2 !important;
+  color: white;
+  text-decoration: none !important;
+  &:hover {
+    background: #219893 !important;
+  }
+`;
+
+const Confidence = styled.p`
+  margin: 0;
+`;
+
+const TagID = styled.p`
+  margin: 0;
+`;
+
+const Row = styled.div`
+  padding: 1rem 0;
+  border-bottom: 2px solid #eee;
 `;
 
 const mapStateToProps = state => ({
-  tag: state.tags.tag,
-  relatedTags: state.tags.relatedTags
+  photo: state.photos.photo
 });
 
 export default connect(
   mapStateToProps,
   actions
-)(TagSingle);
+)(PhotoSingle);

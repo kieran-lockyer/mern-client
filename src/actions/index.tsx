@@ -44,15 +44,26 @@ export const fetchPhotos = (
   });
 };
 
+// Fetch single image and all related tag data
+export const fetchSinglePhoto = photoId => async dispatch => {
+  const photo = (await api.get(`photos/${photoId}`)).data[0];
+  dispatch({
+    type: "FETCH_SINGLE_PHOTO",
+    photo
+  });
+};
+
 // Fetch single image from tag id
-export const fetchTagPhoto = tagId => async dispatch => {
-  const tag = await api.get(`/tags/image/${tagId}`);
-  const relatedTags = (await api.get(`/tags/related/${tag.data[0].label}`)).data.filter(tag => tag._id !== tagId);
+export const fetchSingleTag = tagId => async dispatch => {
+  const tag = (await api.get(`/tags/image/${tagId}`)).data[0];
+  const relatedTags = (await api.get(`/tags/related/${tag.label}`)).data.filter(
+    tag => tag._id !== tagId
+  );
 
   dispatch({
-    type: "FETCH_TAG_IMAGE",
-    tag: tag.data[0],
-    relatedTags: relatedTags
+    type: "FETCH_SINGLE_TAG",
+    tag,
+    relatedTags
   });
 };
 

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Dashboard from "../components/Dashboard/Dashboard";
 import Sidebar from "../components/Sidebar";
-import Photos from "../components/Photos/PhotoList";
-import Tags from "../components/Tags/TagList";
+import PhotoList from "../components/Photos/PhotoList";
+import PhotoSingle from "../components/Photos/PhotoSingle";
+import TagList from "../components/Tags/TagList";
 import TagSingle from "../components/Tags/TagSingle";
 import NotFound from "../components/NotFound";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
@@ -22,13 +23,14 @@ export default class App extends Component {
               exact
               render={() => <Redirect from="/photos" exact to="/photos/1" />}
             />
-            <Route path="/photos/:id" exact component={Photos} />
+            <Route path="/photos/:id" exact component={PhotoList} />
+            <Route path="/photo/:photoId" exact component={PhotoSingle} />
             <Route
               path="/tags"
               exact
               render={() => <Redirect from="/tags" exact to="/tags/1" />}
             />
-            <Route path="/tags/:id" exact component={Tags} />
+            <Route path="/tags/:id" exact component={TagList} />
             <Route path="/tag/:tagId" exact component={TagSingle} />
             <Route component={NotFound} />
           </Switch>

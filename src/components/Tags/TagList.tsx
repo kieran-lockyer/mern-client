@@ -10,6 +10,7 @@ import {
   Tag,
   TagInput,
   Button,
+  Icon,
   Intent
 } from "@blueprintjs/core";
 import { Link } from "react-router-dom";
@@ -43,6 +44,7 @@ class AllTags extends Component<any, any> {
             <GridLabel>
               <Link to={`/tag/${tags._id}`} style={{ textDecoration: "none" }}>
                 <Label large interactive>
+                  <Icon icon="tag" style={{ marginRight: "7px" }} />
                   {tags.label}
                 </Label>
               </Link>
@@ -254,6 +256,9 @@ const Label = styled(Tag)`
   background: #2fa7a2 !important;
   color: white;
   text-decoration: none !important;
+  &:hover {
+    background: #219893 !important;
+  }
 `;
 
 const Wrapper = styled.div`

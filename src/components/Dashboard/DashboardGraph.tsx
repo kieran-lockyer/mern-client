@@ -24,18 +24,18 @@ class DashboardGraph extends Component<any, any> {
             1M
           </Button>
           <Button
-            onClick={() => this.props.fetchGraphData(180)}
+            onClick={() => this.props.fetchGraphData(90)}
             id="six_months"
             className="date-button-group"
           >
-            6M
+            3M
           </Button>
           <Button
-            onClick={() => this.props.fetchGraphData(365)}
+            onClick={() => this.props.fetchGraphData(180)}
             id="one_year"
             className="date-button-group"
           >
-            1Y
+            6M
           </Button>
         </ButtonGroup>
         <Chart options={this.props.options} series={this.props.series} />
@@ -46,7 +46,8 @@ class DashboardGraph extends Component<any, any> {
 
 const mapStateToProps = state => ({
   options: state.graph.options,
-  series: state.graph.series
+  series: state.graph.series,
+  selection: state.graph.selection
 });
 
 export default connect(
