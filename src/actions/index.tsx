@@ -47,7 +47,7 @@ export const fetchPhotos = (
 
 // Fetch single image and all related tag data
 export const fetchSinglePhoto = photoId => async dispatch => {
-  const photo = (await api.get(`photos/${photoId}`)).data[0];
+  const photo = (await api.get(`/photos/${photoId}`)).data[0];
   dispatch({
     type: "FETCH_SINGLE_PHOTO",
     photo
@@ -56,7 +56,7 @@ export const fetchSinglePhoto = photoId => async dispatch => {
 
 // Fetch single image from tag id
 export const fetchSingleTag = tagId => async dispatch => {
-  const tag = (await api.get(`/tags/image/${tagId}`)).data[0];
+  const tag = (await api.get(`/tags/${tagId}`)).data[0];
   const relatedTags = (await api.get(
     `/tags/related/${tag && tag.label}`
   )).data.filter(tag => tag._id !== tagId);
