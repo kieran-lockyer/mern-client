@@ -42,15 +42,28 @@ const Navbar = styled.div`
   max-width: 5rem;
   background: #172336;
   margin-right: auto;
+  @media only screen and (max-width: 800px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+  }
 `;
 
 const NavbarBrand = styled.div`
   margin: 3rem auto;
+
+  @media only screen and (max-width: 800px) {
+    margin 0;
+  }
+
+
   & img {
     border-radius: 50%;
     width: 100%;
     height: auto;
     padding: 0.7rem;
+    max-height: 70px;
+    width: auto;
   }
 `;
 
@@ -60,6 +73,9 @@ const NavbarNav = styled.div`
   width: 100%;
   align-items: center;
   flex-basis: 100%;
+  @media only screen and (max-width: 800px) {
+    flex-direction: row;
+  }
 `;
 
 const NavItems = styled.div`

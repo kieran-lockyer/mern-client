@@ -60,12 +60,20 @@ const Wrapper = styled.div`
   width: 85%;
   padding: 2rem;
   max-width: 1300px;
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    padding: 1rem;
+  }
 `;
 
 const Header = styled.section`
   border-radius: 15px;
   margin-bottom: 3rem;
   display: flex;
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const Graph = styled.div`
@@ -76,6 +84,10 @@ const Graph = styled.div`
   box-sizing: border-box;
   width: 75%;
   margin-right: auto;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
 `;
 
 const mapStateToProps = state => ({

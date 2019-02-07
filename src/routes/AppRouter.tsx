@@ -45,4 +45,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   background: #eee;
+  @media only screen and (max-width: 800px) {
+    display: block;
+  }
 `;

@@ -30,6 +30,9 @@ const AvgStats = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const mapStateToProps = state => ({

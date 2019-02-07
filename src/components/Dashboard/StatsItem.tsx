@@ -78,6 +78,11 @@ const AvgStats = styled.div`
 
   &:nth-child(1) {
     margin-right: 10px;
+
+    @media only screen and (max-width: 800px) {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
   }
 
   h2 {

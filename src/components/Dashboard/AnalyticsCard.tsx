@@ -47,6 +47,7 @@ const Card = styled.div`
 
   @media only screen and (max-width: 1000px) {
     flex-basis: 100%;
+    margin: 0 0 1rem 0;
   }
 `;
 

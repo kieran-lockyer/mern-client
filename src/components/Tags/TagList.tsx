@@ -250,6 +250,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media only screen and (max-width: 800px) {
+    padding: 0;
+  }
 `;
 
 const Label = styled(Tag)`
@@ -265,6 +268,9 @@ const Wrapper = styled.div`
   width: 85%;
   background: #fff;
   max-width: 1300px;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -273,7 +279,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   background: #172336;
-  padding: 1rem 2rem;
+  padding: 1rem;
 `;
 
 const SearchInput = styled(TagInput)`
@@ -288,6 +294,10 @@ const SearchInput = styled(TagInput)`
     background: #2fa7a2 !important;
     color: white;
     text-decoration: none !important;
+  }
+
+  @media only screen and (max-width: 800px) {
+    width: 100% !important;
   }
 `;
 
