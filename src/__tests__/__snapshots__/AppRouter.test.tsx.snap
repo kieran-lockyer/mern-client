@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AppRouter /> render() renders the AppRouter component 1`] = `
+<styled.div>
+  <Sidebar />
+  <Switch>
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      exact={true}
+      path="/photos"
+      render={[Function]}
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/photos/:id"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/photo/:photoId"
+    />
+    <Route
+      exact={true}
+      path="/tags"
+      render={[Function]}
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/tags/:id"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/tag/:tagId"
+    />
+    <Route
+      component={[Function]}
+    />
+  </Switch>
+</styled.div>
+`;

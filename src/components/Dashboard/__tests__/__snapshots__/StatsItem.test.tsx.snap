@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StatsItem /> render() renders the StatsItem component 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-bdVaJa",
+        "isStatic": true,
+        "rules": Array [
+          "
+  padding: 2rem;
+  background: #fff;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 10px;
+  flex-direction: column;
+  color: #fff;
+  background: linear-gradient(to right bottom, #223f67, #192b44);
+  & h2 {
+    font-size: 30px;
+  }
+
+  & > span {
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: inherit;
+    font-size: 14px;
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+    color: #51c7c1;
+    &:last-child {
+      background: #0000004f;
+    }
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 0.9rem;
+  }
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-bdVaJa",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <Blueprint3.Icon
+    iconSize={75}
+  />
+  <span />
+</StyledComponent>
+`;
