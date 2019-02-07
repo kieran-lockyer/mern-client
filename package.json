@@ -12,6 +12,8 @@
     "@types/react-router-dom": "^4.3.1",
     "apexcharts": "^3.1.0",
     "axios": "^0.18.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
@@ -33,7 +35,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "coverage": "node scripts/test.js --env=jsdom --coverage"
   },
   "eslintConfig": {
     "extends": "react-app"
