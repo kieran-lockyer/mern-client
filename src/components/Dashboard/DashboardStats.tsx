@@ -17,6 +17,9 @@ const Stats = styled.div`
   justify-content: space-between;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 800px) {
+    margin-left: 0;
+  }
 `;
 
 const mapStateToProps = state => ({

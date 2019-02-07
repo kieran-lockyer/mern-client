@@ -295,12 +295,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media only screen and (max-width: 800px) {
+    padding: 0;
+  }
 `;
 
 const Wrapper = styled.div`
   width: 85%;
   background: #fff;
   max-width: 1300px;
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
