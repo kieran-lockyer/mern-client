@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<DashboardGraph /> render() renders the DashboardGraph component 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
-`;

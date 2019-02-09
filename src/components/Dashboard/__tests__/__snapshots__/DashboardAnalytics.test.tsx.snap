@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<DashboardAnalytics /> render() renders the DashboardAnalytics component 1`] = `
-<ContextConsumer>
-  <Component />
-</ContextConsumer>
-`;
