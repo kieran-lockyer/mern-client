@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Sidebar /> render() renders the component 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-bdVaJa",
+        "isStatic": true,
+        "rules": Array [
+          "
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: column;
+  align-items: center;
+  max-width: 5rem;
+  background: #172336;
+  margin-right: auto;
+  @media only screen and (max-width: 800px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+  }
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-bdVaJa",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <styled.div>
+    <img
+      alt="Brand Logo"
+      src="/images/logo.png"
+    />
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        exact={true}
+        to="/"
+      >
+        <Blueprint3.Icon
+          icon="dashboard"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/photos"
+      >
+        <Blueprint3.Icon
+          icon="media"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/tags"
+      >
+        <Blueprint3.Icon
+          icon="tag"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/settings"
+      >
+        <Blueprint3.Icon
+          icon="cog"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+  </styled.div>
+</StyledComponent>
+`;
+
+exports[`<Sidebar /> render() renders the sidebar component 1`] = `
+<StyledComponent
+  forwardedComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-bdVaJa",
+        "isStatic": true,
+        "rules": Array [
+          "
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: column;
+  align-items: center;
+  max-width: 5rem;
+  background: #172336;
+  margin-right: auto;
+  @media only screen and (max-width: 800px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+  }
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "foldedComponentIds": Array [],
+      "render": [Function],
+      "styledComponentId": "sc-bdVaJa",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <styled.div>
+    <img
+      alt="Brand Logo"
+      src="/images/logo.png"
+    />
+  </styled.div>
+  <styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        exact={true}
+        to="/"
+      >
+        <Blueprint3.Icon
+          icon="dashboard"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/photos"
+      >
+        <Blueprint3.Icon
+          icon="media"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/tags"
+      >
+        <Blueprint3.Icon
+          icon="tag"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+    <styled.div>
+      <Styled(NavLink)
+        activeClassName="active"
+        to="/settings"
+      >
+        <Blueprint3.Icon
+          icon="cog"
+          iconSize={25}
+        />
+      </Styled(NavLink)>
+    </styled.div>
+  </styled.div>
+</StyledComponent>
+`;
